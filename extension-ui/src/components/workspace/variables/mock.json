@@ -1,0 +1,90 @@
+{
+    "id": "us-east.workspace.cloudless-tf-z6pj3c.882e872e",
+    "name": "cloudless-tf-z6pj3c",
+    "crn": "crn:v1:bluemix:public:schematics:us-south:a/4b5fcc0ce32240478b2ed356834cfeba:822c88c0-db77-4a7e-8ca2-d9a315820e63:workspace:us-east.workspace.cloudless-tf-z6pj3c.882e872e",
+    "type": [
+        "terraform_v0.11"
+    ],
+    "description": "",
+    "resource_group": "Default",
+    "location": "us-east",
+    "tags": [],
+    "created_at": "2021-06-24T14:44:41.236129063Z",
+    "created_by": "test@mail.com",
+    "status": "INACTIVE",
+    "failure_reason": "",
+    "workspace_status_msg": {
+        "status_code": "200",
+        "status_msg": ""
+    },
+    "workspace_status": {
+        "frozen": false,
+        "locked": false
+    },
+    "template_repo": {
+        "commit_id": "",
+        "has_uploadedgitrepotar": true
+    },
+    "template_data": [
+        {
+            "id": "8c270004-30fb-44",
+            "folder": ".",
+            "type": "terraform_v0.11",
+            "values_url": "https://schematics.cloud.ibm.com/v1/workspaces/us-east.workspace.cloudless-tf-z6pj3c.882e872e/template_data/8c270004-30fb-44/values",
+            "values": "",
+            "values_metadata": [
+                {
+                    "default": "hello",
+                    "description": "A sample_var to pass to the template.",
+                    "name": "sample_var",
+                    "type": "string"
+                },
+                {
+                    "default": "0",
+                    "description": "How long our local-exec will take a nap.",
+                    "name": "sleepy_time",
+                    "type": "string"
+                },
+                {
+                    "default": "hello test",
+                    "description": "sample var",
+                    "name": "sample_var2",
+                    "type": "string"
+                }
+            ],
+            "variablestore": [
+                {
+                    "name": "sample_var2",
+                    "secure": false,
+                    "value": "hbhbh",
+                    "type": "string",
+                    "description": ""
+                },
+                {
+                    "name": "sleepy_time",
+                    "secure": true,
+                    "value": "$SCHEMATICSSECRET$04$.KMS04&crn:v1:bluemix:public:kms:us-south:a/c19ef85117044059a3be5e45d6dc1cf6:0de40d7c-085d-4373-9083-bbe598d7c3a9:key:4e6e436a-e53f-423d-848d-a7af60335c1f&crn:v1:bluemix:public:kms:us-east:a/c19ef85117044059a3be5e45d6dc1cf6:4d336da6-914a-4d17-8dc6-dfd9da51a422:key:1987a798-d933-446f-af49-3df7de755269&eyJjaXBoZXJ0ZXh0IjoiSVdNTDUwTEFCdk9ocTZ4b0E0NGM2M3FNcXRBbWZGTGZ2b3I1UDJyN0RUVDRvM2FYdzJaYzliTWM3M2M9IiwiaXYiOiJORnR4ci9uamw5RnBnOWZIIiwidmVyc2lvbiI6IjQuMC4wIiwiaGFuZGxlIjoiNGU2ZTQzNmEtZTUzZi00MjNkLTg0OGQtYTdhZjYwMzM1YzFmIn0=.d1e8986e2b643e573ec4d166.17f571b114a2d1676f951afe57b3a8bfe8",
+                    "type": "string",
+                    "description": "How long our local-exec will take a nap."
+                }
+            ],
+            "has_githubtoken": false
+        }
+    ],
+    "runtime_data": [
+        {
+            "id": "8c270004-30fb-44",
+            "engine_name": "terraform",
+            "engine_version": "v0.11.15",
+            "state_store_url": "https://schematics.cloud.ibm.com/v1/workspaces/us-east.workspace.cloudless-tf-z6pj3c.882e872e/runtime_data/8c270004-30fb-44/state_store",
+            "log_store_url": "https://schematics.cloud.ibm.com/v1/workspaces/us-east.workspace.cloudless-tf-z6pj3c.882e872e/runtime_data/8c270004-30fb-44/log_store"
+        }
+    ],
+    "shared_data": {
+        "resource_group_id": ""
+    },
+    "applied_shareddata_ids": null,
+    "updated_at": "2021-07-18T12:28:15.433023079Z",
+    "last_health_check_at": "0001-01-01T00:00:00Z",
+    "cart_id": ""
+}

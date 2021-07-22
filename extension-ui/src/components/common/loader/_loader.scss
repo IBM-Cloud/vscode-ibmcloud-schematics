@@ -1,0 +1,11 @@
+.bx--vsce-loader-wrapper {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    .bx--vsce-loader-text {
+        padding: $spacing-05;
+    }
+}

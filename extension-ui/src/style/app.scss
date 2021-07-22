@@ -1,0 +1,58 @@
+@import "@carbon/colors/scss/colors";
+@import "@carbon/themes/scss/themes";
+@import "@carbon/type/scss/type";
+@import "@carbon/type/scss/font-face/_mono";
+@import "@carbon/type/scss/font-face/_sans";
+
+@include carbon--type-reset();
+@include carbon--font-face-mono();
+@include carbon--font-face-sans();
+
+html {
+    .vscode-dark {
+        @include carbon--theme($carbon--theme--g90) {
+            @import "carbon-components/scss/globals/scss/_feature-flags";
+            @import "carbon-components/scss/globals/scss/_css--reset";
+            @import "carbon-components/scss/globals/scss/_css--helpers";
+            @import "carbon-components/scss/globals/scss/_helper-mixins";
+            @import "carbon-components/scss/globals/scss/_css--body";
+            @import "carbon-components/scss/globals/grid/_grid";
+            @import "carbon-components/scss/components/button/_button";
+            @import "carbon-components/scss/components/checkbox/_checkbox";
+            @import "carbon-components/scss/components/code-snippet/_code-snippet";
+            @import "carbon-components/scss/components/loading/_loading";
+            @import "carbon-components/scss/components/structured-list/_structured-list";
+            @import "carbon-components/scss/components/text-area/_text-area";
+            @import "carbon-components/scss/components/text-input/_text-input";
+
+            @import "./flex";
+            @import "./common";
+            @import "../components/workspace/workspace";
+            @import "../components/common/loader/loader";
+        }
+    }
+
+    .vscode-light {
+        @include carbon--theme($carbon--theme--white) {
+            @import "carbon-components/scss/globals/scss/_feature-flags";
+            @import "carbon-components/scss/globals/scss/_css--reset";
+            @import "carbon-components/scss/globals/scss/_css--helpers";
+            @import "carbon-components/scss/globals/scss/_helper-mixins";
+            @import "carbon-components/scss/globals/scss/_css--body";
+            @import "carbon-components/scss/globals/grid/_grid";
+            @import "carbon-components/scss/components/button/_button";
+            @import "carbon-components/scss/components/checkbox/_checkbox";
+            @import "carbon-components/scss/components/code-snippet/_code-snippet";
+            @import "carbon-components/scss/components/loading/_loading";
+            @import "carbon-components/scss/components/structured-list/_structured-list";
+            @import "carbon-components/scss/components/text-area/_text-area";
+            @import "carbon-components/scss/components/text-input/_text-input";
+
+            @import "./light";
+            @import "./flex";
+            @import "./common";
+            @import "../components/workspace/workspace";
+            @import "../components/common/loader/loader";
+        }
+    }
+}

@@ -1,0 +1,26 @@
+/* 
+    Fixes for the Variable Search Textbox. 
+    For some reason the text input styles are not working.
+*/
+
+.bx--text-input__field-outer-wrapper {
+    display: flex;
+    width: 100%;
+    flex: 1 1 auto;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.bx--text-input__field-wrapper {
+    position: relative;
+    display: flex;
+    width: 100%;
+}
+
+.bx--text-input {
+    width: 100%;
+    height: 2.5rem;
+    padding: 0 $spacing-05;
+    border: none;
+    background-color: $ui-01;
+}

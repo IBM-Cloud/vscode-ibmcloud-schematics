@@ -1,0 +1,43 @@
+.bx--content {
+    padding: $spacing-05;
+
+    @keyframes spin {
+        from {
+            transform: rotate(0deg);
+        }
+        to {
+            transform: rotate(360deg);
+        }
+    }
+    
+    .bx--spin {
+        animation-name: spin;
+        animation-duration: 700ms;
+        animation-iteration-count: infinite;
+        animation-timing-function: linear;
+    }
+
+    .bx--icon-success {
+        fill: $support-02;
+    }
+
+    .bx--icon-fail {
+        fill: $support-01;
+    }
+
+    .bx--float-right {
+        float: right;
+    }
+
+    .bx--float-left {
+        float: left;
+    }
+
+    .bx--log-snippet {
+        max-width: 100%;
+
+        code {
+            color: $text-01;
+        }
+    }
+}

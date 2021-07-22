@@ -1,0 +1,51 @@
+.bx--variables {
+    h3 {
+        @include type-style(productive-heading-03)
+    }
+
+    p {
+        @include type-style(helper-text-01)
+    }
+
+    .bx--variables-wrapper {
+        margin-top: $spacing-05;
+        
+
+        .bx--variables-header {
+            margin: 0;
+            background-color: $ui-01;
+
+            > div {
+                padding: 0;
+            }
+
+            .bx--variables-save-btn {
+                button {
+                    width: 100%;
+                }
+            }
+        }
+
+        .bx--variables-table-head {
+            margin: 0;
+            align-items: center;
+            background-color: $ui-03;
+            height: $spacing-09;
+        }
+
+        .bx--variables-table-row {
+            @include type-style(body-long-01);
+            margin: 0;
+            align-items: center;
+            min-height: $spacing-09;
+            padding-top: $spacing-03;
+            padding-bottom: $spacing-03;
+
+            &.empty {
+                padding-left: $spacing-05;
+            }
+        }
+    }
+
+    
+}

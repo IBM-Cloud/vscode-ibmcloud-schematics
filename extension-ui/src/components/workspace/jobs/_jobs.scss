@@ -1,0 +1,31 @@
+.bx--ws-jobs {
+    .bx--ws-job {
+        padding-top: $spacing-03;
+        padding-bottom: $spacing-03;
+
+        &:hover {
+            background-color: $hover-ui;
+        }
+    }
+
+    .bx--status-icon {
+        margin-right: $spacing-05;
+        margin-top: $spacing-03;
+    }
+
+    .bx--status-label {
+        @include type-style(productive-heading-02)
+    }
+
+    .bx--datetime {
+        @include type-style(label-01)
+    }
+
+    .bx--counter {
+        @include type-style(productive-heading-02)
+    }
+
+    .bx--counter-text {
+        @include type-style(label-01)
+    }
+}

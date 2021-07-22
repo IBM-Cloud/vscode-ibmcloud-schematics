@@ -1,0 +1,9 @@
+# Ignore everything
+/*
+
+# Whitelist needed files
+!dist
+!media
+!CHANGELOG.md
+!CONTRIBUTE.md
+!LICENCE

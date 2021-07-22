@@ -1,0 +1,166 @@
+{
+    "workspace_name": "cloudless-tf-z6pj3c",
+    "workspace_id": "us-east.workspace.cloudless-tf-z6pj3c.882e872e",
+    "actions": [
+        {
+            "action_id": "c8427aba9b1c08d76b12a1ab65687d3e",
+            "name": "APPLY",
+            "status": "INPROGRESS",
+            "message": [],
+            "performed_by": "test@mail.com",
+            "performed_at": "2021-06-24T14:47:59.084830715Z",
+            "templates": [
+                {
+                    "template_id": "8c270004-30fb-44",
+                    "template_type": "terraform_v0.11",
+                    "start_time": "2021-06-24T14:48:00.009705264Z",
+                    "end_time": "2021-06-24T14:48:20.228790812Z",
+                    "status": "INPROGRESS",
+                    "message": "{\"messagekey\":\"M2001_ActivitySuccessful\",\"parms\":{},\"requestid\":\"9aec59fc-2fc7-43a9-b244-9c05afd04229\",\"timestamp\":\"2021-06-24T14:48:20.228793786Z\"}",
+                    "log_url": "https://schematics.cloud.ibm.com/v1/workspaces/us-east.workspace.cloudless-tf-z6pj3c.882e872e/runtime_data/8c270004-30fb-44/log_store/actions/c8427aba9b1c08d76b12a1ab65687d3e",
+                    "log_summary": {
+                        "activity_status": "COMPLETED",
+                        "time_taken": 20.22,
+                        "resources_added": 1,
+                        "resources_destroyed": 1
+                    }
+                }
+            ],
+            "terraform_commands": {
+                "commands": null
+            }
+        },
+        {
+            "action_id": "4addc7dbeca423bf038d2223d09d8dbe",
+            "name": "PLAN",
+            "status": "COMPLETED",
+            "message": [],
+            "performed_by": "test@mail.com",
+            "performed_at": "2021-06-24T14:47:36.972803244Z",
+            "templates": [
+                {
+                    "template_id": "8c270004-30fb-44",
+                    "template_type": "terraform_v0.11",
+                    "start_time": "2021-06-24T14:47:37.961460505Z",
+                    "end_time": "2021-06-24T14:47:56.035486231Z",
+                    "status": "COMPLETED",
+                    "message": "{\"messagekey\":\"M2001_ActivitySuccessful\",\"parms\":{},\"requestid\":\"9b287f8e-c5ac-416f-b997-958101875037\",\"timestamp\":\"2021-06-24T14:47:56.035489259Z\"}",
+                    "log_url": "https://schematics.cloud.ibm.com/v1/workspaces/us-east.workspace.cloudless-tf-z6pj3c.882e872e/runtime_data/8c270004-30fb-44/log_store/actions/4addc7dbeca423bf038d2223d09d8dbe",
+                    "log_summary": {
+                        "activity_status": "COMPLETED",
+                        "time_taken": 18.07,
+                        "resources_added": 1,
+                        "resources_destroyed": 1
+                    }
+                }
+            ],
+            "terraform_commands": {
+                "commands": null
+            }
+        },
+        {
+            "action_id": "bbcc950584e90a08e97a7239ad15b356",
+            "name": "TAR_WORKSPACE_UPLOAD",
+            "status": "COMPLETED",
+            "message": [],
+            "performed_by": "test@mail.com",
+            "performed_at": "2021-06-24T14:47:19.435290227Z",
+            "templates": [
+                {
+                    "template_id": "8c270004-30fb-44",
+                    "template_type": "terraform_v0.11",
+                    "start_time": "2021-06-24T14:47:20.32265739Z",
+                    "end_time": "2021-06-24T14:47:32.135656297Z",
+                    "status": "COMPLETED",
+                    "message": "{\"messagekey\":\"M2001_ActivitySuccessful\",\"parms\":{},\"requestid\":\"1ff10175-54a1-484d-8aae-71969cfc11a7\",\"timestamp\":\"2021-06-24T14:47:32.135659223Z\"}",
+                    "log_url": "https://schematics.cloud.ibm.com/v1/workspaces/us-east.workspace.cloudless-tf-z6pj3c.882e872e/runtime_data/8c270004-30fb-44/log_store/actions/bbcc950584e90a08e97a7239ad15b356",
+                    "log_summary": {
+                        "time_taken": 0
+                    }
+                }
+            ],
+            "terraform_commands": {
+                "commands": null
+            }
+        },
+        {
+            "action_id": "17128e47814efed4972afd470af32323",
+            "name": "APPLY",
+            "status": "COMPLETED",
+            "message": [],
+            "performed_by": "test@mail.com",
+            "performed_at": "2021-06-24T14:45:25.70424085Z",
+            "templates": [
+                {
+                    "template_id": "8c270004-30fb-44",
+                    "template_type": "terraform_v0.11",
+                    "start_time": "2021-06-24T14:45:26.782590738Z",
+                    "end_time": "2021-06-24T14:45:43.632737496Z",
+                    "status": "COMPLETED",
+                    "message": "{\"messagekey\":\"M2001_ActivitySuccessful\",\"parms\":{},\"requestid\":\"c97d99f3-4a3f-419e-931e-b600b8ae3b80\",\"timestamp\":\"2021-06-24T14:45:43.632740397Z\"}",
+                    "log_url": "https://schematics.cloud.ibm.com/v1/workspaces/us-east.workspace.cloudless-tf-z6pj3c.882e872e/runtime_data/8c270004-30fb-44/log_store/actions/17128e47814efed4972afd470af32323",
+                    "log_summary": {
+                        "activity_status": "COMPLETED",
+                        "time_taken": 16.85,
+                        "resources_added": 1
+                    }
+                }
+            ],
+            "terraform_commands": {
+                "commands": null
+            }
+        },
+        {
+            "action_id": "0cdb8f7eb36e2c5197e47152b2d88b32",
+            "name": "PLAN",
+            "status": "FAILED",
+            "message": [],
+            "performed_by": "test@mail.com",
+            "performed_at": "2021-06-24T14:45:03.006167265Z",
+            "templates": [
+                {
+                    "template_id": "8c270004-30fb-44",
+                    "template_type": "terraform_v0.11",
+                    "start_time": "2021-06-24T14:45:04.25740694Z",
+                    "end_time": "2021-06-24T14:45:20.111599633Z",
+                    "status": "COMPLETED",
+                    "message": "{\"messagekey\":\"M2001_ActivitySuccessful\",\"parms\":{},\"requestid\":\"ce974866-8645-490e-b6a2-94113909839c\",\"timestamp\":\"2021-06-24T14:45:20.111603605Z\"}",
+                    "log_url": "https://schematics.cloud.ibm.com/v1/workspaces/us-east.workspace.cloudless-tf-z6pj3c.882e872e/runtime_data/8c270004-30fb-44/log_store/actions/0cdb8f7eb36e2c5197e47152b2d88b32",
+                    "log_summary": {
+                        "activity_status": "COMPLETED",
+                        "time_taken": 15.85,
+                        "resources_added": 1
+                    }
+                }
+            ],
+            "terraform_commands": {
+                "commands": null
+            }
+        },
+        {
+            "action_id": "b705f878f6ebff8f5a7169b9fbe16407",
+            "name": "TAR_WORKSPACE_UPLOAD",
+            "status": "CREATED",
+            "message": [],
+            "performed_by": "test@mail.com",
+            "performed_at": "2021-06-24T14:44:44.370243257Z",
+            "templates": [
+                {
+                    "template_id": "8c270004-30fb-44",
+                    "template_type": "terraform_v0.11",
+                    "start_time": "2021-06-24T14:44:46.27012641Z",
+                    "end_time": "2021-06-24T14:44:57.274356034Z",
+                    "status": "COMPLETED",
+                    "message": "{\"messagekey\":\"M2001_ActivitySuccessful\",\"parms\":{},\"requestid\":\"e809b234-851d-4d6f-9487-9ce59f9375cb\",\"timestamp\":\"2021-06-24T14:44:57.274359236Z\"}",
+                    "log_url": "https://schematics.cloud.ibm.com/v1/workspaces/us-east.workspace.cloudless-tf-z6pj3c.882e872e/runtime_data/8c270004-30fb-44/log_store/actions/b705f878f6ebff8f5a7169b9fbe16407",
+                    "log_summary": {
+                        "time_taken": 0
+                    }
+                }
+            ],
+            "terraform_commands": {
+                "commands": null
+            }
+        }
+    ]
+}

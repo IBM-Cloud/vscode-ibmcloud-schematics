@@ -1,0 +1,152 @@
+{
+    "name": "ibmcloud-schematics",
+    "displayName": "IBM Cloud Schematics",
+    "description": "IBM Cloud Schematics extension for Visual Studio Code. Automate your IBM Cloud infrastructure, service, and application stack across cloud environments",
+    "version": "1.1.0",
+    "publisher": "IBM",
+    "license": "Apache-2.0",
+    "icon": "media/IBM_Cloud_Icon.png",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/IBM-Cloud/vscode-ibmcloud-schematics.git"
+    },
+    "engines": {
+        "vscode": "^1.52.0"
+    },
+    "categories": [
+        "Other"
+    ],
+    "keywords": [
+        "IBM",
+        "IBM Cloud",
+        "Schematics",
+        "Terraform"
+    ],
+    "extensionDependencies": [],
+    "activationEvents": [
+        "onCommand:workbench.action.tasks.runTask",
+        "onCommand:schematics.workspace.jobs",
+        "onCommand:schematics.workspace.job.log",
+        "onCommand:schematics.workspace.job.latestLog",
+        "onCommand:schematics.workspace.pullLatest",
+        "onCommand:schematics.workspace.resources",
+        "onCommand:schematics.workspace.plan",
+        "onCommand:schematics.workspace.apply",
+        "onCommand:schematics.workspace.delete",
+        "onCommand:schematics.workspace.destroyResources",
+        "onCommand:schematics.workspace.variables"
+    ],
+    "main": "./dist/extension.js",
+    "contributes": {
+        "taskDefinitions": [
+            {
+                "type": "ibmcloud-schematics-build"
+            },
+            {
+                "type": "ibmcloud-schematics-deploy"
+            },
+            {
+                "type": "ibmcloud-schematics-clone"
+            }
+        ],
+        "commands": [
+            {
+                "command": "schematics.workspace.jobs",
+                "title": "View jobs",
+                "category": "IBM Cloud Schematics workspace"
+            },
+            {
+                "command": "schematics.workspace.job.log",
+                "title": "View log",
+                "category": "IBM Cloud Schematics workspace"
+            },
+            {
+                "command": "schematics.workspace.job.latestLog",
+                "title": "View latest log",
+                "category": "IBM Cloud Schematics workspace"
+            },
+            {
+                "command": "schematics.workspace.pullLatest",
+                "title": "Pull latest",
+                "category": "IBM Cloud Schematics workspace"
+            },
+            {
+                "command": "schematics.workspace.resources",
+                "title": "Resources",
+                "category": "IBM Cloud Schematics workspace"
+            },
+            {
+                "command": "schematics.workspace.plan",
+                "title": "Plan",
+                "category": "IBM Cloud Schematics workspace"
+            },
+            {
+                "command": "schematics.workspace.apply",
+                "title": "Apply",
+                "category": "IBM Cloud Schematics workspace"
+            },
+            {
+                "command": "schematics.workspace.delete",
+                "title": "Delete",
+                "category": "IBM Cloud Schematics workspace"
+            },
+            {
+                "command": "schematics.workspace.destroyResources",
+                "title": "Destroy resources",
+                "category": "IBM Cloud Schematics workspace"
+            },
+            {
+                "command": "schematics.workspace.variables",
+                "title": "View Variables",
+                "category": "IBM Cloud Schematics workspace"
+            }
+        ],
+        "menus": {
+            "explorer/context": [],
+            "editor/title/context": []
+        }
+    },
+    "scripts": {
+        "clean": "npm cache clean --force && rm package-lock.json && rm -rf node_modules && npm i",
+        "vscode:prepublish": "npm run package",
+        "compile": "webpack --config ./build/webpack.config.js",
+        "watch": "webpack --watch --config ./build/webpack.config.js",
+        "package": "webpack --mode production --devtool hidden-source-map --config ./build/webpack.config.js",
+        "test-compile": "tsc -p ./",
+        "test-watch": "tsc -watch -p ./",
+        "pretest": "npm run test-compile && npm run lint",
+        "lint": "eslint --fix src --ext ts",
+        "lint:fix": "eslint --fix src --ext ts",
+        "test": "node ./out/test/runTest.js",
+        "ui:build": "cd ./extension-ui && npm run build",
+        "ui:copy": "copyfiles --flat extension-ui/build/*.* dist/build && copyfiles --flat extension-ui/build/static/css/*.* dist/build/static/css && copyfiles --flat extension-ui/build/static/js/*.* dist/build/static/js",
+        "ui:start": "cd ./extension-ui && npm run start",
+        "vsce:package": "mkdir -p bin && vsce package --yarn --out ./bin"
+    },
+    "devDependencies": {
+        "@types/glob": "^7.1.3",
+        "@types/mocha": "^8.0.4",
+        "@types/node": "^12.11.7",
+        "@types/vscode": "^1.52.0",
+        "@typescript-eslint/eslint-plugin": "^4.9.0",
+        "@typescript-eslint/parser": "^4.9.0",
+        "copyfiles": "^2.4.1",
+        "eslint": "^7.15.0",
+        "eslint-config-prettier": "^8.3.0",
+        "eslint-plugin-prettier": "^3.4.0",
+        "glob": "^7.1.6",
+        "mocha": "^8.1.3",
+        "prettier": "^2.3.1",
+        "ts-loader": "^8.2.0",
+        "typescript": "^4.2.4",
+        "vscode-test": "^1.4.1",
+        "webpack": "^5.35.1",
+        "webpack-cli": "^4.6.0"
+    },
+    "dependencies": {
+        "@ibm-cloud/ibm-schematics": "0.0.2",
+        "tar": "^6.1.0",
+        "web-pack": "^1.0.0",
+        "hcl2json": "^0.2.3"
+    }
+}
