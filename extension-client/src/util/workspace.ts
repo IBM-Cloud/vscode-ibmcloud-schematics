@@ -548,60 +548,21 @@ export function removeTarFile(): any {
     }
 }
 
+// TODO: Revisit the logic for detecting terraform version as the hcl2json shell command is not working
 export async function detectTerraformVersion(tfversions: any) {
     const deployed = isDeployed();
     if (deployed) {
-        if (flag === 1 && hasVersionsTFFile()) {
-            await hcl2json();
-            if (hasWorkspaceVersionsFile()) {
-                let data: any = await readTerraformVersion();
-                if (data.terraform[0].hasOwnProperty('required_version')) {
-                    data = data.terraform[0].required_version;
-                    const type: any =
-                        tfversions[0].substring(0, 11) +
-                        data.split('\u003e=')[1].trim(); // tfversions[0].substring(0,11)  i.e. taking "terraform_v" as a substring from first terraform_v0.11
-                    Promise.resolve(saveTerraformVersion({ version: type }));
-                } else {
-                    Promise.resolve('Workspace is present'); // assuming the tf version will be same
-                    return;
-                }
-            }
-        } else {
-            Promise.resolve('Workspace is present');
-            return;
-        }
+        Promise.resolve('Workspace is present');
+        return;
     }
 
     return new Promise(async (resolve, reject) => {
-        if (hasVersionsTFFile()) {
-            await hcl2json();
-            if (hasWorkspaceVersionsFile()) {
-                let data: any = await readTerraformVersion();
-                if (data.terraform[0].hasOwnProperty('required_version')) {
-                    data = data.terraform[0].required_version;
-                    const type: any =
-                        tfversions[0].substring(0, 11) +
-                        data.split('\u003e=')[1].trim(); // tfversions[0].substring(0,11)  i.e. taking "terraform_v" as a substring from first terraform_v0.11
-                    resolve(saveTerraformVersion({ version: type }));
-                } else {
-                    flag = 1;
-                    userInput
-                        .showTFVersionsQuickPick(tfversions)
-                        .then((version) => {
-                            resolve(saveTerraformVersion({ version }));
-                        })
-                        .catch((err) => reject(err));
-                }
-            }
-        } else {
-            flag = 1;
-            userInput
-                .showTFVersionsQuickPick(tfversions)
-                .then((version) => {
-                    resolve(saveTerraformVersion({ version }));
-                })
-                .catch((err) => reject(err));
-        }
+        userInput
+            .showTFVersionsQuickPick(tfversions)
+            .then((version) => {
+                resolve(saveTerraformVersion({ version }));
+            })
+            .catch((err) => reject(err));
     });
 }
 

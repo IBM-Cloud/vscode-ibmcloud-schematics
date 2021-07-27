@@ -67,12 +67,6 @@ export function activate(context: vscode.ExtensionContext) {
     );
     context.subscriptions.push(latestLogCmd);
 
-    var pullLatestCmd = vscode.commands.registerCommand(
-        'schematics.workspace.pullLatest',
-        () => command.workspace.pullLatest()
-    );
-    context.subscriptions.push(pullLatestCmd);
-
     var resourcesCmd = vscode.commands.registerCommand(
         'schematics.workspace.resources',
         () => command.workspace.resources(context)

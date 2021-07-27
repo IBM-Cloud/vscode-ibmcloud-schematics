@@ -2,7 +2,7 @@
     "name": "ibmcloud-schematics",
     "displayName": "IBM Cloud Schematics",
     "description": "IBM Cloud Schematics extension for Visual Studio Code. Automate your IBM Cloud infrastructure, service, and application stack across cloud environments",
-    "version": "1.1.0",
+    "version": "1.1.1",
     "publisher": "IBM",
     "license": "Apache-2.0",
     "icon": "media/IBM_Cloud_Icon.png",
@@ -28,7 +28,6 @@
         "onCommand:schematics.workspace.jobs",
         "onCommand:schematics.workspace.job.log",
         "onCommand:schematics.workspace.job.latestLog",
-        "onCommand:schematics.workspace.pullLatest",
         "onCommand:schematics.workspace.resources",
         "onCommand:schematics.workspace.plan",
         "onCommand:schematics.workspace.apply",
@@ -63,11 +62,6 @@
             {
                 "command": "schematics.workspace.job.latestLog",
                 "title": "View latest log",
-                "category": "IBM Cloud Schematics workspace"
-            },
-            {
-                "command": "schematics.workspace.pullLatest",
-                "title": "Pull latest",
                 "category": "IBM Cloud Schematics workspace"
             },
             {
