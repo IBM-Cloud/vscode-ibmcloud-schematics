@@ -2,7 +2,7 @@
 
 IBM Cloud Schematics extensions for Visual Studio Code aids in automating your IBM Cloud infrastructure, service, and application stack across cloud environments. This capability is currently being released as a Beta release.
 
-The extension is designed to provide a `build and deploy` experience to developers via [vscode custom tasks], there-by increasing developer productivity in terms of ease in Authoring, Building, Deploying and Testing their terraform configuration with IBM Cloud Schematics.
+The extension is designed to provide a `build and deploy` experience to developers via [vscode custom tasks](https://code.visualstudio.com/docs/editor/tasks#_custom-tasks), there-by increasing developer productivity in terms of ease in Authoring, Building, Deploying and Testing their terraform configuration with IBM Cloud Schematics.
 
 ### Tasks
 
@@ -12,7 +12,7 @@ The extension is designed to provide a `build and deploy` experience to develope
 | `ibmcloud-schematics-deploy` | Validates and deploys your terraform configuration to IBM Cloud Schematics.                                                                                                    |
 | `ibmcloud-schematics-clone`  | Clones an existing Schematics workspace or a GIT repository.                                                                                                                   |
 
-Know more about [vscode tasks]
+Know more about [vscode tasks](https://code.visualstudio.com/docs/editor/tasks)
 
 #### Commands
 
@@ -31,28 +31,25 @@ The below commands help you to interact with the deployed Schematics workspace. 
 | Destroy resources                 | You can use this command to destroy resources                                                                                                                                                           |
 | Delete workspace                  | You can use this command to delete workspace                                                                                                                                                            |
 
-Know more about [vscode commands]
+Know more about [vscode commands](https://code.visualstudio.com/docs/getstarted/userinterface#_command-palette)
+
+#### Getting started
+
+For next steps on how to get started with the Visual Studio Code extension for IBM Cloud Schematics, please see the [Getting started tutorial](tutorial/README.md)
 
 #### Changelog and releases
 
-All notable changes to this project will be documented in [changelog]. You can find the releases in [release section]
+All notable changes to this project will be documented in [changelog](CHANGELOG.md). You can find the releases in [release section](https://github.com/IBM-Cloud/vscode-ibmcloud-schematics/releases)
 
 #### Contribution
 
-If you wish to contribute please read the [contribution document]
+If you wish to contribute please read the [contribution document](CONTRIBUTE.md)
 
-#### Issue reporting
+#### Report a Issue / Feature request
 
-If you wish to report an issue or request an enhancement,check the issue list. If the issue/enhancement is not yet already opened, please go ahead and raise a new one.
+-   Is something broken? Have a issue/bug to report? use the [Bug report](https://github.com/IBM-Cloud/vscode-ibmcloud-schematics/issues/new?assignees=&labels=&template=bug_report.md&title=) link. But before raising a issue, please check the [issues list](https://github.com/IBM-Cloud/vscode-ibmcloud-schematics/issues) to see if the issue is already raised by someone
+-   Do you have a new feature or enhancement you would like to see? use the [Feature request](https://github.com/IBM-Cloud/vscode-ibmcloud-schematics/issues/new?assignees=&labels=&template=feature_request.md&title=) link.
 
 ## License
 
 Apache-2.0
-
-[comment]: <Below are the list of links>
-[vscode tasks]: https://code.visualstudio.com/docs/editor/tasks
-[vscode custom tasks]: https://code.visualstudio.com/docs/editor/tasks#_custom-tasks
-[vscode commands]: https://code.visualstudio.com/docs/getstarted/userinterface#_command-palette
-[contribution document]: CONTRIBUTE.md
-[changelog]: CHANGELOG.md
-[release section]: https://github.com/IBM-Cloud/vscode-ibmcloud-schematics/releases
