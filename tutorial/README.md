@@ -75,17 +75,17 @@ You can clone your existing Schematics workspace using the Schematics workspace 
 
 ## Tutorial 3: Iteratively develop an existing Terraform template from a Git repository for IBM Cloud Schematics
 
-For sake of this tutorial, I will use [VPC Classic Cluster](https://github.com/VishwaKumar/ibm-vpc-classic-cluster) as an example to clone in VS Code
+For sake of this tutorial, I will use [VPC Cluster](https://github.com/Cloud-Schematics/vpc-cluster) as an example to clone in VS Code
 
 1. Launch Visual Studio Code
 2. Select Terminal > Run Task... , this will open VS Code Tasks dropdown
 3. In the VS Code Tasks search text box , search for “ibmcloud-schematics”
 4. Select ibmcloud-schematics-build > schematics:clone
    ![](images/image14-vscode-build-task-copy.png)
-5. Select the folder where you want to clone https://github.com/VishwaKumar/ibm-vpc-classic-cluster
-6. Enter https://github.com/VishwaKumar/ibm-vpc-classic-cluster and hit enter
+5. Select the folder where you want to clone https://github.com/Cloud-Schematics/vpc-cluster
+6. Enter https://github.com/Cloud-Schematics/vpc-cluster and hit enter
    ![](images/image11-type-repository-url.png)
-7. A new VS Code window will open with the cloned https://github.com/VishwaKumar/ibm-vpc-classic-cluster
+7. A new VS Code window will open with the cloned https://github.com/Cloud-Schematics/vpc-cluster
 8. Select Terminal > Run Task... , this will open VS Code Tasks dropdown
 9. In the VS Code Tasks search text box , search for “ibmcloud-schematics”
    ![](images/image09-vscode-run-tasks.png)
