@@ -18,18 +18,17 @@ Know more about [vscode tasks](https://code.visualstudio.com/docs/editor/tasks)
 
 The below commands help you to interact with the deployed Schematics workspace. You can access these commands via the vscode Editor commands [ cmd + shift + p ]
 
-| Command                           | Description                                                                                                                                                                                             |
-| --------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| View and override variable values | You can use this command to view workspace variables and override the variable values.                                                                                                                  |
-| View jobs                         | You can use this command to view jobs/activities of the deployed Schematics workspace.                                                                                                                  |
-| View log                          | You can use this command to view logs of selected activity of the deployed Schematics workspace.                                                                                                        |
-| View latest log                   | You can use this command to view logs of the latest activity executed                                                                                                                                   |
-| Pull latest                       | You can use this command to update the workspace with latest configuration changes on a Schematics workspace. **Note:** The changes need to be pushed to your git repository before using this command. |
-| View resources                    | You can use this command to view the resources provisioned by your workspace                                                                                                                            |
-| Generate plan                     | You can use this command to create a Terraform execution plan                                                                                                                                           |
-| Apply plan                        | You can use this command to run your infrastructure code                                                                                                                                                |
-| Destroy resources                 | You can use this command to destroy resources                                                                                                                                                           |
-| Delete workspace                  | You can use this command to delete workspace                                                                                                                                                            |
+| Command                           | Description                                                                                      |
+| --------------------------------- | ------------------------------------------------------------------------------------------------ |
+| View and override variable values | You can use this command to view workspace variables and override the variable values.           |
+| View jobs                         | You can use this command to view jobs/activities of the deployed Schematics workspace.           |
+| View log                          | You can use this command to view logs of selected activity of the deployed Schematics workspace. |
+| View latest log                   | You can use this command to view logs of the latest activity executed                            |
+| View resources                    | You can use this command to view the resources provisioned by your workspace                     |
+| Generate plan                     | You can use this command to create a Terraform execution plan                                    |
+| Apply plan                        | You can use this command to run your infrastructure code                                         |
+| Destroy resources                 | You can use this command to destroy resources                                                    |
+| Delete workspace                  | You can use this command to delete workspace                                                     |
 
 Know more about [vscode commands](https://code.visualstudio.com/docs/getstarted/userinterface#_command-palette)
 
