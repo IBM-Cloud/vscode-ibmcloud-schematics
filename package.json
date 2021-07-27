@@ -28,7 +28,6 @@
         "onCommand:schematics.workspace.jobs",
         "onCommand:schematics.workspace.job.log",
         "onCommand:schematics.workspace.job.latestLog",
-        "onCommand:schematics.workspace.pullLatest",
         "onCommand:schematics.workspace.resources",
         "onCommand:schematics.workspace.plan",
         "onCommand:schematics.workspace.apply",
@@ -63,11 +62,6 @@
             {
                 "command": "schematics.workspace.job.latestLog",
                 "title": "View latest log",
-                "category": "IBM Cloud Schematics workspace"
-            },
-            {
-                "command": "schematics.workspace.pullLatest",
-                "title": "Pull latest",
                 "category": "IBM Cloud Schematics workspace"
             },
             {
