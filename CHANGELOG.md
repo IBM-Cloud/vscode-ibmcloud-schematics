@@ -3,6 +3,13 @@
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v1.1.1] - 27 July 2021
+
+### Bug fixes
+
+-   Removed pull latest command
+-   Fixed hcl2json command not found error by removing hcl2json logic check for detecting terraform version
+
 ## [v1.1.0] - 22 July 2021
 
 ### Added
@@ -23,5 +30,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Integrated React [Carbon Design System] for the extension webview
 
 [comment]: <Below are the list of links>
-[Carbon Design System]: https://www.carbondesignsystem.com/
+[carbon design system]: https://www.carbondesignsystem.com/
 [v1.1.0]: https://github.com/IBM-Cloud/vscode-ibmcloud-schematics/releases/tag/v1.1.0
+[v1.1.1]: https://github.com/IBM-Cloud/vscode-ibmcloud-schematics/releases/tag/v1.1.1
