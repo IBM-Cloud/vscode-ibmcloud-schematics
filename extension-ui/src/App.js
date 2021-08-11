@@ -19,6 +19,7 @@ import React, { useState, useEffect } from 'react';
 import { HashRouter as Router, Route, Redirect } from 'react-router-dom';
 import Loader from './components/common/loader/Loader';
 import Jobs from './components/workspace/jobs';
+import WorkspaceDetail from './components/workspace/detail';
 import Log from './components/common/log/Log';
 import Resources from './components/workspace/resources';
 import Failure from './components/common/failure';
@@ -41,6 +42,11 @@ function App() {
         <Router>
             <Redirect to={redirectPath} />
             <Route exact path="/loading" render={() => <Loader />} />
+            <Route
+                exact
+                path="/workspace/details"
+                render={() => <WorkspaceDetail result={result} />}
+            />
             <Route
                 exact
                 path="/workspace/jobs"
