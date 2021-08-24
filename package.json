@@ -46,6 +46,9 @@
             },
             {
                 "type": "ibmcloud-schematics-clone"
+            },
+            {
+                "type": "ibmcloud-schematics-migrate"
             }
         ],
         "commands": [

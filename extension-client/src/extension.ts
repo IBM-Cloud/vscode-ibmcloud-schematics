@@ -19,6 +19,7 @@ import * as vscode from 'vscode';
 import { BuildTaskProvider } from './task/build/buildTaskProvider';
 import { DeployTaskProvider } from './task/deploy/deployTaskProvider';
 import { CloneTaskProvider } from './task/clone/cloneTaskProvider';
+import { MigrateTaskProvider } from './task/migrate/migrateTaskProvider';
 
 import * as command from './command';
 
@@ -47,6 +48,11 @@ export function activate(context: vscode.ExtensionContext) {
         CloneTaskProvider.taskType,
         new CloneTaskProvider()
     );
+    migrateTaskProvider = vscode.tasks.registerTaskProvider(
+        MigrateTaskProvider.taskType,
+        new MigrateTaskProvider()
+    );
+
 
     // Register commands
     let jobsCmd = vscode.commands.registerCommand(
@@ -122,6 +128,10 @@ export function deactivate() {
     if (cloneTaskProvider) {
         cloneTaskProvider.dispose();
     }
+    if (migrateTaskProvider) {
+        migrateTaskProvider.dispose();
+    }
+
 
     // Dispose webview panels after deactivation
     if (activitiesPanelWebview) {

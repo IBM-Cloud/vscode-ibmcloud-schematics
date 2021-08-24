@@ -20,6 +20,9 @@ import * as util from '../../../util';
 
 const TERRAFORM_INIT_COMMAND = 'terraform init';
 const TERRAFORM_VALIDATE_COMMAND = 'terraform validate';
+const TERRAFORM_VERSION_COMMAND = 'terraform -version';
+const TERRAFORM_UPGRADE_COMMAND = 'terraform 0.12upgrade';
+
 
 export function init(): Promise<string | Error> {
     return shell.execute(TERRAFORM_INIT_COMMAND);
@@ -27,6 +30,13 @@ export function init(): Promise<string | Error> {
 
 export function validate(): Promise<string | Error> {
     return shell.execute(TERRAFORM_VALIDATE_COMMAND);
+}
+export function checkVersion(): Promise<string | Error> {
+    return shell.execute(TERRAFORM_VERSION_COMMAND);
+}
+
+export function upgrade(): Promise<string | Error> {
+    return shell.execute(TERRAFORM_UPGRADE_COMMAND);
 }
 
 export function hcl2json(): Promise<string | Error> {

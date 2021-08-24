@@ -405,3 +405,25 @@ export async function saveVariables(wsData: any, variables: any) {
             });
     });
 }
+
+
+export async function getStatefile(payload: any) {
+    const credentials: type.Account = await util.workspace.readCredentials();
+    const authenticator = auth.getAuthenticator(credentials);
+
+    const schematicsService = new schematicsV1({
+        authenticator,
+        serviceUrl: credentials.serviceURL,
+    });
+
+    return new Promise(function (resolve, reject) {
+        schematicsService
+            .getWorkspaceTemplateState(payload)
+            .then((res: any) => {
+                resolve(res.result);
+            })
+            .catch((err: any) => {
+                reject(err);
+            });
+    });
+}
