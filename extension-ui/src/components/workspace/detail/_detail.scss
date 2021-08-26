@@ -1,0 +1,10 @@
+.bx--workspace_detail {
+    h3 {
+        @include type-style(productive-heading-03);
+        margin-bottom: $spacing-05;
+    }
+
+    .bx--row {
+        margin-bottom: $spacing-07;
+    }
+}
