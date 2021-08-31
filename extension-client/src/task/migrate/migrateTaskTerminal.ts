@@ -87,7 +87,6 @@ export default class MigrateTaskTerminal implements vscode.Pseudoterminal {
             const tfversions: any = await api.versions();
 
             await util.workspace.detectTerraformVersion(tfversions);
-            
 
             //need to implement to tar and create workspace
             await command.workspace.create();
