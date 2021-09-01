@@ -2,7 +2,7 @@
     "name": "ibmcloud-schematics",
     "displayName": "IBM Cloud Schematics",
     "description": "IBM Cloud Schematics extension for Visual Studio Code. Automate your IBM Cloud infrastructure, service, and application stack across cloud environments",
-    "version": "1.1.1",
+    "version": "1.1.2",
     "publisher": "IBM",
     "license": "Apache-2.0",
     "icon": "media/IBM_Cloud_Icon.png",
