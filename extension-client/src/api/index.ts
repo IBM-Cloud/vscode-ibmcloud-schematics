@@ -65,7 +65,11 @@ export async function uploadTar(payload: any): Promise<any> {
     });
 }
 
-export async function getWorkspace(id: string, credentials: any) {
+export async function getWorkspace(id: string, credentials: any = undefined) {
+    if (!credentials) {
+        credentials = await util.workspace.readCredentials();
+    }
+
     const authenticator = auth.getAuthenticator(credentials);
 
     const schematicsService = new schematicsV1({

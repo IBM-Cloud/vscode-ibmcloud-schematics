@@ -114,6 +114,12 @@ export function activate(context: vscode.ExtensionContext) {
         (data) => command.workspace.saveVariables(context, data)
     );
     context.subscriptions.push(saveVariablesCmd);
+
+    var wsDetailsCmd = vscode.commands.registerCommand(
+        'schematics.workspace.details',
+        () => command.workspace.read(context)
+    );
+    context.subscriptions.push(wsDetailsCmd);
 }
 
 // This method is called when your extension is deactivated
