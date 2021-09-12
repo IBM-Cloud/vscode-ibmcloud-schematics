@@ -3,6 +3,18 @@
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v1.1.3](https://github.com/IBM-Cloud/vscode-ibmcloud-schematics/releases/tag/v1.1.3) - 9 Sep 2021
+
+### Added
+
+-   Updated extension icon
+
+## [v1.1.2](https://github.com/IBM-Cloud/vscode-ibmcloud-schematics/releases/tag/v1.1.2) - 1 Sep 2021
+
+### Added
+
+-   New VS Code command `IBM Cloud Schematics workspace: Details`
+
 ## [v1.1.1] - 27 July 2021
 
 ### Bug fixes
@@ -14,19 +26,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
--   New vscode task `Build`
--   New vscode task `Deploy`
--   New vscode task `Clone`
--   New vscode command `IBM Cloud Schematics workspace: View jobs`
--   New vscode command `IBM Cloud Schematics workspace: View log`
--   New vscode command `IBM Cloud Schematics workspace: View latest log`
--   New vscode command `IBM Cloud Schematics workspace: Pull latest`
--   New vscode command `IBM Cloud Schematics workspace: Resources`
--   New vscode command `IBM Cloud Schematics workspace: Plan`
--   New vscode command `IBM Cloud Schematics workspace: Apply`
--   New vscode command `IBM Cloud Schematics workspace: Destroy resources`
--   New vscode command `IBM Cloud Schematics workspace: Delete`
--   New vscode command `IBM Cloud Schematics workspace: View variables`
+-   New VS Code task `Build`
+-   New VS Code task `Deploy`
+-   New VS Code task `Clone`
+-   New VS Code command `IBM Cloud Schematics workspace: View jobs`
+-   New VS Code command `IBM Cloud Schematics workspace: View log`
+-   New VS Code command `IBM Cloud Schematics workspace: View latest log`
+-   New VS Code command `IBM Cloud Schematics workspace: Pull latest`
+-   New VS Code command `IBM Cloud Schematics workspace: Resources`
+-   New VS Code command `IBM Cloud Schematics workspace: Plan`
+-   New VS Code command `IBM Cloud Schematics workspace: Apply`
+-   New VS Code command `IBM Cloud Schematics workspace: Destroy resources`
+-   New VS Code command `IBM Cloud Schematics workspace: Delete`
+-   New VS Code command `IBM Cloud Schematics workspace: View variables`
 -   Integrated React [Carbon Design System] for the extension webview
 
 [comment]: <Below are the list of links>

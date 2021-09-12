@@ -44,6 +44,10 @@ All notable changes to this project will be documented in [changelog](CHANGELOG.
 
 If you wish to contribute please read the [contribution document](CONTRIBUTE.md)
 
+#### FAQ
+
+For general questions on extension please see the [Frequently Asked Questions](FAQ.md)
+
 #### Report a Issue / Feature request
 
 -   Is something broken? Have a issue/bug to report? use the [Bug report](https://github.com/IBM-Cloud/vscode-ibmcloud-schematics/issues/new?assignees=&labels=&template=bug_report.md&title=) link. But before raising a issue, please check the [issues list](https://github.com/IBM-Cloud/vscode-ibmcloud-schematics/issues) to see if the issue is already raised by someone

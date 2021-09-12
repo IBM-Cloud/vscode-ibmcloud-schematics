@@ -25,6 +25,8 @@ export * from './log';
 export * from './job';
 export * from './variables';
 
+import DetailsView from '../../webview/workspace/DetailsView';
+
 const fs = require('fs');
 
 export async function create(): Promise<void> {
@@ -120,6 +122,25 @@ export async function deleteWorkspace(): Promise<void> {
             .catch((error) => {
                 console.log(error);
             });
+    } catch (error) {
+        console.log(error);
+        vscode.window.showErrorMessage(String(error));
+    }
+}
+
+export async function read(context: vscode.ExtensionContext): Promise<void> {
+    const isDeployed = util.workspace.isDeployed();
+    if (!isDeployed) {
+        vscode.window.showErrorMessage(
+            'Workspace not deployed. Make sure you have deployed your workspace.'
+        );
+        return;
+    }
+
+    try {
+        const ws = await util.workspace.readSchematicsWorkspace();
+        const view = new DetailsView(context, ws.id);
+        view.openView(true);
     } catch (error) {
         console.log(error);
         vscode.window.showErrorMessage(String(error));

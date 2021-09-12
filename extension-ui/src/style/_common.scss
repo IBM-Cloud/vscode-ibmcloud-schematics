@@ -40,4 +40,34 @@
             color: $text-01;
         }
     }
+
+    .bx--copy {
+        font-size: 0;
+    }
+    
+    .bx--copy-btn {
+        display: flex;
+        width: 2.5rem;
+        height: 2.5rem;
+        align-items: center;
+        justify-content: center;
+        padding: 0;
+        border: none;
+        cursor: pointer;
+        background-color: $ui-01;
+    
+        &:hover {
+            background-color: $hover-ui;
+        }
+    }
+
+    .bx--col_title {
+        display: block;
+        @include carbon--type-style('helper-text-01');
+    }
+
+    .bx--col_info {
+        display: block;
+        @include carbon--type-style('body-short-01');
+    }
 }

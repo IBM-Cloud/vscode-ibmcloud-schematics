@@ -9,7 +9,6 @@
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
-    "carbon-addons-iot-react": "^2.145.0",
     "carbon-components": "^10.39.0",
     "carbon-components-react": "^7.39.0",
     "carbon-icons": "^7.0.7",
