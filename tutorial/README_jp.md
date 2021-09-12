@@ -1,5 +1,8 @@
 # Visual Studio Code 拡張機能 IBM Cloud Schematics の始め方
 
+※
+この内容は [Getting started with IBM Cloud Schematics extension for Visual Studio Code](README.md) を日本語に訳したものです。 
+
 Visual Studio Code 拡張機能 IBM Cloud Schematics は、VS Code エディターからクラウド環境全体の IBM Cloud インフラストラクチャー、サービス、アプリケーション・スタックの自動化を支援します。
 
 **この記事では、以下の方法を紹介します:**
@@ -29,83 +32,84 @@ Visual Studio Code 拡張機能 IBM Cloud Schematics は、VS Code エディタ�
 2. 拡張機能の検索ボックスで “@installed IBM Cloud Schematics” を入力する。
 3. インストールされている場合、拡張機能リストに IBM Cloud Schematicsが表示される。
 
-![verify extension installation](images/image01-verify-extension-is-installed.png)
+![verify extension installation](images/image01-verify-extension-is-installed_jp.png)
 
-## Tutorial 1: IBM Cloud Schematics 上で新しい Terraform テンプレートを繰り返し開発、デプロイ、テストする
+## Tutorial 1: IBM Cloud Schematics 上で新しい Terraform テンプレートを開発、デプロイ、テストする
 
-For the sake of this tutorial, I we will use [VPC Classic Cluster](https://github.com/IBM-Cloud/terraform-provider-ibm/tree/master/examples/ibm-cluster/vpc-classic-cluster) as an example to deploy to IBM Cloud Schematics, but you are free to use any Terraform template. You can find some useful examples in the on terraform-provider-ibm repository.
+このチュートリアルでは、IBM Cloud Schematics にデプロイする例として [VPC Classic Cluster](https://github.com/IBM-Cloud/terraform-provider-ibm/tree/master/examples/ibm-cluster/vpc-classic-cluster) を使用しますが、任意の Terraform テンプレートを自由に使用できます。terraform-provider-ibm リポジトリでは、いくつかの有用な例を見つけることができます。
 
-1. Download the terraform template from https://github.com/IBM-Cloud/terraform-provider-ibm/tree/master/examples/ibm-cluster/vpc-classic-cluster to your machine
-2. Launch Visual Studio Code
-3. Open the downloaded template from step one into editor from File > Open...
-4. Select Terminal > Run Task... , this will open VS Code Tasks dropdown
-5. In the VS Code Tasks search text box , search for `ibmcloud-schematics`
+1. Terraform テンプレートを https://github.com/IBM-Cloud/terraform-provider-ibm/tree/master/examples/ibm-cluster/vpc-classic-cluster からダウンロードする。
+2. VS Code を起動する。
+3. 1番でダウンロードしたテンプレートを [ファイル] メニューの [開く] から開く。
+4. [ターミナル] メニューの[タスクの実行]を選択し、実行するタスクのリストを表示する。
+5. 実行するタスクの選択ボックスで、`ibmcloud-schematics` を検索する。
    ![](images/image02-vscode-run-tasks.png)
-6. You will see 3 tasks as in above image
-7. Select ibmcloud-schematics-build > schematics: build. This will validate the terraform configuration and output `Success! The configuration is valid on the terminal`
+6. 3つの選択肢が表示される。
+7. [ibmcloud-schematics-build] → [schematics: build] の順に選択する。これにより、`Success! The configuration is valid on the terminal` と出力されれば、ローカルマシン上で設定は有効です。
    ![](images/image03-vscode-build-task.png)
-8. Select Terminal > Run Task... now select ibmcloud-schematics-deploy > schematics: deploy from the dropdown
+8. [ターミナル] → [タスクの実行] から次は [ibmcloud-schematics-deploy] → [schematics: deploy] を選択して実行する。
    ![](images/image04-vscode-deploy-task.png)
-9. Select target API to deploy. Here select cloud.ibm.com from the picker
+9. デプロイする対象の API を選択する。ここでは cloud.ibm.com を選択する。
    ![](images/image05-select-target-api.png)
-10. Enter API key. Type in your cloud.ibm.com API key and hit enter
+10. API key を入力する。cloud.ibm.com の API key を入力し、Enterキーを押す。
     ![](images/image06-enter-api-key.png)
-11. Select Terraform version of workspace. Here select `terraform_v0.12`
+11. ワークスペースの Terraform のバージョンを選択する。ここでは `terraform_v0.12` を選択する。
     ![](images/image07-select-terraform-versions.png)
-12. You can see the deployment progress on the terminal. Finally you should be seeing successful deploy as in below screenshot
+12. ターミナル上でデプロイの進捗状況が出力される。最後に、下記のスクリーンショットのように、デプロイが成功したことを確認する。
     ![](images/image08-deploy-success.png)
 
-## Tutorial 2: Schematics ワークスペースで既存の Terraform テンプレートを繰り返し開発する
+## Tutorial 2: Schematics ワークスペースで既存の Terraform テンプレートを開発する
 
-You can clone your existing Schematics workspace using the Schematics workspace ID.
+既存の Schematics ワークスペースのクローンを作成するには、Schematics workspace ID を使用します。
 
-1. Launch Visual Studio Code
-2. Select Terminal > Run Task... , this will open VS Code Tasks dropdown
-3. In the VS Code Tasks search text box , search for `ibmcloud-schematics`
+1. VS Code を起動する。
+2. [ターミナル]メニューから[タスクの実行]を選択する。
+3. VS Code のタスク検索ボックスで `ibmcloud-schematics` を入力して検索する。
    ![](images/image09-vscode-run-tasks.png)
-4. Select ibmcloud-schematics-build > schematics:clone
+4. [ibmcloud-schematics-build] → [schematics:clone] を選択する。
    ![](images/image10-clone-task.png)
-5. Select the folder where you want to clone Schematics workspace
-6. Type the Schematics workspace ID in the displayed text box
+5. Schematics workspaceのクローンを作成するフォルダを選択する。
+6. 表示されたテキストボックスに、Schematics workspace IDを入力する。
    ![](images/image11-type-repository-url.png)
-7. Select target API to deploy. Here select cloud.ibm.com from the picker
+7. デプロイする対象の API を選択する。ここでは `cloud.ibm.com` を選択する。
    ![](images/image12-select-target-api-copy.png)
-8. Enter the API key. Type in your cloud.ibm.com API key and hit enter
+8. API keyを入力する。cloud.ibm.com の API key を入力し、Enter キーを押す。
    ![](images/image13-enter-api-key-copy.png)
-9. A new VS Code window will open with the cloned Schematics workspace
+9. クローンされた Schematics のワークスペースで新しい VS Code ウィンドウが開く。
 
-## Tutorial 3: IBM Cloud Schematics の Git リポジトリーから既存の Terraform テンプレートを繰り返し開発
+## Tutorial 3: IBM Cloud Schematics の Git リポジトリーから既存の Terraform テンプレートを開発する
 
-For sake of this tutorial, I will use [VPC Cluster](https://github.com/Cloud-Schematics/vpc-cluster) as an example to clone in VS Code
+このチュートリアルでは、VS Code でクローンを作成する例として [VPC Cluster](https://github.com/Cloud-Schematics/vpc-cluster) を使用します。
 
-1. Launch Visual Studio Code
-2. Select Terminal > Run Task... , this will open VS Code Tasks dropdown
-3. In the VS Code Tasks search text box , search for “ibmcloud-schematics”
-4. Select ibmcloud-schematics-build > schematics:clone
+1. VS Code を開く。
+2. [ターミナル]メニューから[タスクの実行]を選択する。
+3. 表示されているタスクの検索ボックスで `ibmcloud-schematics` を検索する
+4. [ibmcloud-schematics-build] → [schematics:clone] を実行する。
    ![](images/image14-vscode-build-task-copy.png)
-5. Select the folder where you want to clone https://github.com/Cloud-Schematics/vpc-cluster
-6. Enter https://github.com/Cloud-Schematics/vpc-cluster and hit enter
+5. https://github.com/Cloud-Schematics/vpc-cluster リポジトリのクローンを作成するフォルダを選択する。
+6. https://github.com/Cloud-Schematics/vpc-cluster を入力して、Enter キーを押す。
    ![](images/image11-type-repository-url.png)
-7. A new VS Code window will open with the cloned https://github.com/Cloud-Schematics/vpc-cluster
-8. Select Terminal > Run Task... , this will open VS Code Tasks dropdown
-9. In the VS Code Tasks search text box , search for “ibmcloud-schematics”
+7. クローンされた https://github.com/Cloud-Schematics/vpc-cluster で新しい VS Code ウィンドウが開く。
+8. [ターミナル] メニューから [タスクの実行] を選択する。
+9. タスクの検索ボックスで `ibmcloud-schematics` を検索する。
    ![](images/image09-vscode-run-tasks.png)
-10. Select ibmcloud-schematics-build > schematics:build. This will validate the terraform configuration and output “Success! The configuration is valid on the terminal”
+10. [ibmcloud-schematics-build] → [schematics:build] を選択する。これによりTerraformの構成が検証され `Success! The configuration is valid on the terminal` と表示される。
     ![](images/image03-vscode-build-task.png)
-11. Select Terminal > Run Task... now select ibmcloud-schematics-deploy > schematics:deploy from the dropdown
+11. [ターミナル] メニューから [タスクの実行] を選択する。
+12.  [ibmcloud-schematics-deploy] → [schematics:deploy]の順に選択する。
     ![](images/image04-vscode-deploy-task.png)
-12. Select target API to deploy. Here select cloud.ibm.com from the picker
+13. デプロイするターゲットの API を選択する。ここでは `cloud.ibm.com` を選択する。
     ![](images/image05-select-target-api.png)
-13. Enter API key. Type in your cloud.ibm.com API key and hit enter
+14. API key を入力する。cloud.ibm.com API key を入力して、Enterキーを押す。
     ![](images/image06-enter-api-key.png)
-14. Select Terraform version of workspace. Here select terraform_v0.12
+15. ワークスペースの Terraform バージョンを選択する。ここでは terraform_v0.12 を選択する。
     ![](images/image07-select-terraform-versions.png)
-15. You can see the deployment progress on the terminal. Finally you should be seeing a successful deploy as in below screenshot
+16. ターミナルで進行中の状況が出力される。最後に下記のスクリーンショットのようにデプロイが成功するメッセージが表示されることを確認する。
     ![](images/image08-deploy-success.png)
 
 ## Tutorial 4: IBM Cloud Schematics 用の VS Code コマンドのパレットを試す
 
-The IBM Cloud Schematics extension provides additional commands that can be executed to perform workspace specific tasks from editor. Below are the commands provided by the extension:
+BM Cloud Schematics 拡張機能は、エディターからワークスペース固有のタスクを実行するための追加コマンドを提供します。以下は、この拡張機能が提供するコマンドです:
 
 -   IBM Cloud Schematics workspace: Apply
 -   IBM Cloud Schematics workspace: Plan
@@ -120,54 +124,56 @@ The IBM Cloud Schematics extension provides additional commands that can be exec
 
 ![](images/image16-vscode-command-palette.png)
 
-**How to apply plan?**
+**プランの適用方法は?**
 
-1. Select View > Command Palette... from VS Code menu bar ( Keyboard Shortcut: ⇧⌘P )
-2. Search for “IBM Cloud Schematics”
-3. Select IBM Cloud Schematics workspace: Apply
-4. Apply initiated
+1. [表示] メニューの [コマンドパレット] を実行する。 (ショートカットキー: ⇧⌘P)
+2. “IBM Cloud Schematics” を検索する。
+3. [IBM Cloud Schematics workspace: Apply] を選択する。
+4. プランが適用される。
 
-**How to generate plan?**
+**プランの作成方法は?**
 
-1. Select View > Command Palette... from VS Code menu bar ( Keyboard Shortcut: ⇧⌘P )
-2. Search for “IBM Cloud Schematics”
-3. Select IBM Cloud Schematics workspace: Plan
-4. Plan initiated
+1. [表示] メニューの [コマンドパレット] を実行する。 (ショートカットキー: ⇧⌘P)
+2. “IBM Cloud Schematics” を検索する。
+3. [IBM Cloud Schematics workspace: Plan] を選択する。
+4. プランが開始される。
 
-**How to view workspace Jobs/Activities?**
+**ワークスペースの Jobs/Activities を表示する方法は?**
 
-1. Select View > Command Palette... from VS Code menu bar ( Keyboard Shortcut: ⇧⌘P )
-2. Search for “IBM Cloud Schematics”
-3. Select IBM Cloud Schematics workspace: View jobs
-4. A new Workspace jobs WebView is opened
+1. [表示] メニューの [コマンドパレット] を実行する。 (ショートカットキー: ⇧⌘P)
+2. “IBM Cloud Schematics” を検索する。
+3. [IBM Cloud Schematics workspace: View jobs] を選択する。
+4. 新しいワークスペースの Job WebView が開く。
 
 ![](images/image17-how-to-view-workspace-jobs-activities-from-editor.png)
 
-**How to view logs?**
+**ログを見る方法は?**
 
-From the above Workspace Jobs WebView , you can select View log button to view the log of a specific job or activity. 
-You can also open the latest job/activity log by:
+上記の Workspace Jobs WebView から、View log ボタンを選択して、特定のジョブやアクティビティのログを表示できます。 
+また、最新のジョブやアクティビティのログを次の方法で開くこともできます。:
 
-1. Select View > Command Palette... from VS Code menu bar ( Keyboard Shortcut: ⇧⌘P )
-2. Select IBM Cloud Schematics workspace: View latest log
-3. A new WebView with latest log is displayed
+1. [表示] メニューの [コマンドパレット] を実行する。 (ショートカットキー: ⇧⌘P)
+2. [IBM Cloud Schematics workspace: View latest log] を選択する。
+3. 最新のログが表示された新しい WebView が表示される。
 
 ![](images/image18-how-to-view-logs-from-editor.png)
 
-**How to view resources?**
+**リソース表示方法は?**
 
-1. Select View > Command Palette... from VS Code menu bar ( Keyboard Shortcut: ⇧⌘P )
-2. Select IBM Cloud Schematics workspace: View resources
-3. A new WebView with resources is displayed
+1. [表示] メニューの [コマンドパレット] を実行する。 (ショートカットキー: ⇧⌘P)
+2. [IBM Cloud Schematics workspace: View resources] を選択する。
+3. リソースを表示した新しい WebView が表示される。
 
 ![](images/image19-how-to-view-resources-from-editor.png)
 
-**How to view and override Variables?**
+**変数の表示方法とオーバーライドの方法は?**
 
-1. Select View > Command Palette... from VS Code menu bar ( Keyboard Shortcut: ⇧⌘P )
-2. Select IBM Cloud Schematics workspace: View variables
-3. A new WebView with variables is displayed
-4. If you need to edit a variable value, enter value in Override textbox
-5. Click on Save variables button
+1. [表示] メニューの [コマンドパレット] を実行する。 (ショートカットキー: ⇧⌘P)
+2. [IBM Cloud Schematics workspace: View variables] を選択する。
+3. 変数が表示された新しいWebViewが表示される。
+4. 変数の値を編集する必要がある場合は、Override テキストボックスに値を入力する。
+5. Save variables (変数の保存)ボタンをクリックする。
 
 ![](images/image20-how-to-view-and-override-variables-from-editor.png)
+
+以上です。
