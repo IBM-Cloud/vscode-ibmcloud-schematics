@@ -32,6 +32,21 @@ export async function showJobsQuickPick(jobs: any) {
     });
 }
 
+export async function showWorkspaceInput() {
+    const selectedWorkspace = await vscode.window.showInputBox( {
+        ignoreFocusOut: true,
+        placeHolder: 'Enter the Workspace id:',
+    });
+
+    return new Promise((resolve, reject) => {
+        if (!selectedWorkspace) {
+            reject('Workspace id not selected');
+        } else {
+            resolve(selectedWorkspace);
+        }
+    });
+}
+
 export async function showConfirmPullLatestModal(id: string): Promise<any> {
     const msg = `This will pull the latest on the parent workspace ${id}. Make sure you have pushed your changes to your git repo. Are you sure you want to continue?`;
     const selection = await vscode.window.showInformationMessage(

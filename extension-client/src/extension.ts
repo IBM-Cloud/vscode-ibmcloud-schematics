@@ -26,6 +26,7 @@ import * as command from './command';
 let buildTaskProvider: vscode.Disposable | undefined;
 let deployTaskProvider: vscode.Disposable | undefined;
 let cloneTaskProvider: vscode.Disposable | undefined;
+let migrateTaskProvider: vscode.Disposable | undefined;
 
 let activitiesPanelWebview: vscode.Disposable | undefined;
 let logPanelWebview: vscode.Disposable | undefined;

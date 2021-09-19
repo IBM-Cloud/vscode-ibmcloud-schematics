@@ -19,7 +19,7 @@ import * as vscode from 'vscode';
 
 import MigrateTaskTerminal from './migrateTaskTerminal';
 
-export class migrateTaskProvider implements vscode.TaskProvider {
+export class MigrateTaskProvider implements vscode.TaskProvider {
     static taskType = 'ibmcloud-schematics-migrate';
 
     private taskName = 'migrate';

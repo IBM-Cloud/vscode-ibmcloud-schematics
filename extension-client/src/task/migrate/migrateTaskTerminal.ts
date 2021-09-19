@@ -24,7 +24,6 @@ import { Terminal } from '../../util/terminal';
 import * as type from '../../type/index';
 var fs = require('fs');
 
-
 export default class MigrateTaskTerminal implements vscode.Pseudoterminal {
     private writeEmitter = new vscode.EventEmitter<string>();
     onDidWrite: vscode.Event<string> = this.writeEmitter.event;
@@ -45,64 +44,79 @@ export default class MigrateTaskTerminal implements vscode.Pseudoterminal {
 
         try {
             terminal.printHeading('Validating, to migrate, terraform version ');
-            const terraform_version = await command.terraform.init();
+            var terraformVersion=new String()
+            terraformVersion = String(await command.terraform.checkVersion());
+            console.log("Terraform version:",terraformVersion);
+            var matchVersion= "0.12"
+            if((terraformVersion).indexOf(matchVersion)!== -1){
+                console.log("Version matched...")
+            const ws= await vscode.window.showInputBox({
+                ignoreFocusOut: true,
+                placeHolder: 'Enter Workspace ID '
+            });
+            if (!!ws){
+                console.log(ws);
+                await util.workspace.createCredentialFile();
+                const creds: type.Account = await util.workspace.readCredentials();
+                api.getWorkspace(ws, creds)
+                .then(async (res: any) => {
+                    var templateId = res.template_data[0].id;
+                    const payload = {
+                        wId: ws,
+                        tId: templateId,
+                    };
+                    let storeFile=await api.getStatefile(payload);
+                    console.log(storeFile);
+                    const workspacePath=util.workspace.getWorkspacePath();
+                    storeFile=JSON.stringify(storeFile)
+                    fs.writeFile(workspacePath+'/terraform.tfstate', storeFile, (err: any) => {
+                        if (err) {
+                            console.log(err);
+                        }
+                        console.log(true);
+                    });
+                    console.log("Upgrading the workspace...")
+                    await command.terraform.init();
+                    await command.terraform.upgrade();
 
-            if (terraform_version == "Terraform v0.12.0"){
-                const wsData = await util.workspace.readSchematicsWorkspace();
-
+                    await command.terraform.validate();
+                    terminal.printSuccess('The configuration is valid');
+        
+                    await util.workspace.createCredentialFile();
+                    const tfversions: any = await api.versions();
+                    await util.workspace.detectTerraformVersion(tfversions);
+                    terminal.printHeading('Preparing deploy');
+                    await util.workspace.createTarFile();
+                    terminal.printSuccess('TAR created');
+                    terminal.printHeading('Deploy started');
+                    await command.workspace.create();
+                    terminal.printSuccess('Workspace created');
+                    terminal.printHeading('TAR upload started');
+                    await command.workspace.uploadTAR();
+                    terminal.printSuccess('TAR uploaded');
+                    terminal.printHeading('Verifying workspace');
+                    await api.pollState();
+                    terminal.printSuccess('Workspace verified');
+                    terminal.printHeading('Plan initiated');
+                    await command.workspace.plan();
+                    await api.pollState();
+                    terminal.printSuccess('Plan generated');
+                    await command.workspace.apply();
+                    terminal.printHeading('Apply initiated');
+                    await api.pollState();            
+                    terminal.printSuccess('Plan applied. IMPORTANT INSTRUCTIONS: Workspace has created with the TAR created from locally. You need to manually add and commit into the github repository. \n Please delete the existing workspace created.');
+                    util.workspace.removeTarFile();
+                    terminal.fireClose(1);
+                });
             }
-            else{
-                throw new Error(
-                    'You need to install Terraform v0.12.0 in order to migrate'
-                );
             }
-
-            const ws = await util.workspace.readSchematicsWorkspace();
-            const creds: type.Account = await util.workspace.readCredentials();
-            const wsData = await api.getWorkspace(ws.id, creds);
-            
-            const template_id = wsData.template_data[0].id
-            const payload = {
-                wId: ws.id,
-                tId: template_id,
-            };
-            
-            // util.workspace.saveSchematicsWorkspace(wsData);
-
-            // wsData.template_data[0].id
-            // wsData.runtime_data[0].state_store_url
-
-            // const wsData = await util.workspace.readSchematicsWorkspace();
-            console.log(wsData)
-            const store_file=await api.getStatefile(payload)
-            
-            fs.writeFile('terraform.tfstate', store_file, 'utf8');
-
-            await command.terraform.upgrade();
-
-            //pop-up and info -> user needs to commit the changes
-            //tar it and upload tar -> create a new workspace and upload. 
-
-            await util.workspace.createCredentialFile();
-            const tfversions: any = await api.versions();
-
-            await util.workspace.detectTerraformVersion(tfversions);
-
-            //need to implement to tar and create workspace
-            await command.workspace.create();
-            terminal.printSuccess('Workspace created');
-
-            terminal.printHeading('Plan initiated');
-            await command.workspace.plan();
-            await api.pollState();
-            terminal.printSuccess('Plan generated');
-            await command.workspace.apply();
-            terminal.printHeading('Apply initiated');
-            await api.pollState();
-            terminal.printSuccess('Plan applied');
-            util.workspace.removeTarFile();
-            terminal.fireClose(1);
-        } catch (error) {
+            else
+            {
+                terminal.printHeading('Please update terraform version 0.12.x');
+                console.log("Please update terraform version 0.12.x")
+            }
+        }
+        catch (error) {
             terminal.printFailure('Deploy error');
             terminal.printError(error);
             terminal.fireClose(1);

@@ -21,7 +21,7 @@ import * as util from '../../../util';
 const TERRAFORM_INIT_COMMAND = 'terraform init';
 const TERRAFORM_VALIDATE_COMMAND = 'terraform validate';
 const TERRAFORM_VERSION_COMMAND = 'terraform -version';
-const TERRAFORM_UPGRADE_COMMAND = 'terraform 0.12upgrade';
+const TERRAFORM_UPGRADE_COMMAND = 'terraform 0.12upgrade -yes';
 
 
 export function init(): Promise<string | Error> {
@@ -35,7 +35,8 @@ export function checkVersion(): Promise<string | Error> {
     return shell.execute(TERRAFORM_VERSION_COMMAND);
 }
 
-export function upgrade(): Promise<string | Error> {
+export async function upgrade(): Promise<string | Error> {
+    console.log("Upgrading...");
     return shell.execute(TERRAFORM_UPGRADE_COMMAND);
 }
 
