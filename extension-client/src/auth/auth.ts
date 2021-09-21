@@ -16,33 +16,80 @@
  */
 
 import * as type from '../type/index';
+import * as util from '../util';
+
+const schematicsV1 = require('@ibm-cloud/ibm-schematics/dist/schematics/v1');
 
 const {
     IamAuthenticator: iamAuthnticator,
 } = require('@ibm-cloud/ibm-schematics/dist/auth/index');
+
 const iamEndpoint = {
     prod: 'https://iam.cloud.ibm.com/identity/token',
     stage: 'https://iam.test.cloud.ibm.com/identity/token',
 };
 
-export function getAuthenticator(credentials: type.Account) {
+const bx = 'bx';
+
+function getDefaultHeaders() {
+    return {
+        // eslint-disable-next-line
+        'IBM-Schematics-RequestOrigin': 'VSCODE',
+    };
+}
+
+export async function getAuthenticator(credentials: type.Account) {
     let authenticator;
+
     if (credentials.serviceURL?.includes('test')) {
         // Create IAM authenticator for staging.
         authenticator = new iamAuthnticator({
             url: iamEndpoint.stage,
             apikey: credentials.apiKey,
-            clientId: 'bx',
-            clientSecret: 'bx',
+            clientId: bx,
+            clientSecret: bx,
         });
     } else {
         // Create IAM authenticator for production.
         authenticator = new iamAuthnticator({
             url: iamEndpoint.prod,
             apikey: credentials.apiKey,
-            clientId: 'bx',
-            clientSecret: 'bx',
+            clientId: bx,
+            clientSecret: bx,
         });
     }
+
     return authenticator;
+}
+
+export async function getSchematicsService(credentials: any = undefined) {
+    if (!credentials) {
+        credentials = await util.workspace.readCredentials();
+    }
+
+    const authenticator = await getAuthenticator(credentials);
+
+    const schematicsService = new schematicsV1({
+        authenticator,
+        serviceUrl: credentials.serviceURL,
+        headers: getDefaultHeaders(),
+    });
+
+    return schematicsService;
+}
+
+export async function getRefreshToken(): Promise<string> {
+    const credentials = await util.workspace.readCredentials();
+    const authenticator = await getAuthenticator(credentials);
+
+    return new Promise((resolve, reject) => {
+        authenticator.tokenManager
+            .requestToken()
+            .then((resp: any) => {
+                resolve(resp.result.refresh_token);
+            })
+            .catch((err: any) => {
+                reject(err);
+            });
+    });
 }
