@@ -55,4 +55,4 @@ For general questions on extension please see the [Frequently Asked Questions](F
 
 ## License
 
-Apache-2.0
+[Apache-2.0](LICENSE)
