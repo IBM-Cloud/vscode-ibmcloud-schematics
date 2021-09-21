@@ -65,7 +65,7 @@ export async function uploadTar(payload: any): Promise<any> {
     });
 }
 
-export async function getWorkspace(id: string, credentials: any = undefined) {
+export async function getWorkspace(id: string, credentials: any): Promise<any> {
     if (!credentials) {
         credentials = await util.workspace.readCredentials();
     }
@@ -77,7 +77,7 @@ export async function getWorkspace(id: string, credentials: any = undefined) {
         serviceUrl: credentials.serviceURL,
     });
 
-    return new Promise(function (resolve, reject) {
+    new Promise(function (resolve, reject) {
         schematicsService
             .getWorkspace({
                 wId: id,
@@ -88,6 +88,7 @@ export async function getWorkspace(id: string, credentials: any = undefined) {
             .catch((err: any) => {
                 reject(err);
             });
+
     });
 }
 

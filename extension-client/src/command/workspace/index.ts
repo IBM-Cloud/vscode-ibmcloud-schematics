@@ -61,6 +61,38 @@ export async function create(): Promise<void> {
     });
 }
 
+export async function createMigratedWorkspace(workspaceVariableStore: any): Promise<void> {
+    const isDeployed = util.workspace.isDeployed();
+    if (isDeployed) {
+        Promise.resolve('workspace already deployed');
+        return;
+    }
+
+    const type: any = await util.workspace.readTerraformVersion();
+    const payload = {
+        name: util.workspace.getSuffixedWorkspaceName(),
+        type: [type.version],
+        templateData: [
+            {
+                folder: '.',
+                type: type.version,
+                variablestore: workspaceVariableStore,
+            },
+        ],
+    };
+
+    return new Promise((resolve, reject) => {
+        api.createWorkspace(payload)
+            .then(async (resp) => {
+                await util.workspace.saveSchematicsWorkspace(resp);
+                resolve();
+            })
+            .catch((error) => {
+                reject(error);
+            });
+    });
+}
+
 export async function pullLatest() {
     if (util.workspace.hasOriginalWorkspace()) {
         const wsData = await util.workspace.readOriginalWorkspace();

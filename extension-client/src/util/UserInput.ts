@@ -16,6 +16,7 @@
  */
 
 import * as vscode from 'vscode';
+var fs = require('fs');
 
 export async function showJobsQuickPick(jobs: any) {
     const selectedJob = await vscode.window.showQuickPick(jobs, {
@@ -116,4 +117,15 @@ export async function showConfirmDeleteWorkspace() {
             reject('Confirm delete workspace modal cancelled');
         }
     });
+}
+
+export async function writeStateFile(storeFile: any, workspacePath: any){
+    
+    fs.writeFile(workspacePath+'/terraform.tfstate', storeFile, (err: any) => {
+        if (err) {
+            console.log(err);
+        }
+        console.log(true);
+    });
+
 }
