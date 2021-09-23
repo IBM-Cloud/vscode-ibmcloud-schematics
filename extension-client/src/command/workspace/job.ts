@@ -35,7 +35,7 @@ export function jobs(context: vscode.ExtensionContext): void {
         jobs.openView(false);
     } catch (error) {
         console.log(error);
-        vscode.window.showErrorMessage(error);
+        vscode.window.showErrorMessage(String(error));
     }
 }
 

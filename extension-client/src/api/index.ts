@@ -65,7 +65,7 @@ export async function uploadTar(payload: any): Promise<any> {
     });
 }
 
-export async function getWorkspace(id: string, credentials: any): Promise<any> {
+export async function getWorkspace(id: string, credentials: any): Promise<string> {
     if (!credentials) {
         credentials = await util.workspace.readCredentials();
     }
@@ -76,16 +76,19 @@ export async function getWorkspace(id: string, credentials: any): Promise<any> {
         authenticator,
         serviceUrl: credentials.serviceURL,
     });
+    console.log(id)
 
-    new Promise(function (resolve, reject) {
+    return new Promise(function (resolve, reject) {
         schematicsService
             .getWorkspace({
                 wId: id,
             })
             .then((res: any) => {
+                console.log(res)
                 resolve(res.result);
             })
             .catch((err: any) => {
+                console.log("Error",err)
                 reject(err);
             });
 
@@ -428,7 +431,7 @@ export async function getStatefile(payload: any) {
                 resolve(res.result);
             })
             .catch((err: any) => {
-                reject(err);
+                resolve(1);
             });
     });
 }

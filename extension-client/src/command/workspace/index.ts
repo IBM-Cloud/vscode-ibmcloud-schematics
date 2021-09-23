@@ -76,10 +76,11 @@ export async function createMigratedWorkspace(workspaceVariableStore: any): Prom
             {
                 folder: '.',
                 type: type.version,
-                variablestore: workspaceVariableStore,
+                variablestore: JSON.parse(JSON.stringify(workspaceVariableStore)),
             },
         ],
     };
+    console.log(payload)
 
     return new Promise((resolve, reject) => {
         api.createWorkspace(payload)
