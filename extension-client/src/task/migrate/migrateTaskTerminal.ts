@@ -64,7 +64,7 @@ export default class MigrateTaskTerminal implements vscode.Pseudoterminal {
                     await util.workspace.createCredentialFile();
                     const creds: type.Account = await util.workspace.readCredentials();
 
-                    var workspaceData=await api.getWorkspace(ws, creds);
+                    var workspaceData=await api.getWorkspaceToMigrate(ws, creds);
                     workspaceData=JSON.stringify(workspaceData)
 
                     var templateId = JSON.parse(workspaceData).template_data[0].id;
