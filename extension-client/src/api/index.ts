@@ -24,13 +24,7 @@ import * as util from '../util';
 let intervalId: any;
 
 export async function createWorkspace(payload: any) {
-    const credentials: type.Account = await util.workspace.readCredentials();
-    const authenticator = auth.getAuthenticator(credentials);
-
-    const schematicsService = new schematicsV1({
-        authenticator,
-        serviceUrl: credentials.serviceURL,
-    });
+    const schematicsService = await auth.getSchematicsService();
 
     return new Promise(function (resolve, reject) {
         schematicsService
@@ -45,13 +39,7 @@ export async function createWorkspace(payload: any) {
 }
 
 export async function uploadTar(payload: any): Promise<any> {
-    const credentials: type.Account = await util.workspace.readCredentials();
-    const authenticator = auth.getAuthenticator(credentials);
-
-    const schematicsService = new schematicsV1({
-        authenticator,
-        serviceUrl: credentials.serviceURL,
-    });
+    const schematicsService = await auth.getSchematicsService();
 
     return new Promise(function (resolve, reject) {
         schematicsService
@@ -65,18 +53,8 @@ export async function uploadTar(payload: any): Promise<any> {
     });
 }
 
-export async function getWorkspace(id: string, credentials: any): Promise<string> {
-    if (!credentials) {
-        credentials = await util.workspace.readCredentials();
-    }
-
-    const authenticator = auth.getAuthenticator(credentials);
-
-    const schematicsService = new schematicsV1({
-        authenticator,
-        serviceUrl: credentials.serviceURL,
-    });
-    console.log(id)
+export async function getWorkspace(id: string, credentials: any = undefined) {
+    const schematicsService = await auth.getSchematicsService(credentials);
 
     return new Promise(function (resolve, reject) {
         schematicsService
@@ -120,19 +98,13 @@ export async function pollState(): Promise<string> {
                 .catch((err: any) => {
                     reject(err);
                 });
-        }, 4000);
+        }, 4250);
     });
 }
 
 export async function getWorkspaceJobs() {
     const wsData = await util.workspace.readSchematicsWorkspace();
-    const credentials: type.Account = await util.workspace.readCredentials();
-    const authenticator = auth.getAuthenticator(credentials);
-
-    const schematicsService = new schematicsV1({
-        authenticator,
-        serviceUrl: credentials.serviceURL,
-    });
+    const schematicsService = await auth.getSchematicsService();
 
     return new Promise(function (resolve, reject) {
         schematicsService
@@ -160,18 +132,12 @@ export async function getActivityLog(activityId: string) {
     }
 
     const wsData = await util.workspace.readSchematicsWorkspace();
-    const credentials: type.Account = await util.workspace.readCredentials();
-    const authenticator = auth.getAuthenticator(credentials);
+    const schematicsService = await auth.getSchematicsService();
 
     if (!actionId) {
         activity = await getLatestActivity();
         actionId = activity.action_id;
     }
-
-    const schematicsService = new schematicsV1({
-        authenticator,
-        serviceUrl: credentials.serviceURL,
-    });
 
     return new Promise(function (resolve, reject) {
         schematicsService
@@ -198,13 +164,7 @@ export async function getLatestActivity(): Promise<object> {
 }
 
 export async function getWorkspaceResources(id: string) {
-    const credentials: type.Account = await util.workspace.readCredentials();
-    const authenticator = auth.getAuthenticator(credentials);
-
-    const schematicsService = new schematicsV1({
-        authenticator,
-        serviceUrl: credentials.serviceURL,
-    });
+    const schematicsService = await auth.getSchematicsService();
 
     return new Promise(function (resolve, reject) {
         schematicsService
@@ -220,69 +180,49 @@ export async function getWorkspaceResources(id: string) {
 }
 
 export async function runPlan(id: string): Promise<string> {
-    const credentials: type.Account = await util.workspace.readCredentials();
-    const authenticator = auth.getAuthenticator(credentials);
+    const schematicsService = await auth.getSchematicsService();
+    const refreshToken = await auth.getRefreshToken();
 
-    const schematicsService = new schematicsV1({
-        authenticator,
-        serviceUrl: credentials.serviceURL,
-    });
+    const params = {
+        wId: id,
+        refreshToken,
+    };
 
     return new Promise((resolve, reject) => {
-        authenticator.tokenManager.requestToken().then(function (resp: any) {
-            const params = {
-                wId: id,
-                refreshToken: resp.result.refresh_token,
-            };
-
-            schematicsService
-                .planWorkspaceCommand(params)
-                .then((res: any) => {
-                    resolve('Plan initiated');
-                })
-                .catch((err: any) => {
-                    reject(err);
-                });
-        });
+        schematicsService
+            .planWorkspaceCommand(params)
+            .then((res: any) => {
+                resolve('Plan initiated');
+            })
+            .catch((err: any) => {
+                reject(err);
+            });
     });
 }
 
 export async function runApply(id: string): Promise<string> {
-    const credentials: type.Account = await util.workspace.readCredentials();
-    const authenticator = auth.getAuthenticator(credentials);
+    const schematicsService = await auth.getSchematicsService();
+    const refreshToken = await auth.getRefreshToken();
 
-    const schematicsService = new schematicsV1({
-        authenticator,
-        serviceUrl: credentials.serviceURL,
-    });
+    const params = {
+        wId: id,
+        refreshToken,
+    };
 
     return new Promise((resolve, reject) => {
-        authenticator.tokenManager.requestToken().then(function (resp: any) {
-            const params = {
-                wId: id,
-                refreshToken: resp.result.refresh_token,
-            };
-
-            schematicsService
-                .applyWorkspaceCommand(params)
-                .then((res: any) => {
-                    resolve('Apply initiated');
-                })
-                .catch((err: any) => {
-                    reject(err);
-                });
-        });
+        schematicsService
+            .applyWorkspaceCommand(params)
+            .then((res: any) => {
+                resolve('Apply initiated');
+            })
+            .catch((err: any) => {
+                reject(err);
+            });
     });
 }
 
 export async function pullLatest(data: any) {
-    const credentials: type.Account = await util.workspace.readCredentials();
-    const authenticator = auth.getAuthenticator(credentials);
-
-    const schematicsService = new schematicsV1({
-        authenticator,
-        serviceUrl: credentials.serviceURL,
-    });
+    const schematicsService = await auth.getSchematicsService();
 
     const params = {
         wId: data.id,
@@ -305,13 +245,7 @@ export async function pullLatest(data: any) {
 }
 
 export async function versions() {
-    const credentials: type.Account = await util.workspace.readCredentials();
-    const authenticator = auth.getAuthenticator(credentials);
-
-    const schematicsService = new schematicsV1({
-        authenticator,
-        serviceUrl: credentials.serviceURL,
-    });
+    const schematicsService = await auth.getSchematicsService();
 
     return new Promise((resolve, reject) => {
         schematicsService
@@ -329,71 +263,51 @@ export async function versions() {
 }
 
 export async function deleteWorkspace(id: string): Promise<string> {
-    const credentials: type.Account = await util.workspace.readCredentials();
-    const authenticator = auth.getAuthenticator(credentials);
+    const schematicsService = await auth.getSchematicsService();
+    const refreshToken = await auth.getRefreshToken();
 
-    const schematicsService = new schematicsV1({
-        authenticator,
-        serviceUrl: credentials.serviceURL,
-    });
+    const params = {
+        wId: id,
+        refreshToken,
+        destroyResources: false,
+        deleteWorkspace: true,
+    };
 
     return new Promise((resolve, reject) => {
-        authenticator.tokenManager.requestToken().then(function (resp: any) {
-            const params = {
-                wId: id,
-                refreshToken: resp.result.refresh_token,
-                destroyResources: false,
-                deleteWorkspace: true,
-            };
-
-            schematicsService
-                .deleteWorkspace(params)
-                .then((res: any) => {
-                    resolve('Delete initiated');
-                })
-                .catch((err: any) => {
-                    reject(err);
-                });
-        });
+        schematicsService
+            .deleteWorkspace(params)
+            .then((res: any) => {
+                resolve('Delete initiated');
+            })
+            .catch((err: any) => {
+                reject(err);
+            });
     });
 }
 
 export async function destroyResources(id: string): Promise<string> {
-    const credentials: type.Account = await util.workspace.readCredentials();
-    const authenticator = auth.getAuthenticator(credentials);
+    const schematicsService = await auth.getSchematicsService();
+    const refreshToken = await auth.getRefreshToken();
 
-    const schematicsService = new schematicsV1({
-        authenticator,
-        serviceUrl: credentials.serviceURL,
-    });
+    const params = {
+        wId: id,
+        refreshToken,
+    };
 
     return new Promise((resolve, reject) => {
-        authenticator.tokenManager.requestToken().then(function (resp: any) {
-            const params = {
-                wId: id,
-                refreshToken: resp.result.refresh_token,
-            };
-
-            schematicsService
-                .destroyWorkspaceCommand(params)
-                .then((res: any) => {
-                    resolve('Destroy initiated');
-                })
-                .catch((err: any) => {
-                    reject(err);
-                });
-        });
+        schematicsService
+            .destroyWorkspaceCommand(params)
+            .then((res: any) => {
+                resolve('Destroy initiated');
+            })
+            .catch((err: any) => {
+                reject(err);
+            });
     });
 }
 
 export async function saveVariables(wsData: any, variables: any) {
-    const credentials: type.Account = await util.workspace.readCredentials();
-    const authenticator = auth.getAuthenticator(credentials);
-
-    const schematicsService = new schematicsV1({
-        authenticator,
-        serviceUrl: credentials.serviceURL,
-    });
+    const schematicsService = await auth.getSchematicsService();
 
     const params = {
         wId: wsData.id,

@@ -3,6 +3,12 @@
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v1.1.3](https://github.com/IBM-Cloud/vscode-ibmcloud-schematics/releases/tag/v1.1.3) - 9 Sep 2021
+
+### Added
+
+-   Updated extension icon
+
 ## [v1.1.2](https://github.com/IBM-Cloud/vscode-ibmcloud-schematics/releases/tag/v1.1.2) - 1 Sep 2021
 
 ### Added
