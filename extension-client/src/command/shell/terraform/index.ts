@@ -23,6 +23,7 @@ const TERRAFORM_VALIDATE_COMMAND = 'terraform validate';
 const TERRAFORM_VERSION_COMMAND = 'terraform -version';
 const TERRAFORM_UPGRADE_COMMAND = 'terraform 0.12upgrade -yes';
 
+const hcltojson = require('hcl-to-json');
 
 export function init(): Promise<string | Error> {
     return shell.execute(TERRAFORM_INIT_COMMAND);
@@ -40,12 +41,9 @@ export async function upgrade(): Promise<string | Error> {
     return shell.execute(TERRAFORM_UPGRADE_COMMAND);
 }
 
-export function hcl2json(): Promise<string | Error> {
-    const cmd: string =
-        'hcl2json < "' +
-        util.workspace.getVersionsTFFilePath() +
-        '" > "' +
-        util.workspace.getWorkspaceVersionsFilePath() +
-        '"';
-    return shell.execute(cmd);
+export async function hcltojsonFunc() {
+    const tfData = await util.workspace.readTFFile();
+    const jsonData = hcltojson(tfData);
+    const versionsPath = util.workspace.getWorkspaceVersionsFilePath();
+    return util.workspace.writeToFile(versionsPath, jsonData);
 }

@@ -148,8 +148,8 @@
     },
     "dependencies": {
         "@ibm-cloud/ibm-schematics": "0.0.2",
+        "hcl-to-json": "^0.1.1",
         "tar": "^6.1.0",
-        "web-pack": "^1.0.0",
-        "hcl2json": "^0.2.3"
+        "web-pack": "^1.0.0"
     }
 }
