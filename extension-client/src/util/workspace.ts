@@ -19,7 +19,7 @@ import * as vscode from 'vscode';
 
 import * as type from '../type/index';
 import * as userInput from './userInput';
-import { hcl2json } from '../command/shell/terraform';
+import { hcltojsonFunc } from '../command/shell/terraform';
 
 export const path = require('path');
 export const fs = require('fs');
@@ -548,21 +548,81 @@ export function removeTarFile(): any {
     }
 }
 
-// TODO: Revisit the logic for detecting terraform version as the hcl2json shell command is not working
+export function readTextFile(path: any) {
+    return new Promise((resolve, reject) => {
+        fs.readFile(path, 'utf8', (err: any, data: string) => {
+            if (err) {
+                reject(err);
+            }
+            resolve(data);
+        });
+    });
+}
+
+export function readTFFile(): any {
+    return new Promise(function (resolve, reject) {
+        const tfFilePath = getVersionsTFFilePath();
+        console.log(tfFilePath);
+        readTextFile(tfFilePath).then((data: any) => {
+            resolve(data);
+        });
+    });
+}
+
 export async function detectTerraformVersion(tfversions: any) {
     const deployed = isDeployed();
     if (deployed) {
-        Promise.resolve('Workspace is present');
-        return;
+        if (flag === 1 && hasVersionsTFFile()) {
+            await hcltojsonFunc();
+            if (hasWorkspaceVersionsFile()) {
+                let data: any = await readTerraformVersion();
+                if (data.terraform.hasOwnProperty('required_version')) {
+                    data = data.terraform.required_version;
+                    const type: any =
+                        tfversions[0].substring(0, 11) +
+                        data.split('\u003e=')[1].trim(); // tfversions[0].substring(0,11)  i.e. taking "terraform_v" as a substring from first terraform_v0.11
+                    Promise.resolve(saveTerraformVersion({ version: type }));
+                } else {
+                    Promise.resolve('Workspace is present'); // assuming the tf version will be same
+                    return;
+                }
+            }
+        } else {
+            Promise.resolve('Workspace is present');
+            return;
+        }
     }
 
     return new Promise(async (resolve, reject) => {
-        userInput
-            .showTFVersionsQuickPick(tfversions)
-            .then((version) => {
-                resolve(saveTerraformVersion({ version }));
-            })
-            .catch((err) => reject(err));
+        if (hasVersionsTFFile()) {
+            await hcltojsonFunc();
+            if (hasWorkspaceVersionsFile()) {
+                let data: any = await readTerraformVersion();
+                if (data.terraform.hasOwnProperty('required_version')) {
+                    data = data.terraform.required_version;
+                    const type: any =
+                        tfversions[0].substring(0, 11) +
+                        data.split('\u003e=')[1].trim(); // tfversions[0].substring(0,11)  i.e. taking "terraform_v" as a substring from first terraform_v0.11
+                    resolve(saveTerraformVersion({ version: type }));
+                } else {
+                    flag = 1;
+                    userInput
+                        .showTFVersionsQuickPick(tfversions)
+                        .then((version) => {
+                            resolve(saveTerraformVersion({ version }));
+                        })
+                        .catch((err) => reject(err));
+                }
+            }
+        } else {
+            flag = 1;
+            userInput
+                .showTFVersionsQuickPick(tfversions)
+                .then((version) => {
+                    resolve(saveTerraformVersion({ version }));
+                })
+                .catch((err) => reject(err));
+        }
     });
 }
 

@@ -20,6 +20,7 @@ import * as util from '../../../util';
 
 const TERRAFORM_INIT_COMMAND = 'terraform init';
 const TERRAFORM_VALIDATE_COMMAND = 'terraform validate';
+const hcltojson = require('hcl-to-json');
 
 export function init(): Promise<string | Error> {
     return shell.execute(TERRAFORM_INIT_COMMAND);
@@ -29,12 +30,9 @@ export function validate(): Promise<string | Error> {
     return shell.execute(TERRAFORM_VALIDATE_COMMAND);
 }
 
-export function hcl2json(): Promise<string | Error> {
-    const cmd: string =
-        'hcl2json < "' +
-        util.workspace.getVersionsTFFilePath() +
-        '" > "' +
-        util.workspace.getWorkspaceVersionsFilePath() +
-        '"';
-    return shell.execute(cmd);
+export async function hcltojsonFunc() {
+    const tfData = await util.workspace.readTFFile();
+    const jsonData = hcltojson(tfData);
+    const versionsPath = util.workspace.getWorkspaceVersionsFilePath();
+    return util.workspace.writeToFile(versionsPath, jsonData);
 }
