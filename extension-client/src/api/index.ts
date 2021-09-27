@@ -83,7 +83,8 @@ export async function pollState(): Promise<string> {
             getWorkspace(wsData.id, credentials)
                 .then((res: any) => {
                     const status = res.status;
-                    if (continueStates.includes(status)) {
+                    const locked = res.workspace_status.locked;
+                    if (continueStates.includes(status) && !locked) {
                         clearInterval(intervalId);
                         resolve(status);
                     }
