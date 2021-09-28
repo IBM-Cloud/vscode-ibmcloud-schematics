@@ -64,12 +64,11 @@ export default class MigrateTaskTerminal implements vscode.Pseudoterminal {
                     await util.workspace.createCredentialFile();
                     const creds: type.Account = await util.workspace.readCredentials();
 
-                    var workspaceData=await api.getWorkspaceToMigrate(ws, creds);
-                    workspaceData=JSON.stringify(workspaceData)
+                    var workspaceData: any=await api.getWorkspace(ws, creds);
 
-                    var templateId = JSON.parse(workspaceData).template_data[0].id;
+                    var templateId = workspaceData.template_data[0].id;
 
-                    var workspaceVariableStore=JSON.parse(workspaceData).template_data[0].values_metadata
+                    var workspaceVariableStore=workspaceData.template_data[0].values_metadata
                     const payload = {
                         wId: ws,
                         tId: templateId,
@@ -89,17 +88,19 @@ export default class MigrateTaskTerminal implements vscode.Pseudoterminal {
                         terminal.printHeading('There is no statefile present for the workspace...');
                     }
 
+                    terminal.printHeading('Upgrading locally..');
                     await command.terraform.init();
                     await command.terraform.upgrade();
-                    terminal.printSuccess('Upgrading locally');
+                    terminal.printSuccess('Terraform version upgraded locally');
 
+                    terminal.printSuccess('Checking the configurations...');
                     await command.terraform.validate();
                     terminal.printSuccess('Configurations are valid');
         
                     await util.workspace.createCredentialFile();
                     await util.workspace.saveTerraformVersion(tfTargetVersion);
 
-                    terminal.printHeading('Preparing deploy:');
+                    terminal.printHeading('Preparing deploy...');
                     await util.workspace.createTarFile();
                     terminal.printSuccess('TAR created');
 
