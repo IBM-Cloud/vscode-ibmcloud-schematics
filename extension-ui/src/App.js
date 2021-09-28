@@ -24,6 +24,7 @@ import Log from './components/common/log/Log';
 import Resources from './components/workspace/resources';
 import Failure from './components/common/failure';
 import Variables from './components/workspace/variables';
+import TimeEstimation from './components/workspace/resources/TimeEstimation';
 
 import './style/app.scss';
 
@@ -66,6 +67,11 @@ function App() {
                 exact
                 path="/workspace/variables"
                 render={() => <Variables result={result} />}
+            />
+            <Route
+                exact
+                path="/workspace/time-estimation"
+                render={() => <TimeEstimation result={result} />}
             />
             <Route
                 exact
