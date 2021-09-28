@@ -62,11 +62,9 @@ export async function getWorkspace(id: string, credentials: any = undefined) {
                 wId: id,
             })
             .then((res: any) => {
-                console.log(res)
                 resolve(res.result);
             })
             .catch((err: any) => {
-                console.log("Error",err)
                 reject(err);
             });
 
