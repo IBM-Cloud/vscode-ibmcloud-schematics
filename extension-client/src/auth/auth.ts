@@ -93,3 +93,19 @@ export async function getRefreshToken(): Promise<string> {
             });
     });
 }
+
+export async function getToken(): Promise<string> {
+    const credentials = await util.workspace.readCredentials();
+    const authenticator = await getAuthenticator(credentials);
+
+    return new Promise((resolve, reject) => {
+        authenticator.tokenManager
+            .getToken()
+            .then((resp: any) => {
+                resolve(resp);
+            })
+            .catch((err: any) => {
+                reject(err);
+            });
+    });
+}

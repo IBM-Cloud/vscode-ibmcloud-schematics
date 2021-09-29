@@ -1,39 +1,28 @@
 {
-    "id": "24",
-    "totalTimeEstimation": "6sec",
-    "resources": [
+    "JobID": "24",
+    "Resources": [
         {
-            "id": "5f353fd41946a1ddad709779",
+            "id": "5f353fd41946a1ddad709777",
             "name": "ibm_iam_service_policy",
             "region": "us-south",
-            "TimeEstimation": 5,
+            "TimeEstimation": "00:00:05",
             "ServiceType": "NA",
             "Action": "create",
             "StartTime": "2020-07-01T05:54:04.000+00:00",
-            "Day": "Fri",
+            "Day": "Wed",
             "AccuracyPercentage": 88
         },
         {
-            "id": "5f353fd41946a1ddad70974f",
-            "name": "ibm_iam_authorization_policy",
-            "region": "us-south",
-            "TimeEstimation": 2,
-            "ServiceType": "NA",
-            "Action": "create",
-            "StartTime": "2020-07-01T05:54:04.000+00:00",
-            "Day": "Fri",
-            "AccuracyPercentage": 88
-        },
-        {
-            "id": "5f353fd41946a1ddad709764",
+            "id": "5f353fd41946a1ddad709762",
             "name": "ibm_iam_service_id",
             "region": "us-south",
-            "TimeEstimation": 1,
+            "TimeEstimation": "00:00:01",
             "ServiceType": "NA",
             "Action": "create",
             "StartTime": "2020-07-01T05:54:04.000+00:00",
-            "Day": "Fri",
+            "Day": "Wed",
             "AccuracyPercentage": 88
         }
-    ]
+    ],
+    "TotalTimeEstimation": "00:00:06"
 }

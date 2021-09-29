@@ -27,7 +27,9 @@ import {
     TableToolbar,
     TableToolbarContent,
     TableToolbarSearch,
+    TooltipIcon,
 } from 'carbon-components-react';
+import { Information16 } from '@carbon/icons-react';
 
 const headers = [
     {
@@ -40,7 +42,15 @@ const headers = [
     },
     {
         key: 'TimeEstimation',
-        header: 'Estimated time (in sec)',
+        header: (
+            <>
+                {'Estimated time'}{' '}
+                <TooltipIcon
+                    tooltipText="Estimated time to provision a resource in hh:mm:ss"
+                    renderIcon={Information16}
+                />
+            </>
+        ),
     },
     {
         key: 'Action',
@@ -48,7 +58,15 @@ const headers = [
     },
     {
         key: 'AccuracyPercentage',
-        header: 'Accuracy (%)',
+        header: (
+            <>
+                {'Accuracy'}{' '}
+                <TooltipIcon
+                    tooltipText="Accuracy in percentage defines how close the provided estimated time are close to actual estimation"
+                    renderIcon={Information16}
+                />
+            </>
+        ),
     },
 ];
 
@@ -56,8 +74,12 @@ const mockData = require('./time-estimation-mock.json');
 
 const TimeEstimation = ({ result }) => {
     result = result ? result : mockData;
-    const totalTime = result.totalTimeEstimation;
-    const rows = result.resources.length ? result.resources : [];
+    const totalTime = result.TotalTimeEstimation;
+    const rows = result.Resources.length ? result.Resources : [];
+
+    if (true) {
+        return <h5>No data available</h5>;
+    }
 
     return (
         <>
@@ -73,7 +95,7 @@ const TimeEstimation = ({ result }) => {
                     <TableContainer
                         title={'Total time: ' + totalTime}
                         description={
-                            'This is a estimated time. Actual time may differ.'
+                            'This is a estimated time. Actual time to deploy may differ.'
                         }
                     >
                         <TableToolbar>

@@ -36,3 +36,11 @@ export async function hcltojsonFunc() {
     const versionsPath = util.workspace.getWorkspaceVersionsFilePath();
     return util.workspace.writeToFile(versionsPath, jsonData);
 }
+
+export function outputPlan(): Promise<string | Error> {
+    return shell.execute('terraform plan --out tfplan.binary');
+}
+
+export function outputJSONPlan(): Promise<string | Error> {
+    return shell.execute('terraform show -json tfplan.binary > tfplan.json');
+}

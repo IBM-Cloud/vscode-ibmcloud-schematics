@@ -17,9 +17,11 @@
 
 import * as vscode from 'vscode';
 
+import * as command from '../../command';
 import * as api from '../../api';
 import * as util from '../../util';
 import ResourcesView from '../../webview/workspace/ResourcesView';
+import TimeEstimationView from '../../webview/workspace/TimeEstimationView';
 
 export async function resources(
     context: vscode.ExtensionContext
@@ -62,6 +64,29 @@ export async function destroyResources(): Promise<void> {
             .catch((error) => {
                 console.log(error);
             });
+    } catch (error) {
+        console.log(error);
+        vscode.window.showErrorMessage(String(error));
+    }
+}
+
+export async function estimateTimeToProvision(
+    context: vscode.ExtensionContext
+): Promise<void> {
+    // const isDeployed = util.workspace.isDeployed();
+    // if (!isDeployed) {
+    //     vscode.window.showErrorMessage(
+    //         'Workspace not deployed. Make sure you have deployed your workspace.'
+    //     );
+    //     return;
+    // }
+    try {
+        await command.terraform.outputPlan();
+        // await command.terraform.outputJSONPlan();
+        const tfplanJson = await util.workspace.readTFPlan();
+        const resp: any = await api.createTimeEstimation(tfplanJson);
+        const teView = new TimeEstimationView(context, resp.jobID);
+        teView.openView(true);
     } catch (error) {
         console.log(error);
         vscode.window.showErrorMessage(String(error));

@@ -33,6 +33,7 @@ export const versionsFilename = 'version.json';
 export const versionsTFFilename = 'versions.tf';
 export const cloneFilename = 'clone.json';
 export const originalWorkspaceFilename = 'original_workspace.json';
+export const tfPlanFilename = 'tfplan.json';
 
 let flag: number = 0;
 const apiEndpoints = ['cloud.ibm.com'];
@@ -629,6 +630,17 @@ export async function detectTerraformVersion(tfversions: any) {
 export function readUIAssetManifest(path: string): any {
     return new Promise(function (resolve, reject) {
         readFile(path).then((data: any) => {
+            resolve(data);
+        });
+    });
+}
+
+export function readTFPlan(): any {
+    return new Promise(function (resolve, reject) {
+        const wsPath = getWorkspacePath();
+        const tfPlanPath = wsPath + path.sep + tfPlanFilename;
+
+        readFile(tfPlanPath).then((data: any) => {
             resolve(data);
         });
     });

@@ -21,6 +21,7 @@ import * as auth from '../auth/auth';
 import * as type from '../type/index';
 import * as util from '../util';
 
+const axios = require('axios');
 let intervalId: any;
 
 export async function createWorkspace(payload: any) {
@@ -324,4 +325,52 @@ export async function saveVariables(wsData: any, variables: any) {
                 reject(error);
             });
     });
+}
+
+export async function createTimeEstimation(tfplan: any) {
+    console.log(`tfplan tfplan ==>`, tfplan);
+    const token = await auth.getToken();
+    const refreshToken = await auth.getRefreshToken();
+
+    const headers = {
+        Authorization: 'Bearer ' + token,
+        refresh_token: refreshToken,
+    };
+
+    return new Promise((resolve, reject) => {
+        axios
+            .post(
+                'https://app-08.ddqbxx6h9up.jp-osa.codeengine.appdomain.cloud/api/v1/predictor',
+                tfplan,
+                {
+                    headers,
+                }
+            )
+            .then((res: any) => {
+                resolve(res.data);
+            })
+            .catch((error: any) => {
+                console.log(error);
+                reject(error);
+            });
+    });
+}
+
+export async function getTimeEstimation(id: any) {
+    const token = await auth.getToken();
+    const refreshToken = await auth.getRefreshToken();
+
+    const headers = {
+        Authorization: 'Bearer ' + token,
+        refresh_token: refreshToken,
+    };
+
+    return axios.get(
+        'https://app-08.ddqbxx6h9up.jp-osa.codeengine.appdomain.cloud/api/v1/predictor/' +
+            id,
+        {},
+        {
+            headers,
+        }
+    );
 }

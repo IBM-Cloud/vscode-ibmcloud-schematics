@@ -114,6 +114,12 @@ export function activate(context: vscode.ExtensionContext) {
         () => command.workspace.read(context)
     );
     context.subscriptions.push(wsDetailsCmd);
+
+    var wsTimeEstimationCmd = vscode.commands.registerCommand(
+        'schematics.workspace.time.estimation',
+        () => command.workspace.estimateTimeToProvision(context)
+    );
+    context.subscriptions.push(wsTimeEstimationCmd);
 }
 
 // This method is called when your extension is deactivated
