@@ -68,13 +68,13 @@ export default class MigrateTaskTerminal implements vscode.Pseudoterminal {
 
                     var templateId = workspaceData.template_data[0].id;
 
-                    var workspaceVariableStore=workspaceData.template_data[0].values_metadata
+                    var workspaceVariableStore=workspaceData.template_data[0].variablestore
                     const payload = {
                         wId: ws,
                         tId: templateId,
                     };
                     terminal.printHeading('Downloading statefile from workspace...');
-                    var storeFile=await api.getStatefile(payload);
+                    var storeFile: any=await api.getStatefile(payload);
 
                     const workspacePath=util.workspace.getWorkspacePath();
                     if(storeFile != 1)
@@ -82,7 +82,6 @@ export default class MigrateTaskTerminal implements vscode.Pseudoterminal {
                         storeFile=JSON.stringify(storeFile)
                         util.userInput.writeStateFile(storeFile,workspacePath);
                         terminal.printSuccess('Downloaded statefile');
-
                     }
                     else{
                         terminal.printHeading('There is no statefile present for the workspace...');
@@ -93,7 +92,7 @@ export default class MigrateTaskTerminal implements vscode.Pseudoterminal {
                     await command.terraform.upgrade();
                     terminal.printSuccess('Terraform version upgraded locally');
 
-                    terminal.printSuccess('Checking the configurations...');
+                    terminal.printHeading('Checking the configurations...');
                     await command.terraform.validate();
                     terminal.printSuccess('Configurations are valid');
         

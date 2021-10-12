@@ -67,6 +67,7 @@ export async function createMigratedWorkspace(workspaceVariableStore: any): Prom
         Promise.resolve('workspace already deployed');
         return;
     }
+    console.log(workspaceVariableStore)
 
     const type: any = await util.workspace.readTerraformVersion();
     const payload = {
@@ -76,7 +77,7 @@ export async function createMigratedWorkspace(workspaceVariableStore: any): Prom
             {
                 folder: '.',
                 type: type.version,
-                variablestore: JSON.parse(JSON.stringify(workspaceVariableStore)),
+                variablestore: workspaceVariableStore,
             },
         ],
     };
