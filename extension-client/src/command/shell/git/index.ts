@@ -17,6 +17,7 @@
 
 import * as shell from '../index';
 import * as util from '../../../util';
+const remoteRepoCheck = 'git remote -v';
 
 export async function clone(
     repoURL: string,
@@ -32,4 +33,8 @@ export async function clone(
         repoFolder;
     console.log(`cmd`, cmd);
     return shell.execute(cmd);
+}
+
+export function repoCheck(): Promise<string | Error> {
+    return shell.execute(remoteRepoCheck);
 }

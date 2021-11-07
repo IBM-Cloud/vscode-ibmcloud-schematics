@@ -33,6 +33,11 @@ export async function showJobsQuickPick(jobs: any) {
     });
 }
 
+export async function delay(ms: number) {
+    return new Promise( resolve => setTimeout(resolve, ms) );
+}
+
+
 export async function showWorkspaceInput() {
     const selectedWorkspace = await vscode.window.showInputBox( {
         ignoreFocusOut: true,

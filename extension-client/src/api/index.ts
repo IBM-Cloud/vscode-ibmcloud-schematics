@@ -171,7 +171,6 @@ export async function getWorkspaceResources(id: string) {
                 resolve(res.result);
             })
             .catch((error: any) => {
-                console.log(error);
                 reject(error);
             });
     });
@@ -236,7 +235,6 @@ export async function pullLatest(data: any) {
                 resolve(res.result);
             })
             .catch((error: any) => {
-                console.log(error);
                 reject(error);
             });
     });
@@ -320,7 +318,6 @@ export async function saveVariables(wsData: any, variables: any) {
                 resolve(res.result);
             })
             .catch((error: any) => {
-                console.log(error);
                 reject(error);
             });
     });

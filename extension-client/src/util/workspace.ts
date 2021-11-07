@@ -33,6 +33,7 @@ export const versionsFilename = 'version.json';
 export const versionsTFFilename = 'versions.tf';
 export const cloneFilename = 'clone.json';
 export const originalWorkspaceFilename = 'original_workspace.json';
+export var cloneTask = false;
 
 let flag: number = 0;
 const apiEndpoints = ['cloud.ibm.com'];
@@ -396,6 +397,12 @@ export function isCloned(): boolean {
     return fs.existsSync(originalwsPath) && fs.existsSync(scrapebookwspath);
 }
 
+export function isWorkspaceExist(): boolean {
+    const workspacepath = getSchematicsWorkspacePath();
+    return fs.existsSync(workspacepath);
+
+}
+
 export function isDirectoryEmpty(dirPath: any): boolean {
     return fs.readdirSync(dirPath).length === 0;
 }
@@ -462,7 +469,7 @@ export async function openClonedRepository(
     }
 }
 
-export async function isGITRepo(url: string) {
+export async function isGITRepo(url: any) {
     const validGITDomains: string[] = [
         'github.com',
         'github.ibm.com',
@@ -480,6 +487,8 @@ export async function isGITRepo(url: string) {
     }
 }
 
+
+
 export function isCatalogWorkspace(obj: any): boolean {
     if (obj.hasOwnProperty('catalog_ref')) {
         return true;
@@ -487,6 +496,8 @@ export function isCatalogWorkspace(obj: any): boolean {
 
     return false;
 }
+
+
 
 export function isArchiveUploadedWorkspace(obj: any): boolean {
     if (obj?.template_repo?.has_uploadedgitrepotar) {
@@ -559,10 +570,21 @@ export function readTextFile(path: any) {
     });
 }
 
+export function readWorkspaceFile(path: any) {
+    return new Promise((resolve, reject) => {
+        fs.readFile(path, 'utf8', (err: any, data: string) => {
+            if (err) {
+                reject(err);
+            }
+            resolve(data);
+        });
+    });
+}
+
+
 export function readTFFile(): any {
     return new Promise(function (resolve, reject) {
         const tfFilePath = getVersionsTFFilePath();
-        console.log(tfFilePath);
         readTextFile(tfFilePath).then((data: any) => {
             resolve(data);
         });
@@ -633,3 +655,4 @@ export function readUIAssetManifest(path: string): any {
         });
     });
 }
+

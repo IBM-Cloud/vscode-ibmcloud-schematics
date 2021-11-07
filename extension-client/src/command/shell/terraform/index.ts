@@ -42,7 +42,6 @@ export function checkVersion(): Promise<string | Error> {
 }
 
 export async function upgrade(): Promise<string | Error> {
-    console.log("Upgrading...");
     var EXEC_COMMAND_TF_MAC;
     if (os.platform() == 'darwin'){
         EXEC_COMMAND_TF_MAC='gfind '+FIND_AND_UPGRADE
