@@ -75,7 +75,8 @@ export default class MigrateTaskTerminal implements vscode.Pseudoterminal {
                     terminal.fireClose(1);
                 }
                 else if(workspaceData.type[0] == "terraform_v0.12"){
-                    terminal.printHeading('Workspace is already on v12. Please select the workspace deployed with v11');
+                    terminal.printHeading('Workspace is already on v12. No migration required');
+                    terminal.
                     terminal.printError("Workspace is already on v12. Please select the workspace deployed with v11")
                     terminal.fireClose(1);
                 }
@@ -100,48 +101,55 @@ export default class MigrateTaskTerminal implements vscode.Pseudoterminal {
                     else{
                         terminal.printHeading('There is no statefile present for the workspace...');
                     }
-                    terminal.printHeading('Upgrading locally..');
-                    await command.terraform.init()
-                    .then(terminal.printSuccess('Terraform initialized'))
-                    .catch(terminal.printError('Terraform initialization failed. ',console.error()))
-                    await command.terraform.upgrade()
-                    .then(terminal.printSuccess('Terraform version upgraded locally'))
-                    .catch(terminal.printError('Terraform upgrade failed. ',console.error()))  
+                    try{
+                        terminal.printHeading('Upgrading locally..');
+                        await command.terraform.init()
+                        terminal.printSuccess('Terraform initialized')
+                        await command.terraform.upgrade()
+                        terminal.printSuccess('Terraform version upgraded locally')
 
-                    terminal.printHeading('Checking the configurations...');
-                    await command.terraform.validate()
-                    .then(terminal.printSuccess('Configurations are valid'))
-                    .catch(terminal.printError('Terraform validation failed. ',console.error()))  
-                    
-                    await util.workspace.createCredentialFile();
-                    await util.workspace.saveTerraformVersion(tfTargetVersion);
-    
-                    terminal.printHeading('Preparing deploy...');
-                    await util.workspace.createTarFile();
-                    terminal.printSuccess('TAR created');
-    
-                    terminal.printHeading('Deploy started');
-                    await command.workspace.createMigratedWorkspace(workspaceVariableStore);
-                    terminal.printSuccess('Workspace created');
-    
-                    terminal.printHeading('TAR upload started');
-                    await command.workspace.uploadTAR();
-                    terminal.printSuccess('TAR uploaded');
-    
-                    terminal.printHeading('Verifying workspace');
-                    await api.pollState();
-                    terminal.printSuccess('Workspace verified');
-    
-                    terminal.printHeading('Plan initiated');
-                    await command.workspace.plan();
-                    await api.pollState();
-                    terminal.printSuccess('Plan generated');
-                    await command.workspace.apply();
-                    terminal.printHeading('Apply initiated');
-                    await api.pollState();            
-                    terminal.printSuccess('Plan applied. IMPORTANT INSTRUCTIONS: Workspace has created with the TAR created from locally. You need to manually add and commit into the github repository. \n Please delete the existing workspace created.');
-                    util.workspace.removeTarFile();
-                    terminal.fireClose(1);
+                        terminal.printHeading('Checking the configurations...');
+                        await command.terraform.validate()
+                        terminal.printSuccess('Configurations are valid')
+                        
+                        await util.workspace.createCredentialFile();
+                        await util.workspace.saveTerraformVersion(tfTargetVersion);
+        
+                        terminal.printHeading('Preparing deploy...');
+                        await util.workspace.createTarFile();
+                        terminal.printSuccess('TAR created');
+        
+                        terminal.printHeading('Deploy started');
+                        await command.workspace.createMigratedWorkspace(workspaceVariableStore);
+                        terminal.printSuccess('Workspace created');
+        
+                        terminal.printHeading('TAR upload started');
+                        await command.workspace.uploadTAR();
+                        terminal.printSuccess('TAR uploaded');
+        
+                        terminal.printHeading('Verifying workspace');
+                        await api.pollState();
+                        terminal.printSuccess('Workspace verified');
+        
+                        terminal.printHeading('Plan initiated');
+                        await command.workspace.plan();
+                        await api.pollState();
+                        terminal.printSuccess('Plan generated');
+                        await command.workspace.apply();
+                        terminal.printHeading('Apply initiated');
+                        await api.pollState();            
+                        terminal.printSuccess('Plan applied. IMPORTANT INSTRUCTIONS: Workspace has created with the TAR created from locally. You need to manually add and commit into the github repository. \n Please delete the existing workspace created.');
+                        util.workspace.removeTarFile();
+                        terminal.fireClose(1);
+
+                    }
+                    catch(error){
+                        terminal.printFailure('Migration error:');
+                        terminal.printError(error);
+                        terminal.fireClose(1);
+                    }
+                
+                
                 }
             }
 
