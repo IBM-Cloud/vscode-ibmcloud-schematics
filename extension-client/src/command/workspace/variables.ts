@@ -45,7 +45,7 @@ export async function variables(
         }
     } catch (error) {
         console.log(error);
-        vscode.window.showErrorMessage(error);
+        vscode.window.showErrorMessage(String(error));
     }
 }
 
@@ -72,6 +72,6 @@ export async function saveVariables(
         });
     } catch (error) {
         console.log(error);
-        vscode.window.showErrorMessage(error);
+        vscode.window.showErrorMessage(String(error));
     }
 }

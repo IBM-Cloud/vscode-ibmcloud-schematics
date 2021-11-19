@@ -47,6 +47,9 @@
             },
             {
                 "type": "ibmcloud-schematics-clone"
+            },
+            {
+                "type": "ibmcloud-schematics-migrate"
             }
         ],
         "commands": [
@@ -146,7 +149,9 @@
     "dependencies": {
         "@ibm-cloud/ibm-schematics": "0.0.2",
         "hcl-to-json": "^0.1.1",
+        "rewire": "^5.0.0",
         "tar": "^6.1.0",
+        "vsce": "^1.100.0",
         "web-pack": "^1.0.0"
     }
 }

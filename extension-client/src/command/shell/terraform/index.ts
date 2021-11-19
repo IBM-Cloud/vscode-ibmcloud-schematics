@@ -15,11 +15,19 @@
  * limitations under the License.
  */
 
+import { openStdin } from 'process';
 import * as shell from '..';
 import * as util from '../../../util';
 
+var os = require('os');
+
+
 const TERRAFORM_INIT_COMMAND = 'terraform init';
 const TERRAFORM_VALIDATE_COMMAND = 'terraform validate';
+const TERRAFORM_VERSION_COMMAND = 'terraform -version';
+
+const FIND_AND_UPGRADE = '. -name "*.tf" -printf "%h\n" | uniq | sort -ur | xargs -n1 terraform 0.12upgrade -yes';
+
 const hcltojson = require('hcl-to-json');
 
 export function init(): Promise<string | Error> {
@@ -28,6 +36,20 @@ export function init(): Promise<string | Error> {
 
 export function validate(): Promise<string | Error> {
     return shell.execute(TERRAFORM_VALIDATE_COMMAND);
+}
+export function checkVersion(): Promise<string | Error> {
+    return shell.execute(TERRAFORM_VERSION_COMMAND);
+}
+
+export async function upgrade(): Promise<string | Error> {
+    var EXEC_COMMAND_TF_MAC;
+    if (os.platform() == 'darwin'){
+        EXEC_COMMAND_TF_MAC='gfind '+FIND_AND_UPGRADE
+    }
+    else{
+        EXEC_COMMAND_TF_MAC='find '+FIND_AND_UPGRADE
+    }
+    return shell.execute(EXEC_COMMAND_TF_MAC);
 }
 
 export async function hcltojsonFunc() {

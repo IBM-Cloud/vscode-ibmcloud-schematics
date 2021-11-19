@@ -16,6 +16,7 @@
  */
 
 import * as vscode from 'vscode';
+var fs = require('fs');
 
 export async function showJobsQuickPick(jobs: any) {
     const selectedJob = await vscode.window.showQuickPick(jobs, {
@@ -28,6 +29,26 @@ export async function showJobsQuickPick(jobs: any) {
             reject('Job not selected');
         } else {
             resolve(selectedJob);
+        }
+    });
+}
+
+export async function delay(ms: number) {
+    return new Promise( resolve => setTimeout(resolve, ms) );
+}
+
+
+export async function showWorkspaceInput() {
+    const selectedWorkspace = await vscode.window.showInputBox( {
+        ignoreFocusOut: true,
+        placeHolder: 'Enter the Workspace id:',
+    });
+
+    return new Promise((resolve, reject) => {
+        if (!selectedWorkspace) {
+            reject('Workspace id not selected');
+        } else {
+            resolve(selectedWorkspace);
         }
     });
 }
@@ -101,4 +122,15 @@ export async function showConfirmDeleteWorkspace() {
             reject('Confirm delete workspace modal cancelled');
         }
     });
+}
+
+export async function writeStateFile(storeFile: any, workspacePath: any){
+    
+    fs.writeFile(workspacePath+'/terraform.tfstate', storeFile, (err: any) => {
+        if (err) {
+            console.log(err);
+        }
+        console.log(true);
+    });
+
 }
