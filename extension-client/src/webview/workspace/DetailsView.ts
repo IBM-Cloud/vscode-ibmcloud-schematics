@@ -34,7 +34,7 @@ export default class DetailView extends ReactView {
     }
 
     async loadComponent(panel: vscode.WebviewPanel): Promise<void> {
-        api.getWorkspace(this._jobID)
+        api.getWorkspace(this._jobID, undefined)
             .then((result) => {
                 panel.webview.postMessage({
                     path: '/workspace/details',

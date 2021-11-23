@@ -68,6 +68,7 @@ export async function getWorkspace(id: string, credentials: any = undefined) {
             .catch((err: any) => {
                 reject(err);
             });
+
     });
 }
 
@@ -172,7 +173,6 @@ export async function getWorkspaceResources(id: string) {
                 resolve(res.result);
             })
             .catch((error: any) => {
-                console.log(error);
                 reject(error);
             });
     });
@@ -237,7 +237,6 @@ export async function pullLatest(data: any) {
                 resolve(res.result);
             })
             .catch((error: any) => {
-                console.log(error);
                 reject(error);
             });
     });
@@ -321,7 +320,6 @@ export async function saveVariables(wsData: any, variables: any) {
                 resolve(res.result);
             })
             .catch((error: any) => {
-                console.log(error);
                 reject(error);
             });
     });
@@ -373,4 +371,20 @@ export async function getTimeEstimation(id: any) {
             headers,
         }
     );
+}
+
+export async function getStatefile(payload: any) {
+    const credentials: type.Account = await util.workspace.readCredentials();
+    const schematicsService = await auth.getSchematicsService(credentials);
+
+    return new Promise(function (resolve, reject) {
+        schematicsService
+            .getWorkspaceTemplateState(payload)
+            .then((res: any) => {
+                resolve(res.result);
+            })
+            .catch((err: any) => {
+                resolve(1);
+            });
+    });
 }

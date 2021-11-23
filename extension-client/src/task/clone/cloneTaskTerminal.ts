@@ -21,6 +21,7 @@ import * as command from '../../command';
 import * as util from '../../util';
 import { Terminal } from '../../util/terminal';
 import * as api from '../../api/index';
+import { openStdin } from 'process';
 
 export default class CloneTaskTerminal implements vscode.Pseudoterminal {
     private writeEmitter = new vscode.EventEmitter<string>();
@@ -53,6 +54,7 @@ export default class CloneTaskTerminal implements vscode.Pseudoterminal {
                     template,
                     pathToClone
                 );
+
             } else {
                 const creds = await util.workspace.getCredentials();
                 const wsdata = await api.getWorkspace(template, creds);
@@ -88,6 +90,7 @@ export default class CloneTaskTerminal implements vscode.Pseudoterminal {
                     templateRepo,
                     pathToClone
                 );
+
             }
             terminal.fireClose(1);
         } catch (error) {
