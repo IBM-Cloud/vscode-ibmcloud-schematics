@@ -77,7 +77,7 @@ const TimeEstimation = ({ result }) => {
     const totalTime = result.TotalTimeEstimation;
     const rows = result.Resources.length ? result.Resources : [];
 
-    if (true) {
+    if (!rows.length) {
         return <h5>No data available</h5>;
     }
 

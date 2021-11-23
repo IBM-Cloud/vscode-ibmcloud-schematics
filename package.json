@@ -103,7 +103,7 @@
             },
             {
                 "command": "schematics.workspace.time.estimation",
-                "title": "Time to provision",
+                "title": "Estimated time to provision",
                 "category": "IBM Cloud Schematics workspace"
             }
         ],

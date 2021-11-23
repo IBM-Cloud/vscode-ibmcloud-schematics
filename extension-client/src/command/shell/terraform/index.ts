@@ -18,9 +18,21 @@
 import * as shell from '..';
 import * as util from '../../../util';
 
-const TERRAFORM_INIT_COMMAND = 'terraform init';
-const TERRAFORM_VALIDATE_COMMAND = 'terraform validate';
 const hcltojson = require('hcl-to-json');
+
+const TERRAFORM_COMMAND = 'terraform';
+const TERRAFORM_INIT_COMMAND = TERRAFORM_COMMAND + ' init';
+const TERRAFORM_VALIDATE_COMMAND = TERRAFORM_COMMAND + ' validate';
+const TERRAFORM_PLAN_COMMAND = TERRAFORM_COMMAND + ' plan';
+const TERRAFORM_SHOW_COMMAND = TERRAFORM_COMMAND + ' show';
+
+const commandLineFlag = {
+    out: '-out',
+    json: '-json',
+};
+
+const FILE_TFPLAN_BIN = 'tfplan.binary';
+const FILE_TFPLAN_JSON = 'tfplan.json';
 
 export function init(): Promise<string | Error> {
     return shell.execute(TERRAFORM_INIT_COMMAND);
@@ -37,10 +49,26 @@ export async function hcltojsonFunc() {
     return util.workspace.writeToFile(versionsPath, jsonData);
 }
 
-export function outputPlan(): Promise<string | Error> {
-    return shell.execute('terraform plan --out tfplan.binary');
+// Run plan and save the generated plan to a file on disk
+export function generateAndSavePlanToFile(): Promise<string | Error> {
+    const plan = [
+        TERRAFORM_PLAN_COMMAND,
+        commandLineFlag.out,
+        FILE_TFPLAN_BIN,
+    ].join(' ');
+
+    return shell.execute(plan);
 }
 
-export function outputJSONPlan(): Promise<string | Error> {
-    return shell.execute('terraform show -json tfplan.binary > tfplan.json');
+// Generate JSON representation of plan
+export function generateJSONPlan(): Promise<string | Error> {
+    const show = [
+        TERRAFORM_SHOW_COMMAND,
+        commandLineFlag.json,
+        FILE_TFPLAN_BIN,
+        '>',
+        FILE_TFPLAN_JSON,
+    ].join(' ');
+
+    return shell.execute(show);
 }

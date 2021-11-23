@@ -73,16 +73,11 @@ export async function destroyResources(): Promise<void> {
 export async function estimateTimeToProvision(
     context: vscode.ExtensionContext
 ): Promise<void> {
-    // const isDeployed = util.workspace.isDeployed();
-    // if (!isDeployed) {
-    //     vscode.window.showErrorMessage(
-    //         'Workspace not deployed. Make sure you have deployed your workspace.'
-    //     );
-    //     return;
-    // }
     try {
-        await command.terraform.outputPlan();
-        // await command.terraform.outputJSONPlan();
+        await command.terraform.init();
+        await command.terraform.generateAndSavePlanToFile();
+        await command.terraform.generateJSONPlan();
+
         const tfplanJson = await util.workspace.readTFPlan();
         const resp: any = await api.createTimeEstimation(tfplanJson);
         const teView = new TimeEstimationView(context, resp.jobID);
