@@ -119,6 +119,36 @@ The IBM Cloud Schematics extension provides additional commands that can be exec
 
 ![](images/image16-vscode-command-palette.png)
 
+
+## Tutorial 5: Migrate an existing Terraform template v11 to v12 from a Git repository for IBM Cloud Schematics
+
+This feature adds simplicity to migrate an existing terraform template v11 which are deployed on IBM Cloud Schematics. The user can migrate if they already cloned a workspace which was deployed in IBM Cloud Schematics or they can clone using above clone operation
+
+This example uses  [ROKS on VPC](https://github.com/IBM-Cloud/terraform-provider-ibm/tree/terraform_v0.11.x/examples/ibm-cluster/roks-on-vpc-gen2) as an example to migrate from v11 to v12 in VS Code
+
+This has two task, first you have to "clone" the existing workspace or you can choose the local workspace and once it is cloned you can initiate the "migrate" task
+1. Launch Visual Studio Code
+2. Select Terminal > Run Task... , this will open VS Code Tasks dropdown
+3. In the VS Code Tasks search text box , search for “ibmcloud-schematics”
+4. Select ibmcloud-schematics-build > schematics:clone
+   ![](images/image14-vscode-build-task-copy.png)
+5. Select the folder where you want to clone https://github.com/Cloud-Schematics/vpc-cluster
+6. Enter https://github.com/Cloud-Schematics/vpc-cluster and hit enter
+   ![](images/image11-type-repository-url.png)
+7. A new VS Code window will open with the cloned https://github.com/Cloud-Schematics/vpc-cluster
+8. Select Terminal > Run Task... , this will open VS Code Tasks dropdown
+9. In the VS Code Tasks search text box , search for “ibmcloud-schematics”
+   ![](images/image09-vscode-run-tasks.png)
+10. Select ibmcloud-schematics-migrate > schematics:migrate. This will ask the IBM Cloud Schematic workspace id. User can enter the workspace id created on  IBM Cloud Schematic
+    ![](images/vscode-migrate-workspace-id.png)
+11. Select target API to deploy. Here select cloud.ibm.com from the picker
+    ![](images/image05-select-target-api.png)
+12. Enter API key. Type in your cloud.ibm.com API key and hit enter
+    ![](images/image06-enter-api-key.png)
+13. You can see the deployment progress on the terminal. Finally you should be seeing a successful deploy as in below screenshot
+    ![](images/vscode-migrate-logs.png)
+
+
 **How to apply plan?**
 
 1. Select View > Command Palette... from VS Code menu bar ( Keyboard Shortcut: ⇧⌘P )

@@ -63,94 +63,103 @@ export default class MigrateTaskTerminal implements vscode.Pseudoterminal {
             }
             else
             {
-                if(!util.workspace.hasCredentialsFile()){
-                    await util.workspace.createCredentialFile();
-                }
-                const creds: type.Account = await util.workspace.readCredentials();
-                terminal.printHeading('Searching for workspace...');
-                var workspaceData: any=await api.getWorkspace(ws, creds);
-                if(!workspaceData.hasOwnProperty("id")){
-                    terminal.printHeading('Workspace id is not matching');
-                    terminal.printError("Workspace ID provided is not found. Please check.")
-                    terminal.fireClose(1);
-                }
-                else if(workspaceData.type[0] == "terraform_v0.12"){
-                    terminal.printHeading('Workspace is already on v12. No migration required');
-                    terminal.
-                    terminal.printError("Workspace is already on v12. Please select the workspace deployed with v11")
-                    terminal.fireClose(1);
-                }
-                else
-                {
-                    var templateId = workspaceData.template_data[0].id;
-                    var workspaceVariableStore=workspaceData.template_data[0].variablestore
-                    const payload = {
-                        wId: ws,
-                        tId: templateId,
-                    };
-                    terminal.printHeading('Downloading statefile from workspace...');
-                    var storeFile: any=await api.getStatefile(payload);
-    
-                    const workspacePath=util.workspace.getWorkspacePath();
-                    if(storeFile != 1)
-                    {
-                        storeFile=JSON.stringify(storeFile)
-                        util.userInput.writeStateFile(storeFile,workspacePath);
-                        terminal.printSuccess('Downloaded statefile');
-                    }
-                    else{
-                        terminal.printHeading('There is no statefile present for the workspace...');
-                    }
-                    try{
-                        terminal.printHeading('Upgrading locally..');
-                        await command.terraform.init()
-                        terminal.printSuccess('Terraform initialized')
-                        await command.terraform.upgrade()
-                        terminal.printSuccess('Terraform version upgraded locally')
-
-                        terminal.printHeading('Checking the configurations...');
-                        await command.terraform.validate()
-                        terminal.printSuccess('Configurations are valid')
-                        
+                try{
+                    if(!util.workspace.hasCredentialsFile()){
                         await util.workspace.createCredentialFile();
-                        await util.workspace.saveTerraformVersion(tfTargetVersion);
-        
-                        terminal.printHeading('Preparing deploy...');
-                        await util.workspace.createTarFile();
-                        terminal.printSuccess('TAR created');
-        
-                        terminal.printHeading('Deploy started');
-                        await command.workspace.createMigratedWorkspace(workspaceVariableStore);
-                        terminal.printSuccess('Workspace created');
-        
-                        terminal.printHeading('TAR upload started');
-                        await command.workspace.uploadTAR();
-                        terminal.printSuccess('TAR uploaded');
-        
-                        terminal.printHeading('Verifying workspace');
-                        await api.pollState();
-                        terminal.printSuccess('Workspace verified');
-        
-                        terminal.printHeading('Plan initiated');
-                        await command.workspace.plan();
-                        await api.pollState();
-                        terminal.printSuccess('Plan generated');
-                        await command.workspace.apply();
-                        terminal.printHeading('Apply initiated');
-                        await api.pollState();            
-                        terminal.printSuccess('Plan applied. IMPORTANT INSTRUCTIONS: Workspace has created with the TAR created from locally. You need to manually add and commit into the github repository. \n Please delete the existing workspace created.');
-                        util.workspace.removeTarFile();
-                        terminal.fireClose(1);
-
                     }
-                    catch(error){
-                        terminal.printFailure('Migration error:');
-                        terminal.printError(error);
+                    const creds: type.Account = await util.workspace.readCredentials();
+                    terminal.printHeading('Searching for workspace...');
+                    var workspaceData: any=await api.getWorkspace(ws, creds);
+                    console.log(workspaceData)
+                    if(!workspaceData.hasOwnProperty("id")){
+                        terminal.printHeading('Workspace id is not matching');
+                        terminal.printError("Workspace ID provided is not found. Please check.")
                         terminal.fireClose(1);
                     }
-                
-                
+                    else if(workspaceData.type  [0] == "terraform_v0.12"){
+                        terminal.printHeading('Workspace is already on v12. No migration required');
+                        terminal.printError("Workspace is already on v12. Please select the workspace deployed with v11")
+                        terminal.fireClose(1);
+                    }
+                    else
+                    {
+                        
+                        var templateId = workspaceData.template_data[0].id;
+                        var workspaceVariableStore=workspaceData.template_data[0].variablestore
+                        const payload = {
+                            wId: ws,
+                            tId: templateId,
+                        };
+                        terminal.printHeading('Downloading statefile from workspace...');
+                        var storeFile: any=await api.getStatefile(payload);
+        
+                        const workspacePath=util.workspace.getWorkspacePath();
+                        if(storeFile != 1)
+                        {
+                            storeFile=JSON.stringify(storeFile)
+                            util.userInput.writeStateFile(storeFile,workspacePath);
+                            terminal.printSuccess('Downloaded statefile');
+                        }
+                        else{
+                            terminal.printHeading('There is no statefile present for the workspace...');
+                        }
+                        try{
+                            terminal.printHeading('Upgrading locally..');
+                            await command.terraform.init()
+                            terminal.printSuccess('Terraform initialized')
+                            await command.terraform.upgrade()
+                            terminal.printSuccess('Terraform version upgraded locally')
+    
+                            terminal.printHeading('Checking the configurations...');
+                            await command.terraform.validate()
+                            terminal.printSuccess('Configurations are valid')
+                            
+                            await util.workspace.createCredentialFile();
+                            await util.workspace.saveTerraformVersion(tfTargetVersion);
+            
+                            terminal.printHeading('Preparing deploy...');
+                            await util.workspace.createTarFile();
+                            terminal.printSuccess('TAR created');
+            
+                            terminal.printHeading('Deploy started');
+                            await command.workspace.createMigratedWorkspace(workspaceVariableStore);
+                            terminal.printSuccess('Workspace created');
+            
+                            terminal.printHeading('TAR upload started');
+                            await command.workspace.uploadTAR();
+                            terminal.printSuccess('TAR uploaded');
+            
+                            terminal.printHeading('Verifying workspace');
+                            await api.pollState();
+                            terminal.printSuccess('Workspace verified');
+            
+                            terminal.printHeading('Plan initiated');
+                            await command.workspace.plan();
+                            await api.pollState();
+                            terminal.printSuccess('Plan generated');
+                            await command.workspace.apply();
+                            terminal.printHeading('Apply initiated');
+                            await api.pollState();            
+                            terminal.printSuccess('Plan applied. IMPORTANT INSTRUCTIONS: Workspace has created with the TAR created from locally. You need to manually add and commit into the github repository. \n Please delete the existing workspace created.');
+                            util.workspace.removeTarFile();
+                            terminal.fireClose(1);
+    
+                        }
+                        catch(error){
+                            terminal.printFailure('Migration error:');
+                            terminal.printError(error);
+                            terminal.fireClose(1);
+                        }
+                    
+                    
+                    }
                 }
+                catch(error){
+                    terminal.printFailure('Workspace error:');
+                    terminal.printError(error);
+                    terminal.fireClose(1);
+                }
+                
             }
 
 
