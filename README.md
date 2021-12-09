@@ -6,11 +6,12 @@ The extension is designed to provide a `build and deploy` experience to develope
 
 ### Tasks
 
-| Task                         | Description                                                                                                                                                                    |
-| ---------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `ibmcloud-schematics-build`  | initializes and validates your terraform configuration by running commands `terraform init` and `terraform validate`. Any validation errors will be displayed in the terminal. |
-| `ibmcloud-schematics-deploy` | Validates and deploys your terraform configuration to IBM Cloud Schematics.                                                                                                    |
-| `ibmcloud-schematics-clone`  | Clones an existing Schematics workspace or a GIT repository.                                                                                                                   |
+| Task                          | Description                                                                                                                                                                    |
+| ----------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `ibmcloud-schematics-build`   | initializes and validates your terraform configuration by running commands `terraform init` and `terraform validate`. Any validation errors will be displayed in the terminal. |
+| `ibmcloud-schematics-deploy`  | Validates and deploys your terraform configuration to IBM Cloud Schematics.                                                                                                    |
+| `ibmcloud-schematics-clone`   | Clones an existing Schematics workspace or a GIT repository.                                                                                                                   |
+| `ibmcloud-schematics-migrate` | Migrates your existing templates from Terraform 11 to Terraform 12                                                                                                             |
 
 Know more about [vscode tasks](https://code.visualstudio.com/docs/editor/tasks)
 
