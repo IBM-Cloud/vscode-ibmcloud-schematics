@@ -20,6 +20,11 @@ const schematicsV1 = require('@ibm-cloud/ibm-schematics/dist/schematics/v1');
 import * as auth from '../auth/auth';
 import * as type from '../type/index';
 import * as util from '../util';
+import * as shell from '../command/shell';
+import { posix } from 'path';
+ import * as vscode from 'vscode';
+
+var os = require('os');
 
 let intervalId: any;
 
@@ -339,4 +344,34 @@ export async function getStatefile(payload: any) {
                 resolve(1);
             });
     });
+}
+
+
+export async function estimateCost(): Promise<string | Error> {
+    
+    const TERRAFORM_PLAN_COMMAND = 'terraform plan --out tfplan.binary';
+    const TERRAFORM_SHOW_COMMAND = 'terraform show -json tfplan.binary > tfplan.json';
+    const TERRAFORM_API_COMMAND = 'IC_API_KEY=';
+    const TERRAFORM_COST_COMMAND = 'tfcost plan tfplan.json --json';
+    const key = await util.userInput.showAPIInput();
+    await shell.execute(TERRAFORM_PLAN_COMMAND);
+    await shell.execute(TERRAFORM_SHOW_COMMAND);
+    var API_EXPORT_COMMAND :string;
+    if (os.platform() === 'darwin' || os.platform() === 'linux'){
+        API_EXPORT_COMMAND = "export "+TERRAFORM_API_COMMAND +key+" && "+ TERRAFORM_COST_COMMAND;
+    }
+    else{
+        API_EXPORT_COMMAND = "set "+TERRAFORM_API_COMMAND + key + " & "+ TERRAFORM_COST_COMMAND;
+    }
+    await shell.execute(API_EXPORT_COMMAND);
+    if(vscode.workspace.workspaceFolders !== undefined) {
+        const ws = vscode.workspace.workspaceFolders[0];
+        const folderUri = ws.uri;
+        const fileUri = folderUri.with({ path: posix.join(folderUri.path, 'cost.json') });
+        const f = await vscode.workspace.fs.readFile(fileUri);
+        return Buffer.from(f).toString('utf8');
+    } else {
+        return Error("YOUR-EXTENSION: Working folder not found, open a folder an try again");
+    }
+
 }

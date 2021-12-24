@@ -18,6 +18,8 @@
 import { openStdin } from 'process';
 import * as shell from '..';
 import * as util from '../../../util';
+import { posix } from 'path';
+ import * as vscode from 'vscode';
 
 var os = require('os');
 
@@ -25,6 +27,7 @@ var os = require('os');
 const TERRAFORM_INIT_COMMAND = 'terraform init';
 const TERRAFORM_VALIDATE_COMMAND = 'terraform validate';
 const TERRAFORM_VERSION_COMMAND = 'terraform -version';
+
 
 const FIND_AND_UPGRADE = '. -name "*.tf" -printf "%h\n" | uniq | sort -ur | xargs -n1 terraform 0.12upgrade -yes';
 

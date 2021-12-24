@@ -1,0 +1,22 @@
+{
+    "country": "USA",
+    "currency": "USD",
+    "totalcost": 0,
+    "Lineitem": [
+        {
+            "quantity": 1,
+            "terraformItemId": "ibm_is_vpc",
+            "id": "testacc_vpc",
+            "title": "VPC",
+            "planID": "",
+            "shortDescription": "",
+            "features": null,
+            "estimateType": "",
+            "lineitemtotal": 0,
+            "currlineitemtotal": 0,
+            "prevlineitemtotal": 0,
+            "changelineitemtotal": 0,
+            "depends": null
+        }
+    ]
+}

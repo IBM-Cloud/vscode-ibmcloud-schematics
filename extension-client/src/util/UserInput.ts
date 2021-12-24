@@ -53,6 +53,21 @@ export async function showWorkspaceInput() {
     });
 }
 
+export async function showAPIInput() {
+    const enterKey = await vscode.window.showInputBox( {
+        ignoreFocusOut: true,
+        placeHolder: 'Enter IBMCloud API key',
+    });
+
+    return new Promise((resolve, reject) => {
+        if (!enterKey) {
+            reject('IBMCloud API key not entered');
+        } else {
+            resolve(enterKey);
+        }
+    });
+}
+
 export async function showConfirmPullLatestModal(id: string): Promise<any> {
     const msg = `This will pull the latest on the parent workspace ${id}. Make sure you have pushed your changes to your git repo. Are you sure you want to continue?`;
     const selection = await vscode.window.showInformationMessage(

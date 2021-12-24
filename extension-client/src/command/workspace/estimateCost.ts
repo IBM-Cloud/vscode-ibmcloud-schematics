@@ -15,18 +15,22 @@
  * limitations under the License.
  */
 
-import * as cp from 'child_process';
-import * as util from '../../util';
+ import * as vscode from 'vscode';
+import { estimateCost } from '../../api/index';
+import EstimateCostView from '../../webview/workspace/EstimateCostView';
 
-const nodejsUtil = require('util');
-const exec = nodejsUtil.promisify(cp.exec);
-
-export async function execute(cmd: string): Promise<string | Error> {
-    let path = util.workspace.getWorkspacePath();
-    const { stdout, stderr } = await exec(cmd, { cwd: path });
-    if (stderr) {
-        console.log(`stderr`, stderr);
-        return new Error(stderr);
+ 
+export async function cost(context: vscode.ExtensionContext): Promise<void> {
+    try {
+        await estimateCost();
+        await vscode.window.showInformationMessage("cost.json file created!");
+        // const cost = new EstimateCostView(context);
+        // cost.openView(true);
     }
-    return stdout;
+    catch(error){
+        console.log(error);
+        vscode.window.showErrorMessage(String(error));
+    }
+       
+    
 }

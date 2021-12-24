@@ -34,7 +34,9 @@
         "onCommand:schematics.workspace.delete",
         "onCommand:schematics.workspace.destroyResources",
         "onCommand:schematics.workspace.variables",
-        "onCommand:schematics.workspace.details"
+        "onCommand:schematics.workspace.details",
+        "onCommand:schematics.workspace.estimateCost"
+
     ],
     "main": "./dist/extension.js",
     "contributes": {
@@ -101,6 +103,11 @@
             {
                 "command": "schematics.workspace.details",
                 "title": "Details",
+                "category": "IBM Cloud Schematics workspace"
+            },
+            {
+                "command": "schematics.workspace.estimateCost",
+                "title": "Estimate Cost",
                 "category": "IBM Cloud Schematics workspace"
             }
         ],
