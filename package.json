@@ -36,7 +36,6 @@
         "onCommand:schematics.workspace.variables",
         "onCommand:schematics.workspace.details",
         "onCommand:schematics.workspace.estimateCost"
-
     ],
     "main": "./dist/extension.js",
     "contributes": {
@@ -158,6 +157,7 @@
         "hcl-to-json": "^0.1.1",
         "rewire": "^5.0.0",
         "tar": "^6.1.0",
+        "tsc": "^2.0.3",
         "vsce": "^1.100.0",
         "web-pack": "^1.0.0"
     }

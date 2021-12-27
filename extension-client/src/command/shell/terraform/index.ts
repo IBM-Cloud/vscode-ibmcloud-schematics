@@ -48,10 +48,10 @@ export function checkVersion(): Promise<string | Error> {
 export async function upgrade(): Promise<string | Error> {
     var EXEC_COMMAND_TF_MAC;
     if (os.platform() === 'darwin'){
-        EXEC_COMMAND_TF_MAC='gfind '+FIND_AND_UPGRADE
+        EXEC_COMMAND_TF_MAC='gfind '+FIND_AND_UPGRADE;
     }
     else{
-        EXEC_COMMAND_TF_MAC='find '+FIND_AND_UPGRADE
+        EXEC_COMMAND_TF_MAC='find '+FIND_AND_UPGRADE;
     }
     return shell.execute(EXEC_COMMAND_TF_MAC);
 }
@@ -88,5 +88,6 @@ export async function estimateCost(): Promise<any> {
     }).catch((error: Error) => {
         return error;
     });
+
     return util.workspace.readFile(path.join(util.workspace.getWorkspacePath(),"cost.json"));
 }

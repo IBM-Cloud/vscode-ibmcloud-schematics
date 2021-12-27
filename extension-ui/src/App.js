@@ -26,7 +26,6 @@ import Failure from './components/common/failure';
 import Variables from './components/workspace/variables';
 import EstimateCost from './components/workspace/estimateCost';
 
-
 import './style/app.scss';
 
 function App() {

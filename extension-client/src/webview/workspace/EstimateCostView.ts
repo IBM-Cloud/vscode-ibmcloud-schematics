@@ -18,10 +18,13 @@
  import * as vscode from 'vscode';
  import * as cost from '../../command/shell/terraform/index';
  import { ReactView } from '../ReactView';
+ import * as util from '../../util';
+import { path } from '../../util/workspace';
  
  export default class EstimateCostView extends ReactView {
      static viewID: string = 'workspace.estimateCost';
      static viewTitle: string = 'Workspace Cost Estimate';
+     
  
      constructor(context: vscode.ExtensionContext) {
          super(context, EstimateCostView.viewID, EstimateCostView.viewTitle);
@@ -32,9 +35,9 @@
      }
  
      async loadComponent(panel: vscode.WebviewPanel): Promise<void> {
-         cost.estimateCost()
+        util.workspace.readFile(path.join(util.workspace.getWorkspacePath(),"cost.json"))
              .then((result) => {
-                 console.log(result);
+                //  console.log("1",result);
                  panel.webview.postMessage({
                      path: '/workspace/estimateCost',
                      message: result,
