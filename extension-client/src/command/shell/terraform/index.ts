@@ -19,7 +19,8 @@ import { openStdin } from 'process';
 import * as shell from '..';
 import * as util from '../../../util';
 import { posix } from 'path';
- import * as vscode from 'vscode';
+import * as vscode from 'vscode';
+import { path } from '../../../util/workspace';
 
 var os = require('os');
 
@@ -46,7 +47,7 @@ export function checkVersion(): Promise<string | Error> {
 
 export async function upgrade(): Promise<string | Error> {
     var EXEC_COMMAND_TF_MAC;
-    if (os.platform() == 'darwin'){
+    if (os.platform() === 'darwin'){
         EXEC_COMMAND_TF_MAC='gfind '+FIND_AND_UPGRADE
     }
     else{
@@ -60,4 +61,32 @@ export async function hcltojsonFunc() {
     const jsonData = hcltojson(tfData);
     const versionsPath = util.workspace.getWorkspaceVersionsFilePath();
     return util.workspace.writeToFile(versionsPath, jsonData);
+}
+
+
+export async function estimateCost(): Promise<any> {
+    
+    const TERRAFORM_PLAN_COMMAND = 'terraform plan --out tfplan.binary';
+    const TERRAFORM_SHOW_COMMAND = 'terraform show -json tfplan.binary > tfplan.json';
+    const TERRAFORM_API_COMMAND = 'IC_API_KEY=';
+    const TERRAFORM_COST_COMMAND = 'tfcost plan tfplan.json --json';
+    
+    await util.workspace.createCredentialFile();
+    await shell.execute(TERRAFORM_INIT_COMMAND);
+    await shell.execute(TERRAFORM_PLAN_COMMAND);
+    await shell.execute(TERRAFORM_SHOW_COMMAND);
+    await util.workspace.readCredentials().then(async (rs: any)=>{
+        const key = rs.apiKey;
+        var API_EXPORT_COMMAND: string;
+        if (os.platform() === 'darwin' || os.platform() === 'linux'){
+            API_EXPORT_COMMAND = "export "+TERRAFORM_API_COMMAND +key+" && "+ TERRAFORM_COST_COMMAND;
+        }
+        else{
+            API_EXPORT_COMMAND = "set "+TERRAFORM_API_COMMAND + key + " & "+ TERRAFORM_COST_COMMAND;
+        }
+        await shell.execute(API_EXPORT_COMMAND);
+    }).catch((error: Error) => {
+        return error;
+    });
+    return util.workspace.readFile(path.join(util.workspace.getWorkspacePath(),"cost.json"));
 }

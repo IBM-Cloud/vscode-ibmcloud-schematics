@@ -16,16 +16,17 @@
  */
 
  import * as vscode from 'vscode';
-import { estimateCost } from '../../api/index';
+import { estimateCost } from '../../command/shell/terraform/index';
 import EstimateCostView from '../../webview/workspace/EstimateCostView';
 
  
 export async function cost(context: vscode.ExtensionContext): Promise<void> {
     try {
-        await estimateCost();
+        await estimateCost().then((r)=>{
+            console.log(r);
+        });
         await vscode.window.showInformationMessage("cost.json file created!");
-        // const cost = new EstimateCostView(context);
-        // cost.openView(true);
+        await new EstimateCostView(context).openView(true);
     }
     catch(error){
         console.log(error);

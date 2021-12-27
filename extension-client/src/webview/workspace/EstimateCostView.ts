@@ -16,7 +16,7 @@
  */
 
  import * as vscode from 'vscode';
- import * as cost from '../../api/index';
+ import * as cost from '../../command/shell/terraform/index';
  import { ReactView } from '../ReactView';
  
  export default class EstimateCostView extends ReactView {
