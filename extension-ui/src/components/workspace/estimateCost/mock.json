@@ -13,9 +13,9 @@
             "features": null,
             "estimateType": "",
             "lineitemtotal": 0,
-            "currlineitemtotal": 0,
-            "prevlineitemtotal": 0,
-            "changelineitemtotal": 0,
+            "currlineitemtotal": 50,
+            "prevlineitemtotal": 20,
+            "changelineitemtotal": 30,
             "depends": null
         }
     ]
