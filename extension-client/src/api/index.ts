@@ -246,8 +246,6 @@ export async function pullLatest(data: any) {
     });
 }
 
-import { Terminal } from '../util/Terminal';
-
 export async function versions() {
     
     const schematicsService = await auth.getSchematicsService();

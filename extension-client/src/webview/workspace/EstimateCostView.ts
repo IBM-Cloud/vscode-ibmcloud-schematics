@@ -37,7 +37,6 @@ import { path } from '../../util/workspace';
      async loadComponent(panel: vscode.WebviewPanel): Promise<void> {
         util.workspace.readFile(path.join(util.workspace.getWorkspacePath(),"cost.json"))
              .then((result) => {
-                //  console.log("1",result);
                  panel.webview.postMessage({
                      path: '/workspace/estimateCost',
                      message: result,
