@@ -5,7 +5,10 @@ const mockData = require('./mock.json');
 
 const EstimateCost = ({ result }) => {
     result = result ? result : mockData;
-
+    let  totalCost =0
+    for (let i =0; i< result?.Lineitem.length;i++) {
+      totalCost += parseInt(result.Lineitem[i].changelineitemtotal)
+    }
     return (
         <div className="bx--cost_detail">
         <h2>Cost</h2>
@@ -52,6 +55,14 @@ const EstimateCost = ({ result }) => {
                 </Column>
             </Row>
             ))}
+            <Row>
+            <Column lg={10}>
+                    <span className="bx--col_info">TOTAL COST</span>
+            </Column>
+            <Column lg={2}>
+                <span className="bx--col_info">{totalCost}</span>
+            </Column>
+            </Row>
             </div>
             </div>
     );

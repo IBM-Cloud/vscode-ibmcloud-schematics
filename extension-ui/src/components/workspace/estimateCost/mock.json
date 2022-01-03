@@ -17,6 +17,21 @@
             "prevlineitemtotal": 20,
             "changelineitemtotal": 30,
             "depends": null
+        },
+        {
+            "quantity": 1,
+            "terraformItemId": "ibm_is_instance",
+            "id": "testacc_vpc",
+            "title": "Virtual Server",
+            "planID": "",
+            "shortDescription": "",
+            "features": null,
+            "estimateType": "",
+            "lineitemtotal": 0,
+            "currlineitemtotal": 64.31,
+            "prevlineitemtotal": 0,
+            "changelineitemtotal": 64.31,
+            "depends": null
         }
     ]
 }
