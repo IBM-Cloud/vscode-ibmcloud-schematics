@@ -21,7 +21,7 @@
         {
             "quantity": 1,
             "terraformItemId": "ibm_is_instance",
-            "id": "testacc_vpc",
+            "id": "testacc",
             "title": "Virtual Server",
             "planID": "",
             "shortDescription": "",

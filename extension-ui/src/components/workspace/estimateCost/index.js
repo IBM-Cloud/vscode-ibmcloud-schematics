@@ -1,5 +1,11 @@
 import { Row, Column } from 'carbon-components-react';
-
+import {
+  StructuredListWrapper,
+  StructuredListHead,
+  StructuredListBody,
+  StructuredListRow,
+  StructuredListCell,
+} from 'carbon-components-react';
 const mockData = require('./mock.json');
 
 const EstimateCost = ({ result }) => {
@@ -12,56 +18,38 @@ const EstimateCost = ({ result }) => {
         <div className="bx--cost_detail">
         <h2>Cost</h2>
         <div>
-            <Row>
-                <Column lg={2}>
-                    <span className="bx--col_title">RESOURCE</span>
-                </Column>
-                <Column lg={2}>
-                    <span className="bx--col_title">LOCAL NAME</span>
-                </Column>
-                <Column lg={2}>
-                    <span className="bx--col_title">TITLE</span>
-                </Column>
-                <Column lg={2}>
-                    <span className="bx--col_title">CURRENT COST</span>
-                </Column>
-                <Column lg={2}>
-                    <span className="bx--col_title">PREVIOUS COST</span>
-                </Column> 
-                <Column lg={2}>
-                    <span className="bx--col_title">CHANGED COST</span>
-                </Column>
-            </Row>
-            {result?.Lineitem.map((item) => (
-                <Row>
-                <Column lg={2}>
-                    <span className="bx--col_info">{item.terraformItemId}</span>
-                </Column>
-                <Column lg={2}>
-                    <span className="bx--col_info">{item.title}</span>
-                </Column>
-                <Column lg={2}>
-                    <span className="bx--col_info">{item.title}</span>
-                </Column>
-                <Column lg={2}>
-                    <span className="bx--col_info">{item.currlineitemtotal}</span>
-                </Column>
-                <Column lg={2}>
-                    <span className="bx--col_info">{item.prevlineitemtotal}</span>
-                </Column> 
-                <Column lg={2}>
-                    <span className="bx--col_info">{item.changelineitemtotal}</span>
-                </Column>
-            </Row>
+        <StructuredListWrapper>
+            <StructuredListHead>
+                <StructuredListRow head>
+                    <StructuredListCell head>RESOURCE</StructuredListCell>
+                    <StructuredListCell head>LOCAL NAME</StructuredListCell>
+                    <StructuredListCell head>TITLE</StructuredListCell>
+                    <StructuredListCell head>CURRENT COST</StructuredListCell>
+                    <StructuredListCell head>PREVIOUS COST</StructuredListCell>
+                    <StructuredListCell head>CHANGED COST</StructuredListCell>
+                </StructuredListRow>
+            </StructuredListHead>
+          
+          <StructuredListBody>
+            {result?.Lineitem.map((item, index) => (
+               <StructuredListRow key={index}>
+                  <StructuredListCell>{item.terraformItemId}</StructuredListCell>
+                  <StructuredListCell>{item.id}</StructuredListCell>
+                  <StructuredListCell>{item.title}</StructuredListCell>
+                  <StructuredListCell>{item.currlineitemtotal} {result?.currency}</StructuredListCell>
+                  <StructuredListCell>{item.prevlineitemtotal} {result?.currency}</StructuredListCell>
+                  <StructuredListCell>{item.changelineitemtotal} {result?.currency}</StructuredListCell>
+               </StructuredListRow>
             ))}
-            <Row>
-            <Column lg={10}>
-                    <span className="bx--col_info">TOTAL COST</span>
-            </Column>
-            <Column lg={2}>
-                <span className="bx--col_info">{totalCost}</span>
-            </Column>
-            </Row>
+             <StructuredListRow key={result?.Lineitem.length+1}></StructuredListRow>
+             <StructuredListCell> TOTAL COST</StructuredListCell>
+             <StructuredListCell></StructuredListCell>
+             <StructuredListCell></StructuredListCell>
+             <StructuredListCell></StructuredListCell>
+             <StructuredListCell></StructuredListCell>
+             <StructuredListCell>{totalCost} {result?.currency}</StructuredListCell>
+          </StructuredListBody>     
+      </StructuredListWrapper>
             </div>
             </div>
     );
