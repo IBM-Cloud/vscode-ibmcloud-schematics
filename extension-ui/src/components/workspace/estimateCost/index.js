@@ -1,4 +1,3 @@
-
 import { Row, Column } from 'carbon-components-react';
 
 const mockData = require('./mock.json');

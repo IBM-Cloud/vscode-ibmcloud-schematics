@@ -23,8 +23,7 @@ import EstimateCostView from '../../webview/workspace/EstimateCostView';
 export async function cost(context: vscode.ExtensionContext): Promise<void> {
     try {
         await estimateCost().then(async (r)=>{
-            console.log("Total Cost=>>>", r.totalcost );
-            await new EstimateCostView(context).openView(true);
+            await new EstimateCostView(context).openView(false);
         });
         
     }
