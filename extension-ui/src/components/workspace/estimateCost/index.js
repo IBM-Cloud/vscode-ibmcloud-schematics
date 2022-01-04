@@ -4,7 +4,9 @@ import {
   StructuredListBody,
   StructuredListRow,
   StructuredListCell,
+  Tooltip,
 } from 'carbon-components-react';
+
 const mockData = require('./mock.json');
 
 const EstimateCost = ({ result }) => {
@@ -12,17 +14,17 @@ const EstimateCost = ({ result }) => {
 
     return (
         <div className="bx--cost_detail">
-            <h2>Cost</h2>
+            <h2>Cost Estimate</h2>
             <div>
                 <StructuredListWrapper>
                     <StructuredListHead>
                         <StructuredListRow head>
-                            <StructuredListCell head>RESOURCE</StructuredListCell>
-                            <StructuredListCell head>LOCAL NAME</StructuredListCell>
-                            <StructuredListCell head>TITLE</StructuredListCell>
-                            <StructuredListCell head>CURRENT COST</StructuredListCell>
-                            <StructuredListCell head>PREVIOUS COST</StructuredListCell>
-                            <StructuredListCell head>CHANGED COST</StructuredListCell>
+                            <StructuredListCell head>Resource</StructuredListCell>
+                            <StructuredListCell head>Local Name</StructuredListCell>
+                            <StructuredListCell head>Title</StructuredListCell>
+                            <StructuredListCell head>Current Cost</StructuredListCell>
+                            <StructuredListCell head>Previous Cost</StructuredListCell>
+                            <StructuredListCell head>Changed Cost</StructuredListCell>
                         </StructuredListRow>
                     </StructuredListHead>
                 
@@ -38,17 +40,18 @@ const EstimateCost = ({ result }) => {
                         </StructuredListRow>
                         ))}
                         <StructuredListRow key={result?.Lineitem.length+1}></StructuredListRow>
-                        <StructuredListCell> TOTAL COST</StructuredListCell>
+                        <StructuredListCell head> Total estimated cost </StructuredListCell>
                         <StructuredListCell></StructuredListCell>
                         <StructuredListCell></StructuredListCell>
                         <StructuredListCell></StructuredListCell>
                         <StructuredListCell></StructuredListCell>
-                        <StructuredListCell>{result?.totalcost.toFixed(2)} {result?.currency}</StructuredListCell>
+                        <StructuredListCell >{`${result?.totalcost.toFixed(2)} ${result?.currency}`} 
+                        </StructuredListCell>
                     </StructuredListBody>     
                 </StructuredListWrapper>
 
             </div>
-            <p style={{color:"#198038"}}>NOTE: cost displayed here are just an extimated cost not an actual cost.</p>
+           
         </div>
     );
 };
