@@ -79,10 +79,10 @@ export async function estimateCost(): Promise<any> {
         const key = rs.apiKey;
         var API_EXPORT_COMMAND: string;
         if (os.platform() === 'darwin' || os.platform() === 'linux'){
-            API_EXPORT_COMMAND = "export "+TERRAFORM_API_COMMAND +key+" && "+ TERRAFORM_COST_COMMAND;
+            API_EXPORT_COMMAND = `export ${TERRAFORM_API_COMMAND}${key} && ${TERRAFORM_COST_COMMAND}`;
         }
         else{
-            API_EXPORT_COMMAND = "set "+TERRAFORM_API_COMMAND + key + " & "+ TERRAFORM_COST_COMMAND;
+            API_EXPORT_COMMAND = `set "${TERRAFORM_API_COMMAND}${key}" & call ${TERRAFORM_COST_COMMAND}`;
         }
         await shell.execute(API_EXPORT_COMMAND);
     }).catch((error: Error) => {
