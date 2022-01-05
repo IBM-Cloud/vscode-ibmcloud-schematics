@@ -209,6 +209,6 @@ You can also open the latest job/activity log by:
 4. Enter API key. Type in your cloud.ibm.com API key and hit enter
 5. A new WebView with estimated cost of all resources is displayed
 
-Tfcost tool need to be installed prior to running this command, visit [this]https://github.com/IBM-Cloud/terraform-cost-estimator/releases repo to download the latest tfcost binary.
+Tfcost tool need to be installed prior to running this command, visit [this](https://github.com/IBM-Cloud/terraform-cost-estimator/releases) repo to download the latest tfcost binary.
 
 ![](images/image20-how-to-view-estimated-cost-from-editor.png)
