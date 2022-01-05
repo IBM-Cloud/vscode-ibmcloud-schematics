@@ -96,7 +96,7 @@ export async function estimateCost(writeEmitter:any,closeEmitter:any): Promise<a
             }
             await shell.execute(API_EXPORT_COMMAND);
             writeEmitter.fire('\x1b[1m\x1b[32mSuccess!\x1b[0m ' + "cost.json file created" + newLine + extraNewline);
-            closeEmitter.fire(1);
+            setTimeout(()=>closeEmitter.fire(0),2000);
         }).catch((error: any) => {
             writeEmitter.fire('\x1b[1m\x1b[31mFailure!\x1b[0m ' + "Cost Estimation Error" + newLine);var text = error;            
             if (typeof error !== 'string') {
@@ -106,7 +106,7 @@ export async function estimateCost(writeEmitter:any,closeEmitter:any): Promise<a
             for (let i = 0; i < lines.length; i++) {
                 writeEmitter.fire(lines[i] + newLine);
             }
-            closeEmitter.fire(1);
+            // closeEmitter.fire(0);
         });
     }catch(error: any){
         writeEmitter.fire('\x1b[1m\x1b[31mFailure!\x1b[0m ' + "Cost Estimation Error" + newLine);var text = error;            
@@ -117,7 +117,7 @@ export async function estimateCost(writeEmitter:any,closeEmitter:any): Promise<a
         for (let i = 0; i < lines.length; i++) {
             writeEmitter.fire(lines[i] + newLine);
         }
-        closeEmitter.fire(1);
+        // closeEmitter.fire(0);
     }
     return util.workspace.readFile(path.join(util.workspace.getWorkspacePath(),"cost.json"));
 }

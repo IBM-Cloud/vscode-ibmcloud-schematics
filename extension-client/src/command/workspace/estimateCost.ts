@@ -26,6 +26,7 @@ export async function cost(context: vscode.ExtensionContext): Promise<void> {
             const closeEmitter = new vscode.EventEmitter<number>();
             const pty = {
                 onDidWrite: writeEmitter.event,
+                onDidClose: closeEmitter.event,
                 open: async() => {
                     await estimateCost(writeEmitter,closeEmitter).then(async (r)=>{
                         await new EstimateCostView(context).openView(false);
@@ -33,9 +34,8 @@ export async function cost(context: vscode.ExtensionContext): Promise<void> {
                 },
                 close: () => {}
             };
-    await (<any>vscode.window).createTerminal({ pty }).show();
-       
-        
+            await (<any>vscode.window).createTerminal({ pty }).show();
+            
     }
     catch(error){
         console.log(error);
