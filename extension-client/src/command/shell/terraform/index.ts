@@ -21,6 +21,8 @@ import * as util from '../../../util';
 import { posix } from 'path';
 import * as vscode from 'vscode';
 import { path } from '../../../util/workspace';
+import { Terminal } from '../../../util/terminal';
+
 
 var os = require('os');
 
@@ -64,30 +66,58 @@ export async function hcltojsonFunc() {
 }
 
 
-export async function estimateCost(): Promise<any> {
+export async function estimateCost(writeEmitter:any,closeEmitter:any): Promise<any> {
     
+    const newLine = '\r\n';
+    const extraNewline = '\n';
+
     const TERRAFORM_PLAN_COMMAND = 'terraform plan --out tfplan.binary';
     const TERRAFORM_SHOW_COMMAND = 'terraform show -json tfplan.binary > tfplan.json';
     const TERRAFORM_API_COMMAND = 'IC_API_KEY=';
     const TERRAFORM_COST_COMMAND = 'tfcost plan tfplan.json --json';
-    
-    await util.workspace.createCredentialFile();
-    await shell.execute(TERRAFORM_INIT_COMMAND);
-    await shell.execute(TERRAFORM_PLAN_COMMAND);
-    await shell.execute(TERRAFORM_SHOW_COMMAND);
-    await util.workspace.readCredentials().then(async (rs: any)=>{
-        const key = rs.apiKey;
-        var API_EXPORT_COMMAND: string;
-        if (os.platform() === 'darwin' || os.platform() === 'linux'){
-            API_EXPORT_COMMAND = `export ${TERRAFORM_API_COMMAND}${key} && ${TERRAFORM_COST_COMMAND}`;
+    try{
+        await util.workspace.createCredentialFile();
+        writeEmitter.fire('\x1b[1m\x1b[33m' + "Running terraform init" + '\x1b[0m' + newLine);
+        await shell.execute(TERRAFORM_INIT_COMMAND);
+        writeEmitter.fire('\x1b[1m\x1b[32mSuccess!\x1b[0m ' + "terraform init" + newLine + extraNewline);
+        writeEmitter.fire('\x1b[1m\x1b[33m' + "Running terraform plan" + '\x1b[0m' + newLine);
+        await shell.execute(TERRAFORM_PLAN_COMMAND);
+        writeEmitter.fire('\x1b[1m\x1b[32mSuccess!\x1b[0m ' + "terraform plan" + newLine + extraNewline);
+        writeEmitter.fire('\x1b[1m\x1b[33m' + "Creating cost.json file" + '\x1b[0m' + newLine);
+        await shell.execute(TERRAFORM_SHOW_COMMAND);
+        await util.workspace.readCredentials().then(async (rs: any)=>{
+            const key = rs.apiKey;
+            var API_EXPORT_COMMAND: string;
+            if (os.platform() === 'darwin' || os.platform() === 'linux'){
+                API_EXPORT_COMMAND = `export ${TERRAFORM_API_COMMAND}${key} && ${TERRAFORM_COST_COMMAND}`;
+            }
+            else{
+                API_EXPORT_COMMAND = `set "${TERRAFORM_API_COMMAND}${key}" & call ${TERRAFORM_COST_COMMAND}`;
+            }
+            await shell.execute(API_EXPORT_COMMAND);
+            writeEmitter.fire('\x1b[1m\x1b[32mSuccess!\x1b[0m ' + "cost.json file created" + newLine + extraNewline);
+            closeEmitter.fire(1);
+        }).catch((error: any) => {
+            writeEmitter.fire('\x1b[1m\x1b[31mFailure!\x1b[0m ' + "Cost Estimation Error" + newLine);var text = error;            
+            if (typeof error !== 'string') {
+                text = error.toString();
+            }
+            var lines: string[] = text.split(/\r?\n/);
+            for (let i = 0; i < lines.length; i++) {
+                writeEmitter.fire(lines[i] + newLine);
+            }
+            closeEmitter.fire(1);
+        });
+    }catch(error: any){
+        writeEmitter.fire('\x1b[1m\x1b[31mFailure!\x1b[0m ' + "Cost Estimation Error" + newLine);var text = error;            
+        if (typeof error !== 'string') {
+            text = error.toString();
         }
-        else{
-            API_EXPORT_COMMAND = `set "${TERRAFORM_API_COMMAND}${key}" & call ${TERRAFORM_COST_COMMAND}`;
+        var lines: string[] = text.split(/\r?\n/);
+        for (let i = 0; i < lines.length; i++) {
+            writeEmitter.fire(lines[i] + newLine);
         }
-        await shell.execute(API_EXPORT_COMMAND);
-    }).catch((error: Error) => {
-        return error;
-    });
-
+        closeEmitter.fire(1);
+    }
     return util.workspace.readFile(path.join(util.workspace.getWorkspacePath(),"cost.json"));
 }

@@ -22,9 +22,19 @@ import EstimateCostView from '../../webview/workspace/EstimateCostView';
  
 export async function cost(context: vscode.ExtensionContext): Promise<void> {
     try {
-        await estimateCost().then(async (r)=>{
-            await new EstimateCostView(context).openView(false);
-        });
+            const writeEmitter = new vscode.EventEmitter<string>();
+            const closeEmitter = new vscode.EventEmitter<number>();
+            const pty = {
+                onDidWrite: writeEmitter.event,
+                open: async() => {
+                    await estimateCost(writeEmitter,closeEmitter).then(async (r)=>{
+                        await new EstimateCostView(context).openView(false);
+                    });
+                },
+                close: () => {}
+            };
+    await (<any>vscode.window).createTerminal({ pty }).show();
+       
         
     }
     catch(error){
