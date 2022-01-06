@@ -30,7 +30,7 @@ The below commands help you to interact with the deployed Schematics workspace. 
 | Apply plan                        | You can use this command to run your infrastructure code                                         |
 | Destroy resources                 | You can use this command to destroy resources                                                    |
 | Delete workspace                  | You can use this command to delete workspace                                                     |
-| Estimate Cost                     | You can use this command to get cost estimate of the resources from the terraform template     |
+| Estimate Cost                     | You can use this command to get cost estimate of the resources from the terraform(TFcost tool need to be install before using this command, refer to this [link](https://github.com/IBM-Cloud/terraform-cost-estimator) to know more)     |
 
 
 Know more about [vscode commands](https://code.visualstudio.com/docs/getstarted/userinterface#_command-palette)
