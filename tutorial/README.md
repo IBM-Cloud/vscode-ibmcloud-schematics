@@ -203,7 +203,7 @@ You can also open the latest job/activity log by:
 
 **How to perform cost estimation?**
 
-1. Download [tfcost Binary] (https://github.com/IBM-Cloud/terraform-cost-estimator/releases) & put the binary in your PATH
+1. Download [tfcost Binary](https://github.com/IBM-Cloud/terraform-cost-estimator/releases) & put the binary in your PATH
 2. Select View > Command Palette... from VS Code menu bar ( Keyboard Shortcut: ⇧⌘P )
 3. Select IBM Cloud Schematics workspace: Estimate Cost
 4. Select target API to deploy. Here select cloud.ibm.com from the picker
