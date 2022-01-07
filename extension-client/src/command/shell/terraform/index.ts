@@ -18,22 +18,14 @@
 import { openStdin } from 'process';
 import * as shell from '..';
 import * as util from '../../../util';
-import { posix } from 'path';
-import * as vscode from 'vscode';
 import { path } from '../../../util/workspace';
-import { Terminal } from '../../../util/terminal';
-
-
 var os = require('os');
 
 
 const TERRAFORM_INIT_COMMAND = 'terraform init';
 const TERRAFORM_VALIDATE_COMMAND = 'terraform validate';
 const TERRAFORM_VERSION_COMMAND = 'terraform -version';
-
-
 const FIND_AND_UPGRADE = '. -name "*.tf" -printf "%h\n" | uniq | sort -ur | xargs -n1 terraform 0.12upgrade -yes';
-
 const hcltojson = require('hcl-to-json');
 
 export function init(): Promise<string | Error> {
@@ -78,7 +70,7 @@ export async function estimateCost(writeEmitter:any,closeEmitter:any): Promise<a
     try{
         await util.workspace.createCredentialFile();
         writeEmitter.fire('\x1b[1m\x1b[33m' + "Running terraform init" + '\x1b[0m' + newLine);
-        await shell.execute(TERRAFORM_INIT_COMMAND);
+        await init();
         writeEmitter.fire('\x1b[1m\x1b[32mSuccess!\x1b[0m ' + "terraform init" + newLine + extraNewline);
         writeEmitter.fire('\x1b[1m\x1b[33m' + "Running terraform plan" + '\x1b[0m' + newLine);
         await shell.execute(TERRAFORM_PLAN_COMMAND);
