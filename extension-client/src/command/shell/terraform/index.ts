@@ -71,14 +71,14 @@ export async function estimateCost(writeEmitter:any,closeEmitter:any): Promise<a
     const newLine = '\r\n';
     const extraNewline = '\n';
 
-    const TERRAFORM_PLAN_COMMAND = 'terraform plan --out tfplan.binary';
-    const TERRAFORM_SHOW_COMMAND = 'terraform show -json tfplan.binary > tfplan.json';
+    const TERRAFORM_PLAN_COMMAND = 'terraform plan --out .vscode-ibmcloud-schematics/tfplan.binary';
+    const TERRAFORM_SHOW_COMMAND = 'terraform show -json .vscode-ibmcloud-schematics/tfplan.binary > .vscode-ibmcloud-schematics/tfplan.json';
     const TERRAFORM_API_COMMAND = 'IC_API_KEY=';
-    const TERRAFORM_COST_COMMAND = 'tfcost plan tfplan.json --json';
+    const TERRAFORM_COST_COMMAND = 'tfcost plan .vscode-ibmcloud-schematics/tfplan.json --json';
     try{
         await util.workspace.createCredentialFile();
         writeEmitter.fire('\x1b[1m\x1b[33m' + "Running terraform init" + '\x1b[0m' + newLine);
-        await shell.execute(TERRAFORM_INIT_COMMAND);
+        await init();
         writeEmitter.fire('\x1b[1m\x1b[32mSuccess!\x1b[0m ' + "terraform init" + newLine + extraNewline);
         writeEmitter.fire('\x1b[1m\x1b[33m' + "Running terraform plan" + '\x1b[0m' + newLine);
         await shell.execute(TERRAFORM_PLAN_COMMAND);
@@ -106,7 +106,6 @@ export async function estimateCost(writeEmitter:any,closeEmitter:any): Promise<a
             for (let i = 0; i < lines.length; i++) {
                 writeEmitter.fire(lines[i] + newLine);
             }
-            // closeEmitter.fire(0);
         });
     }catch(error: any){
         writeEmitter.fire('\x1b[1m\x1b[31mFailure!\x1b[0m ' + "Cost Estimation Error" + newLine);var text = error;            
@@ -117,7 +116,6 @@ export async function estimateCost(writeEmitter:any,closeEmitter:any): Promise<a
         for (let i = 0; i < lines.length; i++) {
             writeEmitter.fire(lines[i] + newLine);
         }
-        // closeEmitter.fire(0);
     }
     return util.workspace.readFile(path.join(util.workspace.getWorkspacePath(),"cost.json"));
 }
