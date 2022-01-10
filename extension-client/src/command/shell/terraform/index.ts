@@ -15,10 +15,11 @@
  * limitations under the License.
  */
 
-import { openStdin } from 'process';
+import * as vscode from 'vscode';
 import * as shell from '..';
 import * as util from '../../../util';
 import { path } from '../../../util/workspace';
+import { cost } from '../../workspace/estimateCost';
 var os = require('os');
 
 
@@ -62,11 +63,12 @@ export async function estimateCost(writeEmitter:any,closeEmitter:any): Promise<a
     
     const newLine = '\r\n';
     const extraNewline = '\n';
+    const folderName = util.workspace.getWorkspaceName();
 
-    const TERRAFORM_PLAN_COMMAND = 'terraform plan --out .vscode-ibmcloud-schematics/tfplan.binary';
-    const TERRAFORM_SHOW_COMMAND = 'terraform show -json .vscode-ibmcloud-schematics/tfplan.binary > .vscode-ibmcloud-schematics/tfplan.json';
+    const TERRAFORM_PLAN_COMMAND = `terraform plan --out .vscode-ibmcloud-schematics/${folderName}.binary`;
+    const TERRAFORM_SHOW_COMMAND = `terraform show -json .vscode-ibmcloud-schematics/${folderName}.binary > .vscode-ibmcloud-schematics/${folderName}.json`;
     const TERRAFORM_API_COMMAND = 'IC_API_KEY=';
-    const TERRAFORM_COST_COMMAND = 'tfcost plan .vscode-ibmcloud-schematics/tfplan.json --json';
+    const TERRAFORM_COST_COMMAND = `tfcost plan .vscode-ibmcloud-schematics/${folderName}.json --json`;
     try{
         await util.workspace.createCredentialFile();
         writeEmitter.fire('\x1b[1m\x1b[33m' + "Running terraform init" + '\x1b[0m' + newLine);
@@ -109,5 +111,6 @@ export async function estimateCost(writeEmitter:any,closeEmitter:any): Promise<a
             writeEmitter.fire(lines[i] + newLine);
         }
     }
+    
     return util.workspace.readFile(path.join(util.workspace.getWorkspacePath(),"cost.json"));
 }

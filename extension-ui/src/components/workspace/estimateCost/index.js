@@ -6,12 +6,12 @@ import {
   StructuredListCell,
   Tooltip,
 } from 'carbon-components-react';
-
 const mockData = require('./mock.json');
+
 
 const EstimateCost = ({ result }) => {
     result = result ? result : mockData;
-
+    
     return (
         <div className="bx--cost_detail">
             <h2>Cost Estimate</h2>
@@ -40,7 +40,16 @@ const EstimateCost = ({ result }) => {
                         </StructuredListRow>
                         ))}
                         <StructuredListRow key={result?.Lineitem.length+1}></StructuredListRow>
-                        <StructuredListCell head> Total estimated cost </StructuredListCell>
+                        <StructuredListCell head>  
+                            <Tooltip
+                                direction="bottom"
+                                triggerText="Total estimated cost"
+                            >
+                                <p style={{margin:'0',width:'300px',mixBlendMode: 'difference'}}>
+                                    The cost displayed here are just an estimated cost not an actual cost.
+                                </p>
+                            </Tooltip>
+                        </StructuredListCell>
                         <StructuredListCell></StructuredListCell>
                         <StructuredListCell></StructuredListCell>
                         <StructuredListCell></StructuredListCell>
