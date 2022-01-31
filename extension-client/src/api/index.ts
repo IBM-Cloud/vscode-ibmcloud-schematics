@@ -20,9 +20,6 @@ const schematicsV1 = require('@ibm-cloud/ibm-schematics/dist/schematics/v1');
 import * as auth from '../auth/auth';
 import * as type from '../type/index';
 import * as util from '../util';
-import * as shell from '../command/shell';
-import { posix } from 'path';
- import * as vscode from 'vscode';
 
 var os = require('os');
 
@@ -249,7 +246,6 @@ export async function pullLatest(data: any) {
 export async function versions() {
     
     const schematicsService = await auth.getSchematicsService();
-    
     return new Promise((resolve, reject) => {
         schematicsService
             .getSchematicsVersion()

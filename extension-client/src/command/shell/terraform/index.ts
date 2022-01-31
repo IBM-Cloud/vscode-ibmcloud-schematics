@@ -15,13 +15,10 @@
  * limitations under the License.
  */
 
-import * as vscode from 'vscode';
 import * as shell from '..';
 import * as util from '../../../util';
 import { path } from '../../../util/workspace';
-import { cost } from '../../workspace/estimateCost';
 var os = require('os');
-
 
 const TERRAFORM_INIT_COMMAND = 'terraform init';
 const TERRAFORM_VALIDATE_COMMAND = 'terraform validate';

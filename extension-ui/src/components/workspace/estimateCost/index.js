@@ -3,15 +3,12 @@ import {
   StructuredListHead,
   StructuredListBody,
   StructuredListRow,
-  StructuredListCell,
-  Tooltip,
+  StructuredListCell
 } from 'carbon-components-react';
 const mockData = require('./mock.json');
 
-
 const EstimateCost = ({ result }) => {
     result = result ? result : mockData;
-    
     return (
         <div className="bx--cost_detail">
             <h2>Cost Estimate</h2>
@@ -34,22 +31,14 @@ const EstimateCost = ({ result }) => {
                             <StructuredListCell>{item.terraformItemId}</StructuredListCell>
                             <StructuredListCell>{item.id}</StructuredListCell>
                             <StructuredListCell>{item.title}</StructuredListCell>
-                            <StructuredListCell>{item.currlineitemtotal.toFixed(2)} {result?.currency}{item.rateCardCost?"*":""}</StructuredListCell>
-                            <StructuredListCell>{item.prevlineitemtotal.toFixed(2)} {result?.currency}{item.rateCardCost?"*":""}</StructuredListCell>
-                            <StructuredListCell>{item.changelineitemtotal.toFixed(2)} {result?.currency}{item.rateCardCost?"*":""}</StructuredListCell>
+                            <StructuredListCell>{item.currlineitemtotal.toFixed(2)} {result?.currency}{item.rateCardCost?" *":""}</StructuredListCell>
+                            <StructuredListCell>{item.prevlineitemtotal.toFixed(2)} {result?.currency}{item.rateCardCost?" *":""}</StructuredListCell>
+                            <StructuredListCell>{item.changelineitemtotal.toFixed(2)} {result?.currency}{item.rateCardCost?" *":""}</StructuredListCell>
                         </StructuredListRow>
                         ))}
                         <StructuredListRow key={result?.Lineitem.length+1}></StructuredListRow>
-                        <StructuredListCell head>  
-                            <Tooltip
-                                direction="bottom"
-                                triggerText="Total estimated cost"
-                            >
-                                <p style={{padding:'2px',fontSize:"15px" ,width:'170px',background: '#0f62fe'}}>
-                                    The cost displayed here are just an estimated cost not an actual cost.
-                                    * indicated cost has been derived from ratecard
-                                </p>
-                            </Tooltip>
+                        <StructuredListCell head>  Total estimated cost
+                        
                         </StructuredListCell>
                         <StructuredListCell></StructuredListCell>
                         <StructuredListCell></StructuredListCell>
@@ -57,8 +46,14 @@ const EstimateCost = ({ result }) => {
                         <StructuredListCell></StructuredListCell>
                         <StructuredListCell >{`${result?.totalcost.toFixed(2)} ${result?.currency}`} 
                         </StructuredListCell>
-                    </StructuredListBody>     
+                    </StructuredListBody>
+                    
                 </StructuredListWrapper>
+                <p>
+                    The cost displayed here are just an estimated cost not an actual cost. <br/>
+                    * indicated cost has been derived from ratecard
+                </p>
+                
 
             </div>
            

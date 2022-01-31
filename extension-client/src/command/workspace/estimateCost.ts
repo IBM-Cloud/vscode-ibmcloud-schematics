@@ -15,11 +15,10 @@
  * limitations under the License.
  */
 
- import * as vscode from 'vscode';
+import * as vscode from 'vscode';
 import { estimateCost } from '../../command/shell/terraform/index';
 import EstimateCostView from '../../webview/workspace/EstimateCostView';
 
- 
 export async function cost(context: vscode.ExtensionContext): Promise<void> {
     try {
             const writeEmitter = new vscode.EventEmitter<string>();
@@ -35,8 +34,7 @@ export async function cost(context: vscode.ExtensionContext): Promise<void> {
                 close: () => {}
             };
             await (<any>vscode.window).createTerminal({ pty }).show();
-            
-    }
+        }
     catch(error){
         console.log(error);
         vscode.window.showErrorMessage(String(error));

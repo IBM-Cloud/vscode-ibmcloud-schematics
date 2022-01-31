@@ -15,9 +15,9 @@
  * limitations under the License.
  */
 
- import * as vscode from 'vscode';
- import { ReactView } from '../ReactView';
- import * as util from '../../util';
+import * as vscode from 'vscode';
+import { ReactView } from '../ReactView';
+import * as util from '../../util';
 import { path } from '../../util/workspace';
  
  export default class EstimateCostView extends ReactView {
