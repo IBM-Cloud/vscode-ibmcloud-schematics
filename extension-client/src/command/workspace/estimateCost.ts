@@ -16,24 +16,30 @@
  */
 
 import * as vscode from 'vscode';
-import { estimateCost } from '../../command/shell/terraform/index';
 import EstimateCostView from '../../webview/workspace/EstimateCostView';
+import { Terminal } from '../../util/terminal';
+import * as shell from '../shell';
+import  * as terraform from '../shell/terraform/index';
+import * as util from '../../util';
+import { path } from '../../util/workspace';
+var os = require('os');
+
 
 export async function cost(context: vscode.ExtensionContext): Promise<void> {
     try {
-            const writeEmitter = new vscode.EventEmitter<string>();
-            const closeEmitter = new vscode.EventEmitter<number>();
-            const pty = {
-                onDidWrite: writeEmitter.event,
-                onDidClose: closeEmitter.event,
-                open: async() => {
-                    await estimateCost(writeEmitter,closeEmitter).then(async (r)=>{
-                        await new EstimateCostView(context).openView(false);
-                    });
-                },
-                close: () => {}
-            };
-            await (<any>vscode.window).createTerminal({ pty }).show();
+        const writeEmitter = new vscode.EventEmitter<string>();
+        const closeEmitter = new vscode.EventEmitter<number>();
+        const pty = {
+            onDidWrite: writeEmitter.event,
+            onDidClose: closeEmitter.event,
+            open: async() => {
+                await estimateCost(writeEmitter, closeEmitter).then(async (r)=>{
+                    await new EstimateCostView(context).openView(false);
+                });
+            },
+            close: () => {}
+        };
+        await (<any>vscode.window).createTerminal({ pty }).show();
         }
     catch(error){
         console.log(error);
@@ -42,3 +48,44 @@ export async function cost(context: vscode.ExtensionContext): Promise<void> {
        
     
 }
+
+async function estimateCost(writeEmitter:any,closeEmitter:any): Promise<any> { 
+
+ var terminal = new Terminal(writeEmitter, closeEmitter);
+ const API_KEY = 'IC_API_KEY=';
+ try{
+     await util.workspace.createCredentialFile();
+     terminal.printHeading("Running terraform init");
+     await terraform.init();
+     terminal.printSuccess( "terraform init" );
+
+     terminal.printHeading( "Running terraform plan" );
+     await terraform.createPlan();
+     terminal.printSuccess("terraform plan" );
+
+     terminal.printHeading("Creating cost.json file");
+     await terraform.convertPlanToJSON();
+     await util.workspace.readCredentials().then(async (rs: any)=>{
+         const key = rs.apiKey;
+         shell.exportVariables(API_KEY, key);
+         await terraform.calculateTFCost();
+         terminal.printSuccess("cost.json file created");
+         terminal.fireClose(1);
+     });
+     
+ }catch(error: any){
+     terminal.printFailure( "Cost Estimation Error");
+     var text = error;            
+     if (typeof error !== 'string') {
+         text = error.toString();
+     }
+     var lines: string[] = text.split(/\r?\n/);
+     for (let i = 0; i < lines.length; i++) {
+         terminal.printText(lines[i]);
+     }
+ }
+ 
+ return util.workspace.readFile(path.join(util.workspace.getWorkspacePath(),"cost.json"));
+}
+
+

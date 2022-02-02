@@ -21,8 +21,6 @@ import * as auth from '../auth/auth';
 import * as type from '../type/index';
 import * as util from '../util';
 
-var os = require('os');
-
 let intervalId: any;
 
 export async function createWorkspace(payload: any) {
@@ -244,7 +242,6 @@ export async function pullLatest(data: any) {
 }
 
 export async function versions() {
-    
     const schematicsService = await auth.getSchematicsService();
     return new Promise((resolve, reject) => {
         schematicsService

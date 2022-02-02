@@ -19,6 +19,8 @@ import * as shell from '..';
 import * as util from '../../../util';
 import { path } from '../../../util/workspace';
 var os = require('os');
+import { Terminal } from '../../../util/terminal';
+
 
 const TERRAFORM_INIT_COMMAND = 'terraform init';
 const TERRAFORM_VALIDATE_COMMAND = 'terraform validate';
@@ -36,6 +38,21 @@ export function validate(): Promise<string | Error> {
 export function checkVersion(): Promise<string | Error> {
     return shell.execute(TERRAFORM_VERSION_COMMAND);
 }
+
+export function createPlan(): Promise<string | Error> {
+    return shell.execute(`terraform plan --out .vscode-ibmcloud-schematics/${util.workspace.getWorkspaceName()}.binary`);
+}
+
+export function calculateTFCost(): Promise<string | Error> {
+    return shell.execute(`tfcost plan .vscode-ibmcloud-schematics/${util.workspace.getWorkspaceName()}.json --json`);
+}
+
+export function convertPlanToJSON(): Promise<string | Error> {
+    const folderName = util.workspace.getWorkspaceName();
+    return shell.execute(`terraform show -json .vscode-ibmcloud-schematics/${folderName}.binary > .vscode-ibmcloud-schematics/${folderName}.json`);
+}
+
+
 
 export async function upgrade(): Promise<string | Error> {
     var EXEC_COMMAND_TF_MAC;
@@ -56,58 +73,3 @@ export async function hcltojsonFunc() {
 }
 
 
-export async function estimateCost(writeEmitter:any,closeEmitter:any): Promise<any> {
-    
-    const newLine = '\r\n';
-    const extraNewline = '\n';
-    const folderName = util.workspace.getWorkspaceName();
-
-    const TERRAFORM_PLAN_COMMAND = `terraform plan --out .vscode-ibmcloud-schematics/${folderName}.binary`;
-    const TERRAFORM_SHOW_COMMAND = `terraform show -json .vscode-ibmcloud-schematics/${folderName}.binary > .vscode-ibmcloud-schematics/${folderName}.json`;
-    const TERRAFORM_API_COMMAND = 'IC_API_KEY=';
-    const TERRAFORM_COST_COMMAND = `tfcost plan .vscode-ibmcloud-schematics/${folderName}.json --json`;
-    try{
-        await util.workspace.createCredentialFile();
-        writeEmitter.fire('\x1b[1m\x1b[33m' + "Running terraform init" + '\x1b[0m' + newLine);
-        await init();
-        writeEmitter.fire('\x1b[1m\x1b[32mSuccess!\x1b[0m ' + "terraform init" + newLine + extraNewline);
-        writeEmitter.fire('\x1b[1m\x1b[33m' + "Running terraform plan" + '\x1b[0m' + newLine);
-        await shell.execute(TERRAFORM_PLAN_COMMAND);
-        writeEmitter.fire('\x1b[1m\x1b[32mSuccess!\x1b[0m ' + "terraform plan" + newLine + extraNewline);
-        writeEmitter.fire('\x1b[1m\x1b[33m' + "Creating cost.json file" + '\x1b[0m' + newLine);
-        await shell.execute(TERRAFORM_SHOW_COMMAND);
-        await util.workspace.readCredentials().then(async (rs: any)=>{
-            const key = rs.apiKey;
-            var API_EXPORT_COMMAND: string;
-            if (os.platform() === 'darwin' || os.platform() === 'linux'){
-                API_EXPORT_COMMAND = `export ${TERRAFORM_API_COMMAND}${key} && ${TERRAFORM_COST_COMMAND}`;
-            }
-            else{
-                API_EXPORT_COMMAND = `set "${TERRAFORM_API_COMMAND}${key}" & call ${TERRAFORM_COST_COMMAND}`;
-            }
-            await shell.execute(API_EXPORT_COMMAND);
-            writeEmitter.fire('\x1b[1m\x1b[32mSuccess!\x1b[0m ' + "cost.json file created" + newLine + extraNewline);
-            setTimeout(()=>closeEmitter.fire(0),2000);
-        }).catch((error: any) => {
-            writeEmitter.fire('\x1b[1m\x1b[31mFailure!\x1b[0m ' + "Cost Estimation Error" + newLine);var text = error;            
-            if (typeof error !== 'string') {
-                text = error.toString();
-            }
-            var lines: string[] = text.split(/\r?\n/);
-            for (let i = 0; i < lines.length; i++) {
-                writeEmitter.fire(lines[i] + newLine);
-            }
-        });
-    }catch(error: any){
-        writeEmitter.fire('\x1b[1m\x1b[31mFailure!\x1b[0m ' + "Cost Estimation Error" + newLine);var text = error;            
-        if (typeof error !== 'string') {
-            text = error.toString();
-        }
-        var lines: string[] = text.split(/\r?\n/);
-        for (let i = 0; i < lines.length; i++) {
-            writeEmitter.fire(lines[i] + newLine);
-        }
-    }
-    
-    return util.workspace.readFile(path.join(util.workspace.getWorkspacePath(),"cost.json"));
-}
