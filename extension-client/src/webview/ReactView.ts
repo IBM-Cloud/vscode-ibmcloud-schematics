@@ -35,7 +35,6 @@ export abstract class ReactView extends View {
     }
 
     async getHTMLString(webview: vscode.Webview): Promise<string> {
-        
         const manifestPath = path.join(
             this._extensionPath,
             'dist',

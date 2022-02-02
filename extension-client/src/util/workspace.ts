@@ -286,10 +286,10 @@ export function verifyCredentials() {
         const credPath = getCredentialsPath();
         readFile(credPath)
             .then((data: any) => {
-                if (!data.serviceURL) {
+                if (!!data.serviceURL) {
                     reject(false);
                 }
-                if (!data.apiKey) {
+                if (!!data.apiKey) {
                     reject(false);
                 }
                 resolve(true);
