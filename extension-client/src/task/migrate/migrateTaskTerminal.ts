@@ -1,3 +1,4 @@
+/* eslint-disable eqeqeq */
 /**
  * IBM Cloud Schematics
  * (C) Copyright IBM Corp. 2021 All Rights Reserved.
@@ -26,6 +27,8 @@ import { isCloned, isDirectoryEmpty } from '../../util/workspace';
 import { delay } from '../../util/userInput';
 var fs = require('fs');
 
+const tfVersion12 = "0.12";
+const tfVersion13 = "0.13";
 
 export default class MigrateTaskTerminal implements vscode.Pseudoterminal {
     
@@ -42,27 +45,26 @@ export default class MigrateTaskTerminal implements vscode.Pseudoterminal {
 
     close(): void {}
 
-    private async migrationStep(terminal:any,ws:any, deploy:any){
+    private async migrationStep(terminal:any,ws:any, deploy:any, version : string){
         terminal.printHeading('IBM Cloud Schematics - Migrating Terraform v.0.11 to v.0.12');
-        var terraformVersionCheck=new String()
+        var terraformVersionCheck=new String();
         terminal.printHeading('Migration started');
         terminal.printHeading('Checking terraform version in local machine.');
         terraformVersionCheck = String(await command.terraform.checkVersion());
-        var tfMatchVersion= "0.12"
-        var tfTargetVersion={"version":"terraform_v0.12"}
-        if((terraformVersionCheck).indexOf(tfMatchVersion)!== -1){
-            terminal.printSuccess('Verified Terraform v0.12.x');
+        var tfTargetVersion={"version":"terraform_v%s"+version};
+
+        if((terraformVersionCheck).indexOf(version)!== -1){
+            terminal.printSuccess(`Verified Terraform v${version}.x`);
 
 
             if (deploy == false){
                 terminal.printHeading('Upgrading locally..');
                 await command.terraform.init();
-                await command.terraform.upgrade();
+                await command.terraform.upgradeTerraformVersion(version);
                 terminal.printSuccess('Terraform version upgraded locally');
                 terminal.fireClose(1);
+                return;
             }
-            else
-            {
                 try{
                     if(!util.workspace.hasCredentialsFile()){
                         await util.workspace.createCredentialFile();
@@ -70,22 +72,27 @@ export default class MigrateTaskTerminal implements vscode.Pseudoterminal {
                     const creds: type.Account = await util.workspace.readCredentials();
                     terminal.printHeading('Searching for workspace...');
                     var workspaceData: any=await api.getWorkspace(ws, creds);
-                    console.log(workspaceData)
+                    console.log(workspaceData);
                     if(!workspaceData.hasOwnProperty("id")){
                         terminal.printHeading('Workspace id is not matching');
-                        terminal.printError("Workspace ID provided is not found. Please check.")
+                        terminal.printError("Workspace ID provided is not found. Please check.");
                         terminal.fireClose(1);
                     }
-                    else if(workspaceData.type  [0] == "terraform_v0.12"){
+                    else if( version == tfVersion12 && workspaceData.type  [0] == "terraform_v0.12"){
                         terminal.printHeading('Workspace is already on v12. No migration required');
-                        terminal.printError("Workspace is already on v12. Please select the workspace deployed with v11")
+                        terminal.printError("Workspace is already on v12. Please select the workspace deployed with v11");
                         terminal.fireClose(1);
                     }
+                    else if( version == tfVersion13 && workspaceData.type  [0] == "terraform_v0.13"){
+                        terminal.printHeading('Workspace is already on v13. No migration required');
+                        terminal.printError("Workspace is already on v13. Please select the workspace deployed with v12");
+                        terminal.fireClose(1);
+                    }
+
                     else
                     {
                         
                         var templateId = workspaceData.template_data[0].id;
-                        var workspaceVariableStore=workspaceData.template_data[0].variablestore
                         const payload = {
                             wId: ws,
                             tId: templateId,
@@ -96,7 +103,7 @@ export default class MigrateTaskTerminal implements vscode.Pseudoterminal {
                         const workspacePath=util.workspace.getWorkspacePath();
                         if(storeFile != 1)
                         {
-                            storeFile=JSON.stringify(storeFile)
+                            storeFile=JSON.stringify(storeFile);
                             util.userInput.writeStateFile(storeFile,workspacePath);
                             terminal.printSuccess('Downloaded statefile');
                         }
@@ -105,14 +112,14 @@ export default class MigrateTaskTerminal implements vscode.Pseudoterminal {
                         }
                         try{
                             terminal.printHeading('Upgrading locally..');
-                            await command.terraform.init()
-                            terminal.printSuccess('Terraform initialized')
-                            await command.terraform.upgrade()
-                            terminal.printSuccess('Terraform version upgraded locally')
+                            await command.terraform.init();
+                            terminal.printSuccess('Terraform initialized');
+                            await command.terraform.upgradeTerraformVersion(version);
+                            terminal.printSuccess('Terraform version upgraded locally');
     
                             terminal.printHeading('Checking the configurations...');
-                            await command.terraform.validate()
-                            terminal.printSuccess('Configurations are valid')
+                            await command.terraform.validate();
+                            terminal.printSuccess('Configurations are valid');
                             
                             await util.workspace.createCredentialFile();
                             await util.workspace.saveTerraformVersion(tfTargetVersion);
@@ -122,7 +129,7 @@ export default class MigrateTaskTerminal implements vscode.Pseudoterminal {
                             terminal.printSuccess('TAR created');
             
                             terminal.printHeading('Deploy started');
-                            await command.workspace.createMigratedWorkspace(workspaceVariableStore);
+                            await command.workspace.createMigratedWorkspace(workspaceData);
                             terminal.printSuccess('Workspace created');
             
                             terminal.printHeading('TAR upload started');
@@ -160,9 +167,6 @@ export default class MigrateTaskTerminal implements vscode.Pseudoterminal {
                     terminal.fireClose(1);
                 }
                 
-            }
-
-
             
 
         }
@@ -177,14 +181,33 @@ export default class MigrateTaskTerminal implements vscode.Pseudoterminal {
                 terminal.printHeading('Migration status:');
                 terminal.printError('Migration cannot be started from an empty folder. Please clone the repository using "Clone" task and start "Migrate" task');
                 terminal.fireClose(1);
+                return;
             }
-            else if(util.workspace.isWorkspaceExist()){
-                var deploy = true
+            var upgradeToversion = "";
+            vscode.window
+            .showInformationMessage(
+              "Please answer 1 or 2",
+              ...["1:v11 to v12 ", "2: v12 to v13"]
+            )
+            .then((answer) => {
+                if (answer == "1"){
+                    upgradeToversion = tfVersion12;
+                }
+                if (answer == "2"){
+                    upgradeToversion = tfVersion13;
+                }
+                else{
+                    terminal.printError("Please input correct value [1/2]. Retry migration.");
+                    terminal.fireClose(1);
+                  }
+            });
+            if(util.workspace.isWorkspaceExist()){
+                var deploy = true;
                 var workspaceid:any = await util.workspace.readWorkspaceFile(util.workspace.getSchematicsWorkspacePath());
-                const ws=JSON.parse(workspaceid).id
-                this.migrationStep(terminal,ws,deploy)
+                const ws=JSON.parse(workspaceid).id;
+                this.migrationStep(terminal,ws,deploy, upgradeToversion);
+                return;
             }
-            else{
                 try{
                     var gitRepoCheck = String(await command.git.repoCheck());
                     const isValidRepoURL = await util.workspace.isGITRepo(gitRepoCheck);
@@ -202,34 +225,34 @@ export default class MigrateTaskTerminal implements vscode.Pseudoterminal {
                               ...["Yes", "No"]
                             )
                             .then((answer) => {
-                              if (answer === "Yes" || answer === "yes") {
-                                var deploy=false
-                                this.migrationStep(terminal,ws, deploy)
+                              if (answer?.toLocaleLowerCase() === "yes") { 
+                                var deploy=false;
+                                this.migrationStep(terminal,ws, deploy, upgradeToversion);
                               }
-                              else if(answer === "No" || answer === "no"){
+                              else if(answer?.toLocaleLowerCase() === "no"){
                                 terminal.printHeading('Migration status:');
-                                terminal.printError("Migration needs workspace ID to proceed. Please retry migration with the input of workspace ID.")
+                                terminal.printError("Migration needs workspace ID to proceed. Please retry migration with the input of workspace ID.");
                                 terminal.fireClose(1);    
                               }
                               else{
                                 terminal.printHeading('Migration status:');
-                                terminal.printError("Please input correct value [Yes/No]. Retry migration.")
+                                terminal.printError("Please input correct value [Yes/No]. Retry migration.");
                                 terminal.fireClose(1);
                               }
                             });
                         }
                         else{
-                            var deploy=true
-                            this.migrationStep(terminal,ws, deploy)
+                            var deploy=true;
+                            this.migrationStep(terminal,ws, deploy, upgradeToversion);
                         }
                     }
                 }
                 catch(giterror){
-                    terminal.printError("Migration requires you to first clone a git repository or existing workspace. Please use the 'Clone' task prior to 'Migrate'")
+                    terminal.printError("Migration requires you to first clone a git repository or existing workspace. Please use the 'Clone' task prior to 'Migrate'");
                     terminal.fireClose(1);
                 }
             }
-        }
+        
         catch(error){
             terminal.printFailure('Migration error');
             terminal.printError(error);
@@ -237,3 +260,4 @@ export default class MigrateTaskTerminal implements vscode.Pseudoterminal {
         }
     }
 }
+
