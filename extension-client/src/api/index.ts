@@ -28,7 +28,7 @@ export async function createWorkspace(payload: any) {
 
     return new Promise(function (resolve, reject) {
         schematicsService
-            .createWorkspace(payload) 
+            .createWorkspace(payload)
             .then((res: any) => {
                 resolve(res.result);
             })
