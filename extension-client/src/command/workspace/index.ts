@@ -61,7 +61,7 @@ export async function create(): Promise<void> {
     });
 }
 
-export async function createMigratedWorkspace(workspaceVariableStore: any): Promise<void> {
+export async function createMigratedWorkspace(workspaceData: any): Promise<void> {
     const isDeployed = util.workspace.isDeployed();
     if (isDeployed) {
         Promise.resolve('workspace already deployed');
@@ -76,8 +76,12 @@ export async function createMigratedWorkspace(workspaceVariableStore: any): Prom
             {
                 folder: '.',
                 type: type.version,
-                variablestore: workspaceVariableStore,
-            },
+                description: workspaceData.description,
+                tags: workspaceData.tags,
+                variablestore: workspaceData.template_data[0].variablestore,
+                // eslint-disable-next-line @typescript-eslint/naming-convention
+                env_values: workspaceData.template_data[0].env_values,
+                        },
         ],
     };
 

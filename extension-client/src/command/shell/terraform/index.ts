@@ -15,7 +15,6 @@
  * limitations under the License.
  */
 
-import { openStdin } from 'process';
 import * as shell from '..';
 import * as util from '../../../util';
 
@@ -25,8 +24,6 @@ var os = require('os');
 const TERRAFORM_INIT_COMMAND = 'terraform init';
 const TERRAFORM_VALIDATE_COMMAND = 'terraform validate';
 const TERRAFORM_VERSION_COMMAND = 'terraform -version';
-
-const FIND_AND_UPGRADE = '. -name "*.tf" -printf "%h\n" | uniq | sort -ur | xargs -n1 terraform 0.12upgrade -yes';
 
 const hcltojson = require('hcl-to-json');
 
@@ -41,13 +38,18 @@ export function checkVersion(): Promise<string | Error> {
     return shell.execute(TERRAFORM_VERSION_COMMAND);
 }
 
-export async function upgrade(): Promise<string | Error> {
+export async function upgradeTerraformVersion(version: string): Promise<string | Error> {
     var EXEC_COMMAND_TF_MAC;
-    if (os.platform() == 'darwin'){
-        EXEC_COMMAND_TF_MAC='gfind '+FIND_AND_UPGRADE
+    if(!["0.12","0.13"].find(v => (version === v))){
+        throw new Error("invalid version");
+    }
+    var FIND_AND_UPGRADE = `. -name "*.tf" -printf "%h\n" | uniq | sort -ur | xargs -n1 terraform ${version}upgrade -yes`;
+
+    if (os.platform() === 'darwin'){
+        EXEC_COMMAND_TF_MAC='gfind '+FIND_AND_UPGRADE;
     }
     else{
-        EXEC_COMMAND_TF_MAC='find '+FIND_AND_UPGRADE
+        EXEC_COMMAND_TF_MAC='find '+FIND_AND_UPGRADE;
     }
     return shell.execute(EXEC_COMMAND_TF_MAC);
 }
