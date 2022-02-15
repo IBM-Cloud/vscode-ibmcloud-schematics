@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 /**
  * IBM Cloud Schematics
  * (C) Copyright IBM Corp. 2021 All Rights Reserved.
@@ -67,21 +68,28 @@ export async function createMigratedWorkspace(workspaceData: any): Promise<void>
         Promise.resolve('workspace already deployed');
         return;
     }
-
+    const {template_data =[] ,description,template_repo={}  } = workspaceData;
+    const {repo_url, url} = template_repo;
+    const { env_values= "", variablestore = "" }  = template_data[0] || {};
+   
     const type: any = await util.workspace.readTerraformVersion();
     const payload = {
         name: util.workspace.getSuffixedWorkspaceName(),
         type: [type.version],
+        template_repo: {
+            url: url,
+            repo_url: repo_url
+        },
+        description: description,
+        tags: workspaceData.tags,
         templateData: [
             {
                 folder: '.',
                 type: type.version,
-                description: workspaceData.description,
-                tags: workspaceData.tags,
-                variablestore: workspaceData.template_data[0].variablestore,
-                // eslint-disable-next-line @typescript-eslint/naming-convention
-                env_values: workspaceData.template_data[0].env_values,
-                        },
+                env_values: env_values,
+                variablestore: variablestore,
+
+            },
         ],
     };
 

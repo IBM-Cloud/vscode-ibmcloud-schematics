@@ -1,3 +1,4 @@
+/* eslint-disable eqeqeq */
 /**
  * IBM Cloud Schematics
  * (C) Copyright IBM Corp. 2021 All Rights Reserved.
@@ -238,16 +239,16 @@ export default class MigrateTaskTerminal implements vscode.Pseudoterminal {
         var upgradeToversion = "";
         var versionInput = await vscode.window.showInputBox({
             ignoreFocusOut: true,
-            placeHolder: 'Please answer 1 or 2'
+            placeHolder: 'Please answer 12 or 13 ( 12 : migration from v11 to v12, 13: migration from v12 to v13'
         });
-        if (versionInput === "1") {
+        if (versionInput === "12") {
             upgradeToversion = tfVersion12;
         }
-        if (versionInput === "2") {
+        if (versionInput === "13") {
             upgradeToversion = tfVersion13;
         }
         else {
-            terminal.printError("Please input correct value [1/2]. Retry migration.");
+            terminal.printError("Please input correct value [12/13]. Retry migration.");
             terminal.fireClose(1);
         }
         return upgradeToversion;
