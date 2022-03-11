@@ -68,7 +68,7 @@ async function estimateCost(writeEmitter:any,closeEmitter:any): Promise<any> {
      await util.workspace.readCredentials().then(async (rs: any)=>{
          const key = rs.apiKey;
          shell.exportVariables(API_KEY, key);
-         await terraform.calculateTFCost();
+         await terraform.calculateTFCost(key);
          terminal.printSuccess("cost.json file created");
          terminal.fireClose(1);
      });
