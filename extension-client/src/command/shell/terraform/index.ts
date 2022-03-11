@@ -43,8 +43,17 @@ export function createPlan(): Promise<string | Error> {
     return shell.execute(`terraform plan --out .vscode-ibmcloud-schematics/${util.workspace.getWorkspaceName()}.binary`);
 }
 
-export function calculateTFCost(): Promise<string | Error> {
-    return shell.execute(`tfcost plan .vscode-ibmcloud-schematics/${util.workspace.getWorkspaceName()}.json --json`);
+export function calculateTFCost(key: string): Promise<string | Error> {
+    const apikey = 'IC_API_KEY=';
+    const TERRAFORM_COST_COMMAND = `tfcost plan .vscode-ibmcloud-schematics/${util.workspace.getWorkspaceName()}.json --json`;
+    var COST_COMMAND: string;
+    if (os.platform() === 'darwin' || os.platform() === 'linux'){
+        COST_COMMAND = `export ${apikey}${key} && ${TERRAFORM_COST_COMMAND}`;
+    }
+    else{
+        COST_COMMAND = `set "${apikey}${key}" & call ${TERRAFORM_COST_COMMAND}`;
+    }
+    return shell.execute(COST_COMMAND);
 }
 
 export function convertPlanToJSON(): Promise<string | Error> {
