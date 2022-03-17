@@ -656,3 +656,24 @@ export function readUIAssetManifest(path: string): any {
     });
 }
 
+export async function getResourceGroupInput(): Promise<string> {
+         // Get the Resource Group
+         const inputResourceGroup = await vscode.window.showInputBox({
+            ignoreFocusOut: true,
+            placeHolder: 'Type resource group name, press escape to use default resource group',
+            prompt: 'Resource group where you want to organize your workspace. ',
+        });
+        return new Promise(async (resolve, reject) => {
+                if (inputResourceGroup) {
+                    // user entered a string value
+                    resolve(inputResourceGroup);
+                } else if (inputResourceGroup === undefined){
+                    // user pressed ESC
+                    resolve('Default');
+                } else {
+                    // any other error
+                    reject('Resource Group rejected!');
+                }
+        });
+}
+

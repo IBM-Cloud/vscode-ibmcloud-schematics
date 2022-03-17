@@ -47,13 +47,15 @@ export default class DeployTaskTerminal implements vscode.Pseudoterminal {
             terminal.printSuccess('The configuration is valid');
 
             await util.workspace.createCredentialFile();
+            const inputResourceGrp: string = await util.workspace.getResourceGroupInput();
+            terminal.printHeading(inputResourceGrp);
             const tfversions: any = await api.versions();
             await util.workspace.detectTerraformVersion(tfversions);
             terminal.printHeading('Preparing deploy');
             await util.workspace.createTarFile();
             terminal.printSuccess('TAR created');
             terminal.printHeading('Deploy started');
-            await command.workspace.create();
+            await command.workspace.create(inputResourceGrp);
             terminal.printSuccess('Workspace created');
             terminal.printHeading('TAR upload started');
             await command.workspace.uploadTAR();
