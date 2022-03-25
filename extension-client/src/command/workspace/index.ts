@@ -69,8 +69,8 @@ export async function createMigratedWorkspace(workspaceData: any): Promise<void>
         return;
     }
     const {template_data =[] ,description,template_repo={}  } = workspaceData;
-    const {repo_url, url} = template_repo;
-    const { env_values= "", variablestore = "" }  = template_data[0] || {};
+    const {repo_url="", url} = template_repo;
+    const { env_values= [], variablestore = "" }  = template_data[0] || {};
    
     const type: any = await util.workspace.readTerraformVersion();
     const payload = {

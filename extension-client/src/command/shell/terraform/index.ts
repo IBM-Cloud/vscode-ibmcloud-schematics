@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-import * as shell from '..';
+import * as shell from '../index';
 import * as util from '../../../util';
 
 var os = require('os');
