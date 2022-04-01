@@ -70,8 +70,12 @@ export async function createMigratedWorkspace(workspaceData: any): Promise<void>
     }
     const {template_data =[] ,description,template_repo={}  } = workspaceData;
     const {repo_url="", url} = template_repo;
-    const { env_values= [], variablestore = "" }  = template_data[0] || {};
+    const { env_values= [], variablestore = [], values_metadata=[] }  = template_data[0] || {};
    
+    variablestore.forEach( function (val: any){
+        val.type = values_metadata.find((m : any) => m.name == val.name)?.type;
+    });
+
     const type: any = await util.workspace.readTerraformVersion();
     const payload = {
         name: util.workspace.getSuffixedWorkspaceName(),
@@ -88,7 +92,7 @@ export async function createMigratedWorkspace(workspaceData: any): Promise<void>
                 type: type.version,
                 env_values: env_values,
                 variablestore: variablestore,
-
+                values_metadata: values_metadata
             },
         ],
     };
