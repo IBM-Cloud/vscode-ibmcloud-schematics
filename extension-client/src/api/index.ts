@@ -243,7 +243,6 @@ export async function pullLatest(data: any) {
 
 export async function versions() {
     const schematicsService = await auth.getSchematicsService();
-
     return new Promise((resolve, reject) => {
         schematicsService
             .getSchematicsVersion()
@@ -340,3 +339,4 @@ export async function getStatefile(payload: any) {
             });
     });
 }
+

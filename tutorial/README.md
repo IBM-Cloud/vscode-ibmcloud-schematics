@@ -200,3 +200,22 @@ You can also open the latest job/activity log by:
 5. Click on Save variables button
 
 ![](images/image20-how-to-view-and-override-variables-from-editor.png)
+
+**How to perform cost estimation?**
+
+1. Download [tfcost Binary](https://github.com/IBM-Cloud/terraform-cost-estimator/releases) & put the binary in your PATH
+2. Launch Visual Studio Code
+3. Select Terminal > Run Task... , this will open VS Code Tasks dropdown
+4. In the VS Code Tasks search text box , search for “ibmcloud-schematics”
+5. Select ibmcloud-schematics-build > schematics:clone
+6. Select the folder where you want to clone https://github.com/Cloud-Schematics/vpc-cluster-edge-pool
+7. Enter https://github.com/Cloud-Schematics/vpc-cluster-edge-pool and hit enter
+8. A new VS Code window will open with the cloned https://github.com/Cloud-Schematics/vpc-cluster-edge-pool
+9. Add the required inputs in variable.tf file
+10. Select View > Command Palette... from VS Code menu bar ( Keyboard Shortcut: ⇧⌘P )
+11. Select IBM Cloud Schematics workspace: Estimate Cost
+12. Select target API to deploy. Here select cloud.ibm.com from the picker
+13. Enter API key. Type in your cloud.ibm.com API key and hit enter
+14. A new WebView with estimated cost of all resources is displayed
+
+![](images/image20-how-to-view-estimated-cost-from-editor.png)
