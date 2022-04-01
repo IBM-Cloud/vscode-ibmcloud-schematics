@@ -23,6 +23,7 @@
     "web-vitals": "^1.0.1"
   },
   "scripts": {
+    "clean": "npm cache clean --force && rm package-lock.json && rm -rf node_modules && npm i",
     "start": "react-scripts start",
     "build": "node ./scripts/build-non-split.js",
     "test": "react-scripts test",

@@ -1,6 +1,6 @@
 /**
  * IBM Cloud Schematics
- * (C) Copyright IBM Corp. 2021 All Rights Reserved.
+ * (C) Copyright IBM Corp. 2022 All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,7 +15,8 @@
  * limitations under the License.
  */
 
-import { Loading } from "carbon-components-react"
+import React from 'react';
+import { Loading } from 'carbon-components-react';
 
 export default function Loader() {
     return (
@@ -23,5 +24,5 @@ export default function Loader() {
             <Loading description="Loading view" withOverlay={false} />
             <div className="bx--vsce-loader-text">Loading...</div>
         </div>
-    )
+    );
 }

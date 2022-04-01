@@ -1,0 +1,67 @@
+{
+    "country": "USA",
+    "currency": "USD",
+    "totalcost": 275.99092957993815,
+    "Lineitem": [
+        {
+            "quantity": 1,
+            "terraformItemId": "ibm_container_cluster",
+            "id": "testacc_cluster",
+            "title": "IKS",
+            "planID": "",
+            "shortDescription": "",
+            "features": null,
+            "estimateType": "",
+            "lineitemtotal": 0,
+            "currlineitemtotal": 211.68,
+            "prevlineitemtotal": 0,
+            "changelineitemtotal": 211.68,
+            "depends": null
+        },
+        {
+            "quantity": 1,
+            "terraformItemId": "ibm_is_instance",
+            "id": "testacc_instance",
+            "title": "Virtual Server",
+            "planID": "",
+            "shortDescription": "",
+            "features": null,
+            "estimateType": "",
+            "lineitemtotal": 0,
+            "currlineitemtotal": 64.31092957993815,
+            "prevlineitemtotal": 0,
+            "changelineitemtotal": 64.31092957993815,
+            "depends": null
+        },
+        {
+            "quantity": 1,
+            "terraformItemId": "ibm_is_subnet",
+            "id": "testacc_subnet",
+            "title": "Subnet",
+            "planID": "",
+            "shortDescription": "",
+            "features": null,
+            "estimateType": "",
+            "lineitemtotal": 0,
+            "currlineitemtotal": 0,
+            "prevlineitemtotal": 0,
+            "changelineitemtotal": 0,
+            "depends": null
+        },
+        {
+            "quantity": 1,
+            "terraformItemId": "ibm_is_vpc",
+            "id": "testacc_vpc",
+            "title": "VPC",
+            "planID": "",
+            "shortDescription": "",
+            "features": null,
+            "estimateType": "",
+            "lineitemtotal": 0,
+            "currlineitemtotal": 0,
+            "prevlineitemtotal": 0,
+            "changelineitemtotal": 0,
+            "depends": null
+        }
+    ]
+}

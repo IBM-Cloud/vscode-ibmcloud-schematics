@@ -1,6 +1,6 @@
 /**
  * IBM Cloud Schematics
- * (C) Copyright IBM Corp. 2021 All Rights Reserved.
+ * (C) Copyright IBM Corp. 2022 All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -142,7 +142,7 @@ const Variables = ({ result }) => {
     const onSearchChange = (event) => {
         const query = event.target.value;
         if (!query) {
-            setIsSearch(false)
+            setIsSearch(false);
         } else {
             setIsSearch(true);
         }
@@ -197,72 +197,86 @@ const Variables = ({ result }) => {
                     </Column>
                 </Row>
                 {tableHeader}
-                {
-                    !isSearch && !variables.length && 
-                    <div className="bx--variables-table-row empty">There are no variables defined for the workspace</div>
-                }
-                {
-                    isSearch && !variables.length && 
-                    <div className="bx--variables-table-row empty">There are no variables for the search query</div>
-                }
-                {!!variables.length && variables.map((variable, index) => (
-                    <Row key={index} className="bx--variables-table-row">
-                        <Column  md={1} lg={2}>{variable.name}</Column>
-                        <Column  md={1} lg={2}>{variable.description}</Column>
-                        <Column  md={1} lg={1}>{variable.type}</Column>
-                        <Column  md={1} lg={1}>{variable.default}</Column>
-                        <Column  md={1} lg={1}>
-                            <Checkbox
-                                id={'default-checkbox-' + index}
-                                labelText="Use default value"
-                                hideLabel
-                                defaultChecked={variable.use_default}
-                                onChange={(evt) => {
-                                    onDefaultCheckboxChange(evt, index);
-                                }}
-                            />
-                        </Column>
-                        <Column  md={2} lg={4}>
-                            {variable.use_default ? (
-                                <span>Default value is used</span>
-                            ) : (
-                                <TextArea
-                                    rows={1}
-                                    labelText=""
-                                    placeholder={
-                                        variable.uiSecure ? 'Secure value' : ''
-                                    }
-                                    value={
-                                        variable.uiSecure
-                                            ? variable.changed &&
-                                              variable.use_default
-                                                ? variable.value
-                                                : ''
-                                            : variable.value
-                                    }
-                                    id={'textinput-' + index}
+                {!isSearch && !variables.length && (
+                    <div className="bx--variables-table-row empty">
+                        There are no variables defined for the workspace
+                    </div>
+                )}
+                {isSearch && !variables.length && (
+                    <div className="bx--variables-table-row empty">
+                        There are no variables for the search query
+                    </div>
+                )}
+                {!!variables.length &&
+                    variables.map((variable, index) => (
+                        <Row key={index} className="bx--variables-table-row">
+                            <Column md={1} lg={2}>
+                                {variable.name}
+                            </Column>
+                            <Column md={1} lg={2}>
+                                {variable.description}
+                            </Column>
+                            <Column md={1} lg={1}>
+                                {variable.type}
+                            </Column>
+                            <Column md={1} lg={1}>
+                                {variable.default}
+                            </Column>
+                            <Column md={1} lg={1}>
+                                <Checkbox
+                                    id={'default-checkbox-' + index}
+                                    labelText="Use default value"
+                                    hideLabel
+                                    defaultChecked={variable.use_default}
                                     onChange={(evt) => {
-                                        onTextAreaChange(evt, index);
+                                        onDefaultCheckboxChange(evt, index);
                                     }}
                                 />
-                            )}
-                        </Column>
-                        <Column  md={1} lg={1}>
-                            <Checkbox
-                                id={'checkbox-' + index}
-                                labelText="Secure"
-                                hideLabel
-                                defaultChecked={variable.secure}
-                                disabled={
-                                    variable.use_default || variable.uiSecure
-                                }
-                                onChange={(evt) => {
-                                    onSecureCheckboxChange(evt, index);
-                                }}
-                            />
-                        </Column>
-                    </Row>
-                ))}
+                            </Column>
+                            <Column md={2} lg={4}>
+                                {variable.use_default ? (
+                                    <span>Default value is used</span>
+                                ) : (
+                                    <TextArea
+                                        rows={1}
+                                        labelText=""
+                                        placeholder={
+                                            variable.uiSecure
+                                                ? 'Secure value'
+                                                : ''
+                                        }
+                                        value={
+                                            variable.uiSecure
+                                                ? variable.changed &&
+                                                  variable.use_default
+                                                    ? variable.value
+                                                    : ''
+                                                : variable.value
+                                        }
+                                        id={'textinput-' + index}
+                                        onChange={(evt) => {
+                                            onTextAreaChange(evt, index);
+                                        }}
+                                    />
+                                )}
+                            </Column>
+                            <Column md={1} lg={1}>
+                                <Checkbox
+                                    id={'checkbox-' + index}
+                                    labelText="Secure"
+                                    hideLabel
+                                    defaultChecked={variable.secure}
+                                    disabled={
+                                        variable.use_default ||
+                                        variable.uiSecure
+                                    }
+                                    onChange={(evt) => {
+                                        onSecureCheckboxChange(evt, index);
+                                    }}
+                                />
+                            </Column>
+                        </Row>
+                    ))}
             </div>
         </div>
     );
