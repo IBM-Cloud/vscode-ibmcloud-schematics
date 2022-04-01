@@ -1,6 +1,6 @@
 /**
  * IBM Cloud Schematics
- * (C) Copyright IBM Corp. 2021 All Rights Reserved.
+ * (C) Copyright IBM Corp. 2022 All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,7 +24,7 @@ import Log from './components/common/log/Log';
 import Resources from './components/workspace/resources';
 import Failure from './components/common/failure';
 import Variables from './components/workspace/variables';
-import EstimateCost from './components/workspace/estimateCost';
+import EstimateCost from './components/workspace/cost-estimation';
 
 import './style/app.scss';
 
@@ -70,7 +70,7 @@ function App() {
             />
             <Route
                 exact
-                path="/workspace/estimateCost"
+                path="/workspace/cost-estimation"
                 render={() => <EstimateCost result={result} />}
             />
             <Route

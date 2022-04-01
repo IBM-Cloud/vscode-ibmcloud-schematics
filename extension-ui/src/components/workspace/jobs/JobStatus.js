@@ -1,6 +1,6 @@
 /**
  * IBM Cloud Schematics
- * (C) Copyright IBM Corp. 2021 All Rights Reserved.
+ * (C) Copyright IBM Corp. 2022 All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -60,7 +60,28 @@ const JobStatus = ({ name, status, datetime }) => {
             statusIcon = <CheckmarkFilled16 className="bx--icon-success" />;
             break;
         case 'INPROGRESS':
-            statusIcon = <svg class="bx--loading__svg bx--spin" width="16" height="16" viewBox="0 0 100 100"><title>Active loading indicator</title><circle class="bx--loading__background" cx="50%" cy="50%" r="42"></circle><circle class="bx--loading__stroke" cx="50%" cy="50%" r="42"></circle></svg>;
+            statusIcon = (
+                <svg
+                    class="bx--loading__svg bx--spin"
+                    width="16"
+                    height="16"
+                    viewBox="0 0 100 100"
+                >
+                    <title>Active loading indicator</title>
+                    <circle
+                        class="bx--loading__background"
+                        cx="50%"
+                        cy="50%"
+                        r="42"
+                    ></circle>
+                    <circle
+                        class="bx--loading__stroke"
+                        cx="50%"
+                        cy="50%"
+                        r="42"
+                    ></circle>
+                </svg>
+            );
             break;
         case 'COMPLETED':
             statusIcon = <CheckmarkFilled16 className="bx--icon-success" />;
@@ -77,12 +98,10 @@ const JobStatus = ({ name, status, datetime }) => {
         <div className="bx--flex">
             <div className="bx--status-icon">{statusIcon}</div>
             <div>
-            <h5 className="bx--status-label">{statusLabels[label]}</h5>
-            <h6 className="bx--datetime">
-                <Moment format="YYYY/MM/DD, H:m">
-                {datetime}
-                </Moment>
-            </h6>
+                <h5 className="bx--status-label">{statusLabels[label]}</h5>
+                <h6 className="bx--datetime">
+                    <Moment format="YYYY/MM/DD, H:m">{datetime}</Moment>
+                </h6>
             </div>
         </div>
     );

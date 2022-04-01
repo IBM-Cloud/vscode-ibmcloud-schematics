@@ -1,6 +1,6 @@
 /**
  * IBM Cloud Schematics
- * (C) Copyright IBM Corp. 2021 All Rights Reserved.
+ * (C) Copyright IBM Corp. 2022 All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,7 +18,9 @@
 import { Row, Column } from 'carbon-components-react';
 
 const Summary = ({ count, text }) => {
-    if (!count) {count = 0; }
+    if (!count) {
+        count = 0;
+    }
 
     return (
         <>

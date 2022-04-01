@@ -1,6 +1,6 @@
 /**
  * IBM Cloud Schematics
- * (C) Copyright IBM Corp. 2021 All Rights Reserved.
+ * (C) Copyright IBM Corp. 2022 All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,14 +15,13 @@
  * limitations under the License.
  */
 
-import {
-    CodeSnippet,
-} from 'carbon-components-react';
+import React from 'react';
+import { CodeSnippet } from 'carbon-components-react';
 
-export default function Log({result}) {
+export default function Log({ result }) {
     return (
         <CodeSnippet type="multi" className="bx--log-snippet">
             {result}
         </CodeSnippet>
-    )
+    );
 }
