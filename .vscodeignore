@@ -3,7 +3,7 @@
 
 # Whitelist needed files
 !dist
-!media
+!assets
 !CHANGELOG.md
 !CONTRIBUTE.md
 !LICENCE
