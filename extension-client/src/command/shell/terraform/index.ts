@@ -40,12 +40,12 @@ export function checkVersion(): Promise<string | Error> {
 }
 
 export function createPlan(): Promise<string | Error> {
-    return shell.execute(`terraform plan --out .vscode-ibmcloud-schematics/${util.workspace.getWorkspaceName()}.binary`);
+    return shell.execute(`terraform plan --out ${util.workspace.getSecureDirectoryPath()}/plan.binary`);
 }
 
 export function calculateTFCost(key: string): Promise<string | Error> {
     const apikey = 'IC_API_KEY=';
-    const TERRAFORM_COST_COMMAND = `tfcost plan .vscode-ibmcloud-schematics/${util.workspace.getWorkspaceName()}.json --json`;
+    const TERRAFORM_COST_COMMAND = `tfcost plan ${util.workspace.getSecureDirectoryPath()}/plan.json --json`;
     var COST_COMMAND: string;
     if (os.platform() === 'darwin' || os.platform() === 'linux'){
         COST_COMMAND = `export ${apikey}${key} && ${TERRAFORM_COST_COMMAND}`;
@@ -57,8 +57,8 @@ export function calculateTFCost(key: string): Promise<string | Error> {
 }
 
 export function convertPlanToJSON(): Promise<string | Error> {
-    const folderName = util.workspace.getWorkspaceName();
-    return shell.execute(`terraform show -json .vscode-ibmcloud-schematics/${folderName}.binary > .vscode-ibmcloud-schematics/${folderName}.json`);
+    const secureDirectory = util.workspace.getSecureDirectoryPath();
+    return shell.execute(`terraform show -json ${secureDirectory}/plan.binary > ${secureDirectory}/plan.json`);
 }
 
 
