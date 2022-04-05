@@ -20,6 +20,7 @@ import EstimateCostView from '../../webview/workspace/EstimateCostView';
 import { Terminal } from '../../util/terminal';
 import * as shell from '../shell';
 import  * as terraform from '../shell/terraform/index';
+import  * as tfcost from '../shell/tfcost/index';
 import * as util from '../../util';
 import { path } from '../../util/workspace';
 var os = require('os');
@@ -54,6 +55,16 @@ async function estimateCost(writeEmitter:any,closeEmitter:any): Promise<any> {
  var terminal = new Terminal(writeEmitter, closeEmitter);
  const API_KEY = 'IC_API_KEY=';
  try{
+    terminal.printHeading("Verifying tfcost binary");
+     try{
+         await tfcost.verifyBinary();
+         terminal.printSuccess( "Binary verified" );
+
+     }
+     catch{
+        terminal.printFailure("Please download tfcost binary & include it in your path." +'\r\n'+ "Link: https://github.com/IBM-Cloud/terraform-cost-estimator/releases");
+        return;
+    }
      await util.workspace.createCredentialFile();
      terminal.printHeading("Running terraform init");
      await terraform.init();
@@ -68,7 +79,7 @@ async function estimateCost(writeEmitter:any,closeEmitter:any): Promise<any> {
      await util.workspace.readCredentials().then(async (rs: any)=>{
          const key = rs.apiKey;
          shell.exportVariables(API_KEY, key);
-         await terraform.calculateTFCost(key);
+         await tfcost.calculateTFCost(key);
          terminal.printSuccess("cost.json file created");
          terminal.fireClose(1);
      });

@@ -17,9 +17,7 @@
 
 import * as shell from '..';
 import * as util from '../../../util';
-import { path } from '../../../util/workspace';
 var os = require('os');
-import { Terminal } from '../../../util/terminal';
 
 
 const TERRAFORM_INIT_COMMAND = 'terraform init';
@@ -43,18 +41,7 @@ export function createPlan(): Promise<string | Error> {
     return shell.execute(`terraform plan --out ${util.workspace.getSecureDirectoryPath()}/plan.binary`);
 }
 
-export function calculateTFCost(key: string): Promise<string | Error> {
-    const apikey = 'IC_API_KEY=';
-    const TERRAFORM_COST_COMMAND = `tfcost plan ${util.workspace.getSecureDirectoryPath()}/plan.json --json`;
-    var COST_COMMAND: string;
-    if (os.platform() === 'darwin' || os.platform() === 'linux'){
-        COST_COMMAND = `export ${apikey}${key} && ${TERRAFORM_COST_COMMAND}`;
-    }
-    else{
-        COST_COMMAND = `set "${apikey}${key}" & call ${TERRAFORM_COST_COMMAND}`;
-    }
-    return shell.execute(COST_COMMAND);
-}
+
 
 export function convertPlanToJSON(): Promise<string | Error> {
     const secureDirectory = util.workspace.getSecureDirectoryPath();
