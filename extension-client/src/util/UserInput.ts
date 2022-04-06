@@ -134,3 +134,24 @@ export async function writeStateFile(storeFile: any, workspacePath: any){
     });
 
 }
+
+export async function getResourceGroupInput(): Promise<string> {
+    // Get the Resource Group
+    const inputResourceGroup = await vscode.window.showInputBox({
+       ignoreFocusOut: true,
+       placeHolder: 'Type resource group name, press escape to use default resource group',
+       prompt: 'Resource group where you want to organize your workspace.',
+   });
+   return new Promise(async (resolve, reject) => {
+           if (inputResourceGroup && inputResourceGroup !== "") {
+               // user entered a string value
+               resolve(inputResourceGroup);
+           } else if (inputResourceGroup === undefined || inputResourceGroup === ""){
+               // user pressed ESC or entered empty string
+               resolve('Default');
+           } else {
+               // any other error
+               reject('Resource Group rejected!');
+           }
+   });
+}
