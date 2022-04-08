@@ -25,6 +25,7 @@ import * as util from '../../util';
 import { path } from '../../util/workspace';
 var os = require('os');
 
+const TFCOST_INSTALL_PATH = 'https://github.com/IBM-Cloud/terraform-cost-estimator#using-the-cli';
 
 export async function cost(context: vscode.ExtensionContext): Promise<void> {
     try {
@@ -36,6 +37,8 @@ export async function cost(context: vscode.ExtensionContext): Promise<void> {
             open: async() => {
                 await estimateCost(writeEmitter, closeEmitter).then(async (r)=>{
                     await new EstimateCostView(context).openView(false);
+                }).catch((err: any) => {
+                    vscode.window.showErrorMessage(String(err));
                 });
             },
             close: () => {}
@@ -55,15 +58,14 @@ async function estimateCost(writeEmitter:any,closeEmitter:any): Promise<any> {
  var terminal = new Terminal(writeEmitter, closeEmitter);
  const API_KEY = 'IC_API_KEY=';
  try{
-    terminal.printHeading("Verifying tfcost binary");
      try{
-         await tfcost.verifyBinary();
-         terminal.printSuccess( "Binary verified" );
-
+         await tfcost.isInstalled();
      }
      catch{
-        terminal.printFailure("Please download tfcost binary & include it in your path." +'\r\n'+ "Link: https://github.com/IBM-Cloud/terraform-cost-estimator/releases");
-        return;
+        showTFCostInstallationModal(terminal);
+        return new Promise((resolve, reject) => {
+            reject(new Error("Install tfcost and try again."));
+        });
     }
      await util.workspace.createCredentialFile();
      terminal.printHeading("Running terraform init");
@@ -79,7 +81,7 @@ async function estimateCost(writeEmitter:any,closeEmitter:any): Promise<any> {
      await util.workspace.readCredentials().then(async (rs: any)=>{
          const key = rs.apiKey;
          shell.exportVariables(API_KEY, key);
-         await tfcost.calculateTFCost(key);
+         await tfcost.calculateCost(key);
          terminal.printSuccess("cost.json file created");
          terminal.fireClose(1);
      });
@@ -100,3 +102,20 @@ async function estimateCost(writeEmitter:any,closeEmitter:any): Promise<any> {
 }
 
 
+export async function showTFCostInstallationModal(terminal: Terminal): Promise<any> {
+    const msg = `This feature requires you to install tfcost. Details of installtion can be found at https://github.com/IBM-Cloud/terraform-cost-estimator#using-the-cli. Do you want to open the URL ?`;
+    
+     await vscode.window.showInformationMessage(
+        msg,
+        { modal: true },
+        "OK"
+        )
+        .then((answer) => {
+          if (answer?.toUpperCase() === "OK" ) {
+            vscode.env.openExternal(vscode.Uri.parse(TFCOST_INSTALL_PATH));
+          }else{
+            terminal.printFailure("Install tfcost and try again. See "+TFCOST_INSTALL_PATH+ "for details");
+          }
+        });
+    return;
+}
