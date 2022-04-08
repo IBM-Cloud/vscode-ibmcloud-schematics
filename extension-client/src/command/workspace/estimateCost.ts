@@ -25,7 +25,7 @@ import * as util from '../../util';
 import { path } from '../../util/workspace';
 var os = require('os');
 
-const TFCOST_INSTALL_PATH = 'https://github.com/IBM-Cloud/terraform-cost-estimator#using-the-cli';
+const TCOST_INSTALL_DOC = 'https://github.com/IBM-Cloud/terraform-cost-estimator#using-the-cli';
 
 export async function cost(context: vscode.ExtensionContext): Promise<void> {
     try {
@@ -112,9 +112,9 @@ export async function showTFCostInstallationModal(terminal: Terminal): Promise<a
         )
         .then((answer) => {
           if (answer?.toUpperCase() === "OK" ) {
-            vscode.env.openExternal(vscode.Uri.parse(TFCOST_INSTALL_PATH));
+            vscode.env.openExternal(vscode.Uri.parse(TCOST_INSTALL_DOC));
           }else{
-            terminal.printFailure("Install tfcost and try again. See "+TFCOST_INSTALL_PATH+ "for details");
+            terminal.printFailure("Install tfcost and try again. See "+TCOST_INSTALL_DOC+ " for details");
           }
         });
     return;
