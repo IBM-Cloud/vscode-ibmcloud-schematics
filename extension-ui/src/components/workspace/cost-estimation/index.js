@@ -30,6 +30,13 @@ const EstimateCost = ({ result }) => {
     return (
         <div className="bx--cost_detail">
             <h2>Cost Estimate</h2>
+            {!result.Lineitem || (Array.isArray(result.Lineitem) && result.Lineitem.length === 0)
+            ?
+            <div>
+                <p>There are no resources generated </p>
+                <p>Total estimated cost: 0 </p>
+            </div>
+            :
             <div>
                 <StructuredListWrapper>
                     <StructuredListHead>
@@ -106,8 +113,9 @@ const EstimateCost = ({ result }) => {
                     ratecard
                 </p>
             </div>
+        }
+               
         </div>
-    );
-};
+    );}
 
 export default EstimateCost;
