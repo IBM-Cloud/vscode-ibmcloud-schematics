@@ -29,7 +29,7 @@ import DetailsView from '../../webview/workspace/DetailsView';
 
 const fs = require('fs');
 
-export async function create(): Promise<void> {
+export async function create(inputResourceGrp: string): Promise<void> {
     const isDeployed = util.workspace.isDeployed();
     if (isDeployed) {
         Promise.resolve('workspace already deployed');
@@ -39,6 +39,7 @@ export async function create(): Promise<void> {
     const type: any = await util.workspace.readTerraformVersion();
     const payload = {
         name: util.workspace.getSuffixedWorkspaceName(),
+        resourceGroup: inputResourceGrp,
         type: [type.version],
         templateData: [
             {
