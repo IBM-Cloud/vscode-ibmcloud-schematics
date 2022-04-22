@@ -33,6 +33,7 @@ export const versionsFilename = 'version.json';
 export const versionsTFFilename = 'versions.tf';
 export const cloneFilename = 'clone.json';
 export const originalWorkspaceFilename = 'original_workspace.json';
+export const tfvarsFilename = 'terraform.tfvars';
 export var cloneTask = false;
 
 let flag: number = 0;
@@ -125,6 +126,11 @@ export function createCredentialFile(): any {
 export function getCredentialsPath(): string {
     const wsPath = getWorkspacePath();
     return wsPath + path.sep + secureDirName + path.sep + credFilename;
+}
+
+export function getTfvarsPath(): string {
+    const wsPath = getWorkspacePath();
+    return wsPath + path.sep + tfvarsFilename;
 }
 
 export function getSchematicsWorkspacePath(): string {
@@ -535,7 +541,7 @@ export async function createTarFile(): Promise<string> {
     };
 
     return new Promise((resolve, reject) => {
-        tar.c(options, [fileList], () => {})
+        tar.c(options, [fileList], () => { })
             .then(() => {
                 resolve('tar created');
             })
@@ -654,5 +660,10 @@ export function readUIAssetManifest(path: string): any {
             resolve(data);
         });
     });
+}
+
+export function hasTfvarsFile(): boolean {
+    const tfvarsPath = getTfvarsPath();
+    return fs.existsSync(tfvarsPath);
 }
 

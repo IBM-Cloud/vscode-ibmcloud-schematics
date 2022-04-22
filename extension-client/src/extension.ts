@@ -23,8 +23,6 @@ import { MigrateTaskProvider } from './task/migrate/migrateTaskProvider';
 
 import * as command from './command';
 
-import * as cost from './command/workspace/estimateCost';
-
 let buildTaskProvider: vscode.Disposable | undefined;
 let deployTaskProvider: vscode.Disposable | undefined;
 let cloneTaskProvider: vscode.Disposable | undefined;
@@ -126,7 +124,7 @@ export function activate(context: vscode.ExtensionContext) {
 
     var estimateCostCmd = vscode.commands.registerCommand(
         'schematics.workspace.estimateCost',
-        () => cost.cost(context)
+        () => command.workspace.cost(context)
     );
     context.subscriptions.push(estimateCostCmd);
 }
