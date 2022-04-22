@@ -206,12 +206,6 @@ export default class MigrateTaskTerminal implements vscode.Pseudoterminal {
                                         terminal.printHeading('Migration status:');
                                         terminal.printError("Migration needs workspace ID to proceed. Please retry migration with the input of workspace ID.");
                                         terminal.fireClose(1);
-                                terminal.fireClose(1);    
-                                        terminal.fireClose(1);
-                                terminal.fireClose(1);    
-                                        terminal.fireClose(1);
-                                        terminal.fireClose(1);
-                                        terminal.fireClose(1);
                                     }
                                     else {
                                         terminal.printHeading('Migration status:');
