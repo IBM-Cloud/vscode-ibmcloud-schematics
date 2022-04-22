@@ -19,35 +19,33 @@ import * as vscode from 'vscode';
 import { ReactView } from '../ReactView';
 import * as util from '../../util';
 import { path } from '../../util/workspace';
- 
- export default class EstimateCostView extends ReactView {
-     static viewID: string = 'workspace.estimateCost';
-     static viewTitle: string = 'Workspace Cost Estimate';
-     
- 
-     constructor(context: vscode.ExtensionContext) {
-         super(context, EstimateCostView.viewID, EstimateCostView.viewTitle);
-     }
- 
-     async openPanelInner(panel: vscode.WebviewPanel): Promise<void> {
-         await this.loadComponent(panel);
-     }
- 
-     async loadComponent(panel: vscode.WebviewPanel): Promise<void> {
-        util.workspace.readFile(path.join(util.workspace.getWorkspacePath(),"cost.json"))
-             .then((result) => {
-                 panel.webview.postMessage({
-                     path: '/workspace/cost-estimation',
-                     message: result,
-                 });
-             })
-             .catch((error) => {
-                 console.log(error);
-                 panel.webview.postMessage({
-                     path: '/error',
-                     message: String(error),
-                 });
-             });
-     }
- }
- 
+
+export default class EstimateCostView extends ReactView {
+    static viewID: string = 'workspace.estimateCost';
+    static viewTitle: string = 'Workspace Cost Estimate';
+
+    constructor(context: vscode.ExtensionContext) {
+        super(context, EstimateCostView.viewID, EstimateCostView.viewTitle);
+    }
+
+    async openPanelInner(panel: vscode.WebviewPanel): Promise<void> {
+        await this.loadComponent(panel);
+    }
+
+    async loadComponent(panel: vscode.WebviewPanel): Promise<void> {
+        util.workspace.readFile(path.join(util.workspace.getWorkspacePath(), "cost.json"))
+            .then((result) => {
+                panel.webview.postMessage({
+                    path: '/workspace/cost-estimation',
+                    message: result,
+                });
+            })
+            .catch((error) => {
+                console.log(error);
+                panel.webview.postMessage({
+                    path: '/error',
+                    message: String(error),
+                });
+            });
+    }
+}
