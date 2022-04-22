@@ -18,9 +18,8 @@
 import * as vscode from 'vscode';
 import EstimateCostView from '../../webview/workspace/EstimateCostView';
 import { Terminal } from '../../util/terminal';
-import * as shell from '../shell';
-import  * as terraform from '../shell/terraform/index';
-import  * as tfcost from '../shell/tfcost/index';
+import * as terraform from '../shell/terraform/index';
+import * as tfcost from '../shell/tfcost/index';
 import * as util from '../../util';
 import { path } from '../../util/workspace';
 var os = require('os');
@@ -34,88 +33,86 @@ export async function cost(context: vscode.ExtensionContext): Promise<void> {
         const pty = {
             onDidWrite: writeEmitter.event,
             onDidClose: closeEmitter.event,
-            open: async() => {
-                await estimateCost(writeEmitter, closeEmitter).then(async (r)=>{
+            open: async () => {
+                await estimateCost(writeEmitter, closeEmitter).then(async (r) => {
                     await new EstimateCostView(context).openView(false);
                 }).catch((err: any) => {
                     vscode.window.showErrorMessage(String(err));
                 });
             },
-            close: () => {}
+            close: () => { }
         };
         await (<any>vscode.window).createTerminal({ pty }).show();
-        }
-    catch(error){
+    }
+    catch (error) {
         console.log(error);
         vscode.window.showErrorMessage(String(error));
     }
-       
-    
+
+
 }
 
-async function estimateCost(writeEmitter:any,closeEmitter:any): Promise<any> { 
+async function estimateCost(writeEmitter: any, closeEmitter: any): Promise<any> {
+    var terminal = new Terminal(writeEmitter, closeEmitter);
 
- var terminal = new Terminal(writeEmitter, closeEmitter);
- const API_KEY = 'IC_API_KEY=';
- try{
-     try{
-         await tfcost.isInstalled();
-     }
-     catch{
-        showTFCostInstallationModal(terminal);
-        return new Promise((resolve, reject) => {
-            reject(new Error("Install tfcost and try again."));
-        });
+    try {
+        try {
+            await tfcost.isInstalled();
+        }
+        catch {
+            showTFCostInstallationModal(terminal);
+            return new Promise((resolve, reject) => {
+                reject(new Error("Install tfcost and try again."));
+            });
+        }
+
+        await util.workspace.createCredentialFile();
+        const cred = await util.workspace.readCredentials();
+
+        terminal.printHeading("Running terraform init");
+        await terraform.init();
+        terminal.printSuccess("terraform init");
+
+        terminal.printHeading("Running terraform plan");
+        await terraform.createPlan(cred.apiKey);
+        terminal.printSuccess("terraform plan");
+
+        terminal.printHeading("Creating cost.json file");
+        await terraform.convertPlanToJSON(cred.apiKey);
+        await tfcost.calculateCost(cred.apiKeys);
+        terminal.printSuccess("cost.json file created");
+
+        terminal.fireClose(1);
+    } catch (error: any) {
+        terminal.printFailure("Cost Estimation Error");
+        var text = error;
+        if (typeof error !== 'string') {
+            text = error.toString();
+        }
+        var lines: string[] = text.split(/\r?\n/);
+        for (let i = 0; i < lines.length; i++) {
+            terminal.printText(lines[i]);
+        }
     }
-     await util.workspace.createCredentialFile();
-     terminal.printHeading("Running terraform init");
-     await terraform.init();
-     terminal.printSuccess( "terraform init" );
 
-     terminal.printHeading( "Running terraform plan" );
-     await terraform.createPlan();
-     terminal.printSuccess("terraform plan" );
-
-     terminal.printHeading("Creating cost.json file");
-     await terraform.convertPlanToJSON();
-     await util.workspace.readCredentials().then(async (rs: any)=>{
-         const key = rs.apiKey;
-         shell.exportVariables(API_KEY, key);
-         await tfcost.calculateCost(key);
-         terminal.printSuccess("cost.json file created");
-         terminal.fireClose(1);
-     });
-     
- }catch(error: any){
-     terminal.printFailure( "Cost Estimation Error");
-     var text = error;            
-     if (typeof error !== 'string') {
-         text = error.toString();
-     }
-     var lines: string[] = text.split(/\r?\n/);
-     for (let i = 0; i < lines.length; i++) {
-         terminal.printText(lines[i]);
-     }
- }
- 
- return util.workspace.readFile(path.join(util.workspace.getWorkspacePath(),"cost.json"));
+    return util.workspace.readFile(path.join(util.workspace.getWorkspacePath(), "cost.json"));
 }
 
 
 export async function showTFCostInstallationModal(terminal: Terminal): Promise<any> {
     const msg = `This feature requires you to install tfcost. Details of installtion can be found at https://github.com/IBM-Cloud/terraform-cost-estimator#using-the-cli. Do you want to open the URL ?`;
-    
-     await vscode.window.showInformationMessage(
+
+    await vscode.window.showInformationMessage(
         msg,
         { modal: true },
         "OK"
-        )
+    )
         .then((answer) => {
-          if (answer?.toUpperCase() === "OK" ) {
-            vscode.env.openExternal(vscode.Uri.parse(TCOST_INSTALL_DOC));
-          }else{
-            terminal.printFailure("Install tfcost and try again. See "+TCOST_INSTALL_DOC+ " for details");
-          }
+            if (answer?.toUpperCase() === "OK") {
+                vscode.env.openExternal(vscode.Uri.parse(TCOST_INSTALL_DOC));
+            } else {
+                terminal.printFailure("Install tfcost and try again. See " + TCOST_INSTALL_DOC + " for details");
+            }
         });
     return;
 }

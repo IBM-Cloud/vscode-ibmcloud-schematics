@@ -17,14 +17,15 @@
 
 import * as shell from '..';
 import * as util from '../../../util';
-var os = require('os');
 
+var os = require('os');
 
 const TERRAFORM_INIT_COMMAND = 'terraform init';
 const TERRAFORM_VALIDATE_COMMAND = 'terraform validate';
 const TERRAFORM_VERSION_COMMAND = 'terraform -version';
 const FIND_AND_UPGRADE = '. -name "*.tf" -printf "%h\n" | uniq | sort -ur | xargs -n1 terraform 0.12upgrade -yes';
 const hcltojson = require('hcl-to-json');
+const IC_API_KEY = 'IC_API_KEY=';
 
 export function init(): Promise<string | Error> {
     return shell.execute(TERRAFORM_INIT_COMMAND);
@@ -37,26 +38,22 @@ export function checkVersion(): Promise<string | Error> {
     return shell.execute(TERRAFORM_VERSION_COMMAND);
 }
 
-export function createPlan(): Promise<string | Error> {
-    return shell.execute(`terraform plan --out ${util.workspace.getSecureDirectoryPath()}/plan.binary`);
+export function createPlan(apikey: string): Promise<string | Error> {
+    return shell.execute(`export ${IC_API_KEY}${apikey} && terraform plan --out ${util.workspace.getSecureDirectoryPath()}/plan.binary`);
 }
 
-
-
-export function convertPlanToJSON(): Promise<string | Error> {
+export function convertPlanToJSON(apikey: string): Promise<string | Error> {
     const secureDirectory = util.workspace.getSecureDirectoryPath();
-    return shell.execute(`terraform show -json ${secureDirectory}/plan.binary > ${secureDirectory}/plan.json`);
+    return shell.execute(`export ${IC_API_KEY}${apikey} && terraform show -json ${secureDirectory}/plan.binary > ${secureDirectory}/plan.json`);
 }
-
-
 
 export async function upgrade(): Promise<string | Error> {
     var EXEC_COMMAND_TF_MAC;
-    if (os.platform() === 'darwin'){
-        EXEC_COMMAND_TF_MAC='gfind '+FIND_AND_UPGRADE;
+    if (os.platform() === 'darwin') {
+        EXEC_COMMAND_TF_MAC = 'gfind ' + FIND_AND_UPGRADE;
     }
-    else{
-        EXEC_COMMAND_TF_MAC='find '+FIND_AND_UPGRADE;
+    else {
+        EXEC_COMMAND_TF_MAC = 'find ' + FIND_AND_UPGRADE;
     }
     return shell.execute(EXEC_COMMAND_TF_MAC);
 }
