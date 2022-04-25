@@ -2,6 +2,8 @@ import * as shell from '..';
 import * as util from '../../../util';
 var os = require('os');
 
+import {exportEnvironmentVariables} from '../index';
+
 const TFCOST_COMMAND = 'tfcost';
 const PLAN_COMMAND = 'plan';
 const JSON_FLAG = '--json';
@@ -15,14 +17,7 @@ export function calculateCost(key: string): Promise<string | Error> {
     `${util.workspace.getSecureDirectoryPath()}/plan.json`,
     JSON_FLAG
   ].join(' ');
-  var command: string;
-  if (os.platform() === 'darwin' || os.platform() === 'linux') {
-    command = `export ${apikey}${key} && ${tfcostCommand}`;
-  }
-  else {
-    command = `set "${apikey}${key}" & call ${tfcostCommand}`;
-  }
-  return shell.execute(command);
+  return shell.execute(`${exportEnvironmentVariables(apikey,key)} ${tfcostCommand}`);
 }
 
 export function isInstalled(): Promise<string | Error> {

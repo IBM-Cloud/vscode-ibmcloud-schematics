@@ -17,6 +17,7 @@
 
 import * as shell from '..';
 import * as util from '../../../util';
+import {exportEnvironmentVariables} from '../index';
 
 var os = require('os');
 
@@ -39,12 +40,12 @@ export function checkVersion(): Promise<string | Error> {
 }
 
 export function createPlan(apikey: string): Promise<string | Error> {
-    return shell.execute(`export ${IC_API_KEY}${apikey} && terraform plan --out ${util.workspace.getSecureDirectoryPath()}/plan.binary`);
+    return shell.execute(`${exportEnvironmentVariables(IC_API_KEY,apikey)}  terraform plan --out ${util.workspace.getSecureDirectoryPath()}/plan.binary`);
 }
 
 export function convertPlanToJSON(apikey: string): Promise<string | Error> {
     const secureDirectory = util.workspace.getSecureDirectoryPath();
-    return shell.execute(`export ${IC_API_KEY}${apikey} && terraform show -json ${secureDirectory}/plan.binary > ${secureDirectory}/plan.json`);
+    return shell.execute(`${exportEnvironmentVariables(IC_API_KEY,apikey)} terraform show -json ${secureDirectory}/plan.binary > ${secureDirectory}/plan.json`);
 }
 
 export async function upgrade(): Promise<string | Error> {
@@ -64,5 +65,4 @@ export async function hcltojsonFunc() {
     const versionsPath = util.workspace.getWorkspaceVersionsFilePath();
     return util.workspace.writeToFile(versionsPath, jsonData);
 }
-
 

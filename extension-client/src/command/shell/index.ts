@@ -32,12 +32,11 @@ export async function execute(cmd: string): Promise<string | Error> {
     return stdout;
 }
 
-export function exportVariables(key: string, value: string): Promise<string | Error> {
-
-    var API_EXPORT_COMMAND = `set ${key}=${value}`;
+export function exportEnvironmentVariables(key: string, value: string): string {
+    var exportCommand  = `set ${key}=${value} & call`;
     if (os.platform() === 'darwin' || os.platform() === 'linux'){
-        API_EXPORT_COMMAND = `export ${key}=${value}`;
+        exportCommand = `export ${key}=${value} &&`;
     }
-    return execute(API_EXPORT_COMMAND);
+    return exportCommand;
 }
 

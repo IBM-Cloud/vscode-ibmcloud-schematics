@@ -37,7 +37,7 @@ export async function cost(context: vscode.ExtensionContext): Promise<void> {
         const cred = await util.workspace.readCredentials();
         await command.terraform.createPlan(cred.apiKey);
         await command.terraform.convertPlanToJSON(cred.apiKey);
-        await command.tfcost.calculateCost(cred.apiKeys);
+        await command.tfcost.calculateCost(cred.apiKey);
         await new EstimateCostView(context).openView(false);
     }
     catch (error: any) {
