@@ -18,3 +18,4 @@
 export * as userInput from './userInput';
 export * as status from './status';
 export * as workspace from './workspace';
+export * from './OutputChannel';
