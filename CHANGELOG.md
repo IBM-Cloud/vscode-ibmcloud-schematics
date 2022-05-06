@@ -3,7 +3,21 @@
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [v1.2.0](https://github.com/IBM-Cloud/vscode-ibmcloud-schematics/releases/tag/v1.2.0) - 9 Dec 2021
+## [v1.3.0](https://github.com/IBM-Cloud/vscode-ibmcloud-schematics/releases/tag/v1.3.0)
+
+### Added
+
+-   Support to specify target resource group during schematics:deploy task
+    https://github.com/IBM-Cloud/vscode-ibmcloud-schematics/issues/19
+-   New VS Code command `IBM Cloud Schematics workspace: Estimate Cost`
+-   Added tutorial on how to use command `IBM Cloud Schematics workspace: Estimate Cost` to get estimated cost of your terraform resources
+
+### Bug fixes
+
+-   Fix extension icon to make use of transparent image
+-   Fix npm vulnerabilities
+
+## [v1.2.0](https://github.com/IBM-Cloud/vscode-ibmcloud-schematics/releases/tag/v1.2.0)
 
 ### Added
 
@@ -16,26 +30,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Fix licence issues
 -   Fix issue with detecting terraform version automatically
 
-## [v1.1.3](https://github.com/IBM-Cloud/vscode-ibmcloud-schematics/releases/tag/v1.1.3) - 9 Sep 2021
+## [v1.1.3](https://github.com/IBM-Cloud/vscode-ibmcloud-schematics/releases/tag/v1.1.3)
 
 ### Added
 
 -   Updated extension icon
 
-## [v1.1.2](https://github.com/IBM-Cloud/vscode-ibmcloud-schematics/releases/tag/v1.1.2) - 1 Sep 2021
+## [v1.1.2](https://github.com/IBM-Cloud/vscode-ibmcloud-schematics/releases/tag/v1.1.2)
 
 ### Added
 
 -   New VS Code command `IBM Cloud Schematics workspace: Details`
 
-## [v1.1.1] - 27 July 2021
+## [v1.1.1](https://github.com/IBM-Cloud/vscode-ibmcloud-schematics/releases/tag/v1.1.1)
 
 ### Bug fixes
 
 -   Removed pull latest command
 -   Fixed hcl2json command not found error by removing hcl2json logic check for detecting terraform version
 
-## [v1.1.0] - 22 July 2021
+## [v1.1.0](https://github.com/IBM-Cloud/vscode-ibmcloud-schematics/releases/tag/v1.1.0)
 
 ### Added
 
@@ -56,5 +70,3 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 [comment]: <Below are the list of links>
 [carbon design system]: https://www.carbondesignsystem.com/
-[v1.1.0]: https://github.com/IBM-Cloud/vscode-ibmcloud-schematics/releases/tag/v1.1.0
-[v1.1.1]: https://github.com/IBM-Cloud/vscode-ibmcloud-schematics/releases/tag/v1.1.1
