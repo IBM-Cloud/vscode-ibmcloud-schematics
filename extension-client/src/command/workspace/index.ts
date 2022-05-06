@@ -24,6 +24,7 @@ export * from './resources';
 export * from './log';
 export * from './job';
 export * from './variables';
+export * from './tfcost';
 
 import DetailsView from '../../webview/workspace/DetailsView';
 
