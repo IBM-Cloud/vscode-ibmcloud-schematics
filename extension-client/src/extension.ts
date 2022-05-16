@@ -23,6 +23,8 @@ import { MigrateTaskProvider } from './task/migrate/migrateTaskProvider';
 
 import * as command from './command';
 
+import * as importe from './command/discovery/importe';
+
 let buildTaskProvider: vscode.Disposable | undefined;
 let deployTaskProvider: vscode.Disposable | undefined;
 let cloneTaskProvider: vscode.Disposable | undefined;
@@ -127,6 +129,12 @@ export function activate(context: vscode.ExtensionContext) {
         () => command.workspace.cost(context)
     );
     context.subscriptions.push(estimateCostCmd);
+
+    var importResourcesCmd = vscode.commands.registerCommand(
+        'schematics.discover.import',
+        () => importe.importe(context)
+    );
+    context.subscriptions.push(importResourcesCmd);
 }
 
 // This method is called when your extension is deactivated

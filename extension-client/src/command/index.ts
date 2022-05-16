@@ -19,3 +19,4 @@ export * as workspace from './workspace';
 export * as terraform from './shell/terraform';
 export * as git from './shell/git';
 export * as tfcost from './shell/tfcost';
+export * as discovery from './shell/discovery';

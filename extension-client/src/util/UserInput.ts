@@ -154,4 +154,20 @@ export async function getResourceGroupInput(): Promise<string> {
                reject('Resource Group rejected!');
            }
    });
+
+}
+export async function showServicesForDiscoveryQuickPick(services: any) {
+    const selectedJob = await vscode.window.showQuickPick(services, {
+        ignoreFocusOut: true,
+        canPickMany: true,
+        placeHolder: 'Chose all the services',
+    });
+
+    return new Promise((resolve, reject) => {
+        if (!selectedJob) {
+            reject('At least one service should be selected');
+        } else {
+            resolve(selectedJob);
+        }
+    });
 }
