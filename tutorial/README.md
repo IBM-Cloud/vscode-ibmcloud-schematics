@@ -219,3 +219,18 @@ You can also open the latest job/activity log by:
 14. A new WebView with estimated cost of all resources is displayed
 
 ![](images/image20-how-to-view-estimated-cost-from-editor.png)
+
+
+ <!-- // todo: @srikar - better this -->
+ **How to import resources from IBM Cloud as terraform files?**
+
+1. Download [discovery Binary](https://github.com/IBM-Cloud/configuration-discovery#installation) & put the binary in your PATH. Install the prerequisites terraformer and terraform
+2. Launch Visual Studio Code
+3. Run the command palette , this will open VS Code Commands dropdown
+4. In the VS Code Tasks search text box , search for “IBM Cloud Schematics discovery”
+5. Select "IBM Cloud Schematics discovery: Import resources from IBM Cloud"
+6. Enter the api key if prompted. Enter the key of the account from where you want to import resources.
+7. Select the all the services you want to resources from and click OK.
+8. Choose the right option for you if you're prompted. You can choose to do a clean import into a new folder (current vscode workspace directory, if empty) or import and merge with existing tf files.
+<!-- Explain more -->
+<!-- May be add an image once we have a good display of what we did -->

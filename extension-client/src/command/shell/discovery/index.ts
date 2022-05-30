@@ -21,18 +21,19 @@ var os = require('os');
 
 const DISCOVERY_COMMAND = 'discovery';
 const DISCOVERY_IMPORT_COMMAND = ' import ';
+const apikey = 'IC_API_KEY=';
+const configDirEnv = 'DISCOVERY_CONFIG_DIR=';
 
- // todo: @srikar - How are config name and config dir related and used.
 export function importConfig(
     services: string,
-    configDir: string,
     configName: string,
     key: string,
+    confDirEnvVal: string,
+    mergeFlag: boolean
     ): Promise<string | Error> {
 
     console.log(`HEre::: Inside shell fn`);
 
-    const apikey = 'IC_API_KEY=';
     // todo: @srikar - use async fn synchronously
     // todo: @srikar - change to this when installation is automated
     // let prefix: Promise<string> = pathToBinary();  
@@ -45,34 +46,38 @@ export function importConfig(
         //     value = value + " import "
         // }
 
-        const cmd: string =
+        var cmd: string =
             // prefix +
             DISCOVERY_COMMAND + 
             DISCOVERY_IMPORT_COMMAND +
             ' --services ' +
             services +
-            ' --config_dir ' +
-            configDir + 
-            ' command default';
-            // ' --config_name ' +
-            // configName;
-        console.log(`cmd`, cmd);
+            ' --compact';  // todo: @srikar - do we take this from user
+        
+        if (mergeFlag) {
+            cmd = cmd + ' --merge';
+        }
 
-         // todo: @srikar - export the api key only if it is non empty
+        if (configName !== "") {
+            cmd = cmd + 
+            ' --config_name ' +
+            configName;  
+        }
+        
+        console.log(`cmd`, cmd);
+        
+        // todo: @srikar - export the api key only if it is non empty - no problem
+        console.log("setting disc. config dir env var", confDirEnvVal);
         var command: string;
         if (os.platform() === 'darwin' || os.platform() === 'linux'){
-            command = `export ${apikey}${key} && ${cmd}`;
+            command = `export ${apikey}${key} && export ${configDirEnv}${confDirEnvVal} && ${cmd}`; 
         }
         else{
-            command = `set "${apikey}${key}" & call ${cmd}`;
+            command = `set "${apikey}${key}" & set ${configDirEnv}${confDirEnvVal} & call ${cmd}`;
         }
     
-        // let key: string = "hardvalue";
-        // const credentials: type.Account = util.workspace.readCredentials();
-        // return shell.execute('export IC_API_KEY= '+ credentials.apiKey+'; '+cmd);
-
-        console.log(`HERE: here is the api key getting used`, key);
-        return shell.execute(command);  // todo: @srikar - @vishwa why is the stdout not coming
+        console.log(`**HERE: here is the api key and config dir and config name getting used`, key, confDirEnvVal, configName);
+        return shell.run_cmd(command);  // todo: @srikar - @vishwa why is the stdout not coming
 
     // })
     // .catch((error) => console.log("couldn't get binary path", error));

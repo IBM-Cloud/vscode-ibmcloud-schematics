@@ -16,10 +16,14 @@
  */
 
 
- import * as vscode from 'vscode';
- import * as userInput from './userInput';
- import * as credutils from './workspace';
- import * as type from '../type/index';
+import * as vscode from 'vscode';
+import * as userInput from './userInput';
+import * as credutils from './workspace';
+import * as type from '../type/index';
+import { openStdin } from 'process';
+
+const fs = require('fs');
+var path = require('path');
  
 export async function chooseServices(): Promise<string> {
     let services: string = '';
@@ -57,11 +61,11 @@ export async function chooseServices(): Promise<string> {
         ];
         const servicesPicked: any = await userInput.showServicesForDiscoveryQuickPick(servicesList);
         vscode.window.showInformationMessage('Got services: ' + servicesPicked);
-        services = servicesPicked.join(); // 
+        console.log('Got services: ' + servicesPicked);
+        services = servicesPicked.join(","); // 
         vscode.window.showInformationMessage('concatenated services: ' + services);
-        // services = 'ibm_iam'
-        return services;  // todo: @srikar - why is services coming as empty
-        // // todo: @srikar -  concatenate the chosen list with commas in between
+        console.log('***joined services: ' + services);
+        return services;  
     } catch (error) {
         console.log(error);
         vscode.window.showErrorMessage(String(error));
@@ -70,7 +74,7 @@ export async function chooseServices(): Promise<string> {
 }
  
  
-export async function chooseConfigDir(): Promise<string> {
+export async function chooseConfigName(): Promise<string> {
     const openDialogOptions: vscode.OpenDialogOptions = {
         canSelectMany: false,
         openLabel: 'Select',
@@ -83,27 +87,7 @@ export async function chooseConfigDir(): Promise<string> {
             if (fileUri && fileUri[0]) {
                 resolve(fileUri[0].fsPath);
             } else {
-                reject('Please select the folder where you want your config');
-            }
-        });
-    });
-}
- 
-export async function chooseConfigName(): Promise<string> {
-    const openDialogOptions: vscode.OpenDialogOptions = {
-        canSelectMany: false,
-        openLabel: 'Select',
-        canSelectFiles: false,
-        canSelectFolders: true,
-    };
- 
-    return new Promise(async (resolve, reject) => {
-        vscode.window.showOpenDialog(openDialogOptions).then((fileUri) => {
-            if (fileUri && fileUri[0]) {
-                // resolve(fileUri[0].fsPath);
-                return 'test';
-            } else {
-                reject('Please select the folder inside your config for config name');
+                reject('Import cancelled');
             }
         });
     });
@@ -160,4 +144,117 @@ export function verifyAPIKey() {
             })
             .catch((err) => reject(err));
     });
+}
+
+
+ // todo: @srikar - fix this 
+//  TypeError: The "path" argument must be of type string. Received an instance of Dirent
+// 	at new NodeError (/Users/srikar/friday/vscode-ibmcloud-schematics/lib/internal/errors.js:371:5)
+// 	at validateString (/Users/srikar/friday/vscode-ibmcloud-schematics/lib/internal/validators.js:119:11)
+// 	at Object.extname (/Users/srikar/friday/vscode-ibmcloud-schematics/lib/path.js:1386:5)
+// 	at Object.containsTFFiles (/Users/srikar/friday/vscode-ibmcloud-schematics/extension-client/src/util/discover.ts:161:18)
+// 	at /Users/srikar/friday/vscode-ibmcloud-schematics/extension-client/src/command/discovery/importe.ts:104:31
+// 	at Generator.next (<anonymous>)
+// 	at fulfilled (/Users/srikar/friday/vscode-ibmcloud-schematics/dist/extension.js:56761:58)
+// 	at processTicksAndRejections (node:internal/process/task_queues:96:5) {code: 'ERR_INVALID_ARG_TYPE', vslsStack: Array(8), stack: 'TypeError: The "path" argument must be of typ…ions (node:internal/process/task_queues:96:5)', message: 'The "path" argument must be of type string. Received an instance of Dirent', toString: ƒ, …}
+
+// arg0:TypeError: The "path" argument must be of type string. Received an instance of Dirent\n\tat new NodeError (node:internal/errors:371:5)\n\tat validateString (node:internal/validators:119:11)\n\tat Object.extname (node:path:1386:5)\n\tat Object.containsTFFiles (/Users/srikar/friday/vscode-ibmcloud-schematics/dist/extension.js:54653:22)\n\tat /Users/srikar/friday/vscode-ibmcloud-schematics/dist/extension.js:56840:35\n\tat Generator.next (<anonymous>)\n\tat fulfilled (/Users/srikar/friday/vscode-ibmcloud-schematics/dist/extension.js:56761:58)\n\tat processTicksAndRejections (node:internal/process/task_queues:96:5) {code: 'ERR_INVALID_ARG_TYPE', vslsStack: Array(8), stack: 'TypeError: The "path" argument must be of typ…ions (node:internal/process/task_queues:96:5)', message: 'The "path" argument must be of type string. Received an instance of Dirent', toString: ƒ, …}
+// <anonymous> @ /Applications/Visual Studio Code.app/Contents/Resources/app/out/bootstrap-fork.js:5:6
+export function containsTFFiles(dirPath: any): boolean {
+    // const fileList = fs.readdirSync(dirPath, { withFileTypes: true });
+    // fileList.forEach(file => {
+    //     console.log(file)
+    //     if (path.extname(file) === ".tf") {
+    //         return true
+    //     }
+    //   });
+
+    // try {
+    //     const fileList = fs.readdirSync(dirPath, { withFileTypes: true });
+    //     for (const file of fileList)
+    //     if (path.extname(file) === ".tf") {
+    //                 return true
+    //             }
+    // } catch (err) {
+    //     console.error(err);
+    // }
+
+    // for (let i = 0; i < fileList.length; i++) {
+    //     if (path.extname(fileList[i]) === ".tf") {
+    //         return true
+    //     }
+    // }
+    return true;
+}
+
+
+export function isDirectoryEmpty(dirPath: any): boolean {
+    return fs.readdirSync(dirPath).length === 0;
+}
+
+export function getBaseName(dirPath: any): string {
+    return path.basename(dirPath);
+}
+
+
+export function splitBaseName(dirPath: any): [string, string] {
+    var basename = path.basename(dirPath);  // todo: @srikar - better the logic in this fn
+    var parentName = dirPath.replace(path.sep +basename, '');
+    return [parentName, basename];
+}
+
+
+// https://nodejs.org/api/fs.html#fsstatpath-options-callback
+// https://www.typescriptlang.org/play?#code/LAKAZgrgdgxgLgSwPZQAQGcAOAbBcBCAhugKYByhAtiQBQAmCATgAqFwAWAXKoVAJ4BKbgG10cRgigBzADQZxkqQF1UAb1CpNqAG6FGqAEbESUKiVQBeVACJsAawBW6bHWsatu-Zj0m4FapaoDCxs7AB0jCQ4hDC0APQAJKr2Ti4AvglxcgDk2QIA3O6akXAQjGjC3pFQfmZyRqSm1EqgaaDtIB0wKOhI2CRh2EhSNFi4BMb+tNaEjujsdGDYhE52YHEpzq4CAh2gQA
+
+
+ // todo: @srikar - fill the path ways after choosing eadch option
+export async function showBrownFieldModal(dirName: string): Promise<any> {
+    var msg = dirName + ` contains some files already`;
+    const selection = await vscode.window.showInformationMessage(
+        msg,
+        { modal: true },
+        'Create a new folder and import',  // todo: @srikar - grammar
+        'I want to choose another folder with tf files to import and merge with'
+    );
+
+    return new Promise(async (resolve, reject) => {
+        if (!selection) {
+            reject('Discovery import cancelled');
+        } else {
+            resolve(selection);
+        }
+    });
+}
+
+
+export async function showBrownFieldModalTFFiles(dirName: string): Promise<any> {
+    var msg = dirName + ` contains some files already, some tf files`;
+    const selection = await vscode.window.showInformationMessage(
+        msg,
+        { modal: true },
+        'Create a new folder and import',  // todo: @srikar - grammar
+        'Import and merge with tf files',
+        'I want to choose another folder with tf files to import and merge with'
+    );
+
+    return new Promise(async (resolve, reject) => {
+        if (!selection) {
+            reject('Discovery import cancelled');
+        } else {
+            resolve(selection);
+        }
+    });
+}
+
+export function hasNoUnhiddenFiles(dirPath: any): boolean {
+    return false;  // todo: @srikar - fix this error
+    // &&&&&&%%%%%% Inside the catch blaock TypeError: fs.readdirSync(...).then is not a function
+	// at Object.hasUnhiddenFiles (/Users/srikar/friday/vscode-ibmcloud-schematics/extension-client/src/util/discover.ts:239:40)
+	// at /Users/srikar/friday/vscode-ibmcloud-schematics/extension-client/src/command/discovery/importe.ts:93:27
+	// at Generator.next (<anonymous>)
+	// at fulfilled (/Users/srikar/friday/vscode-ibmcloud-schematics/dist/extension.js:56754:58)
+	// at processTicksAndRejections (node:internal/process/task_queues:96:5) {vslsStack: Array(5), stack: 'TypeError: fs.readdirSync(...).then is not a …ions (node:internal/process/task_queues:96:5)', message: 'fs.readdirSync(...).then is not a function'}
+    // var list = fs.readdirSync(dirPath).then((list:any) => list.filter((item:any) => !/(^|\/)\.[^/.]/g.test(item)));
+    // return list.length === 0;
 }
