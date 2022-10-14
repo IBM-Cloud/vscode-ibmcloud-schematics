@@ -16,6 +16,7 @@
  */
 
 export * as workspace from './workspace';
+export * as blueprint from './blueprint';
 export * as terraform from './shell/terraform';
 export * as git from './shell/git';
 export * as tfcost from './shell/tfcost';

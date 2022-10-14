@@ -20,6 +20,7 @@ import { BuildTaskProvider } from './task/build/buildTaskProvider';
 import { DeployTaskProvider } from './task/deploy/deployTaskProvider';
 import { CloneTaskProvider } from './task/clone/cloneTaskProvider';
 import { MigrateTaskProvider } from './task/migrate/migrateTaskProvider';
+import { BlueprintTaskProvider } from './task/blueprint/blueprintTaskProvider';
 
 import * as command from './command';
 
@@ -27,6 +28,7 @@ let buildTaskProvider: vscode.Disposable | undefined;
 let deployTaskProvider: vscode.Disposable | undefined;
 let cloneTaskProvider: vscode.Disposable | undefined;
 let migrateTaskProvider: vscode.Disposable | undefined;
+let blueprintTaskProvider: vscode.Disposable | undefined;
 
 let activitiesPanelWebview: vscode.Disposable | undefined;
 let logPanelWebview: vscode.Disposable | undefined;
@@ -53,7 +55,10 @@ export function activate(context: vscode.ExtensionContext) {
         MigrateTaskProvider.taskType,
         new MigrateTaskProvider()
     );
-
+    blueprintTaskProvider = vscode.tasks.registerTaskProvider(
+        BlueprintTaskProvider.taskType,
+        new BlueprintTaskProvider()
+    );
 
     // Register commands
     let jobsCmd = vscode.commands.registerCommand(
@@ -144,7 +149,9 @@ export function deactivate() {
     if (migrateTaskProvider) {
         migrateTaskProvider.dispose();
     }
-
+    if (blueprintTaskProvider) {
+        blueprintTaskProvider.dispose();
+    }
 
     // Dispose webview panels after deactivation
     if (activitiesPanelWebview) {

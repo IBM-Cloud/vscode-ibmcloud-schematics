@@ -51,6 +51,9 @@
             },
             {
                 "type": "ibmcloud-schematics-migrate"
+            },
+            {
+                "type": "ibmcloud-schematics-blueprint"
             }
         ],
         "commands": [
@@ -155,7 +158,7 @@
         "husky": "^7.0.0"
     },
     "dependencies": {
-        "@ibm-cloud/ibm-schematics": "0.0.2",
+        "@ibm-cloud/ibm-schematics": "^2.0.0",
         "hcl-to-json": "^0.1.1",
         "rewire": "^5.0.0",
         "tar": "^6.1.0",

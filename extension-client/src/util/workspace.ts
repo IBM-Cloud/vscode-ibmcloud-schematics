@@ -406,7 +406,6 @@ export function isCloned(): boolean {
 export function isWorkspaceExist(): boolean {
     const workspacepath = getSchematicsWorkspacePath();
     return fs.existsSync(workspacepath);
-
 }
 
 export function isDirectoryEmpty(dirPath: any): boolean {
@@ -493,8 +492,6 @@ export async function isGITRepo(url: any) {
     }
 }
 
-
-
 export function isCatalogWorkspace(obj: any): boolean {
     if (obj.hasOwnProperty('catalog_ref')) {
         return true;
@@ -502,8 +499,6 @@ export function isCatalogWorkspace(obj: any): boolean {
 
     return false;
 }
-
-
 
 export function isArchiveUploadedWorkspace(obj: any): boolean {
     if (obj?.template_repo?.has_uploadedgitrepotar) {
@@ -541,7 +536,7 @@ export async function createTarFile(): Promise<string> {
     };
 
     return new Promise((resolve, reject) => {
-        tar.c(options, [fileList], () => { })
+        tar.c(options, [fileList], () => {})
             .then(() => {
                 resolve('tar created');
             })
@@ -586,7 +581,6 @@ export function readWorkspaceFile(path: any) {
         });
     });
 }
-
 
 export function readTFFile(): any {
     return new Promise(function (resolve, reject) {
@@ -666,4 +660,3 @@ export function hasTfvarsFile(): boolean {
     const tfvarsPath = getTfvarsPath();
     return fs.existsSync(tfvarsPath);
 }
-

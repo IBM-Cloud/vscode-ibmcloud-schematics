@@ -16,6 +16,7 @@
  */
 
 const schematicsV1 = require('@ibm-cloud/ibm-schematics/dist/schematics/v1');
+const schematicsV2 = require('@ibm-cloud/ibm-schematics/dist/schematics/v2');
 
 import * as auth from '../auth/auth';
 import * as type from '../type/index';
@@ -43,7 +44,7 @@ export async function uploadTar(payload: any): Promise<any> {
 
     return new Promise(function (resolve, reject) {
         schematicsService
-            .uploadTemplateTar(payload)
+            .templateRepoUpload(payload)
             .then(() => {
                 resolve('Workspace updated');
             })
@@ -67,7 +68,6 @@ export async function getWorkspace(id: string, credentials: any = undefined) {
             .catch((err: any) => {
                 reject(err);
             });
-
     });
 }
 
@@ -92,6 +92,53 @@ export async function pollState(): Promise<string> {
                     if (stopStates.includes(status)) {
                         clearInterval(intervalId);
                         reject('Workspace state is ' + status);
+                    }
+                })
+                .catch((err: any) => {
+                    reject(err);
+                });
+        }, 4250);
+    });
+}
+
+export async function pollStateBlueprintJobs(): Promise<string> {
+    const pollStates = [
+        'DRAFT',
+        'CREATE_INPROGRESS',
+        'PENDING',
+        'UPDATE_INPROGRESS',
+        'FULFILMENT_INPROGRESS',
+    ];
+    const continueUserStatusCode = [
+        'CREATE_SUCCESS',
+        'UPDATE_SUCCESS',
+        'FULFILMENT_SUCCESS',
+    ];
+    const stopStates = [
+        'TEMPLATE_ERROR',
+        'CREATE_FAILED',
+        'UPDATE_FAILED',
+        'FULFILMENT_FAILED',
+    ];
+
+    const credentials: type.Account = await util.workspace.readCredentials();
+    const bpData = await util.blueprint.readSchematicsBlueprint();
+
+    return new Promise((resolve, reject) => {
+        intervalId = setInterval(function () {
+            getBlueprint(bpData.blueprint_id, credentials)
+                .then((res: any) => {
+                    const status = res.state;
+                    if (status.hasOwnProperty('status_code')) {
+                        const statusCode = status.status_code;
+                        if (continueUserStatusCode.includes(statusCode)) {
+                            clearInterval(intervalId);
+                            resolve(statusCode);
+                        }
+                        if (stopStates.includes(status)) {
+                            clearInterval(intervalId);
+                            reject('Blueprint state is ' + status);
+                        }
                     }
                 })
                 .catch((err: any) => {
@@ -323,7 +370,6 @@ export async function saveVariables(wsData: any, variables: any) {
     });
 }
 
-
 export async function getStatefile(payload: any) {
     const credentials: type.Account = await util.workspace.readCredentials();
     const schematicsService = await auth.getSchematicsService(credentials);
@@ -340,3 +386,55 @@ export async function getStatefile(payload: any) {
     });
 }
 
+export async function createBlueprint(payload: any) {
+    const schematicsService = await auth.getSchematicsServiceV2();
+
+    return new Promise(function (resolve, reject) {
+        schematicsService
+            .createBlueprint(payload)
+            .then((res: any) => {
+                resolve(res.result);
+            })
+            .catch((err: any) => {
+                reject(err);
+            });
+    });
+}
+
+export async function createJob(payload: any): Promise<string> {
+    const schematicsService = await auth.getSchematicsServiceV2();
+    const refreshToken = await auth.getRefreshToken();
+
+    const params = {
+        refreshToken,
+        job: payload,
+    };
+
+    return new Promise((resolve, reject) => {
+        schematicsService
+            .createJob(params)
+            .then((res: any) => {
+                resolve('Job created');
+            })
+            .catch((err: any) => {
+                reject(err);
+            });
+    });
+}
+
+export async function getBlueprint(id: string, credentials: any = undefined) {
+    const schematicsService = await auth.getSchematicsServiceV2(credentials);
+
+    return new Promise(function (resolve, reject) {
+        schematicsService
+            .getBlueprint({
+                blueprintId: id,
+            })
+            .then((res: any) => {
+                resolve(res.result);
+            })
+            .catch((err: any) => {
+                reject(err);
+            });
+    });
+}
