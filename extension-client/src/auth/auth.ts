@@ -19,6 +19,7 @@ import * as type from '../type/index';
 import * as util from '../util';
 
 const schematicsV1 = require('@ibm-cloud/ibm-schematics/dist/schematics/v1');
+const schematicsV2 = require('@ibm-cloud/ibm-schematics/dist/schematics/v2');
 
 const {
     IamAuthenticator: iamAuthnticator,
@@ -70,6 +71,22 @@ export async function getSchematicsService(credentials: any = undefined) {
     const authenticator = await getAuthenticator(credentials);
 
     const schematicsService = new schematicsV1({
+        authenticator,
+        serviceUrl: credentials.serviceURL,
+        headers: getDefaultHeaders(),
+    });
+
+    return schematicsService;
+}
+
+export async function getSchematicsServiceV2(credentials: any = undefined) {
+    if (!credentials) {
+        credentials = await util.workspace.readCredentials();
+    }
+
+    const authenticator = await getAuthenticator(credentials);
+
+    const schematicsService = new schematicsV2({
         authenticator,
         serviceUrl: credentials.serviceURL,
         headers: getDefaultHeaders(),

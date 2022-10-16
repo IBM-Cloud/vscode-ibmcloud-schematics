@@ -35,7 +35,8 @@
         "onCommand:schematics.workspace.destroyResources",
         "onCommand:schematics.workspace.variables",
         "onCommand:schematics.workspace.details",
-        "onCommand:schematics.workspace.estimateCost"
+        "onCommand:schematics.workspace.estimateCost",
+        "onCommand:schematics.workspace.stateFile"
     ],
     "main": "./dist/extension.js",
     "contributes": {
@@ -108,6 +109,11 @@
                 "command": "schematics.workspace.estimateCost",
                 "title": "Estimate Cost",
                 "category": "IBM Cloud Schematics workspace"
+            },
+            {
+                "command": "schematics.workspace.stateFile",
+                "title": "State File",
+                "category": "IBM Cloud Schematics workspace"
             }
         ],
         "menus": {
@@ -145,17 +151,17 @@
         "eslint-config-prettier": "^8.3.0",
         "eslint-plugin-prettier": "^3.4.1",
         "glob": "^7.2.0",
+        "husky": "^7.0.0",
         "mocha": "^9.2.2",
         "prettier": "^2.5.1",
         "ts-loader": "^8.3.0",
         "typescript": "^4.5.4",
         "vscode-test": "^1.6.1",
         "webpack": "^5.65.0",
-        "webpack-cli": "^4.9.1",
-        "husky": "^7.0.0"
+        "webpack-cli": "^4.9.1"
     },
     "dependencies": {
-        "@ibm-cloud/ibm-schematics": "0.0.2",
+        "@ibm-cloud/ibm-schematics": "^2.0.0",
         "hcl-to-json": "^0.1.1",
         "rewire": "^5.0.0",
         "tar": "^6.1.0",
