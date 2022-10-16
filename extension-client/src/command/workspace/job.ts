@@ -18,6 +18,7 @@
 import * as vscode from 'vscode';
 
 import * as api from '../../api';
+import * as type from '../../type/index';
 import * as util from '../../util';
 import JobsView from '../../webview/workspace/JobsView';
 
@@ -75,4 +76,43 @@ export async function apply(): Promise<void> {
         console.log(error);
         vscode.window.showErrorMessage(String(error));
     }
+}
+
+export async function getStateFile(): Promise<void> {
+    const isDeployed = util.workspace.isDeployed();
+    if (!isDeployed) {
+        vscode.window.showErrorMessage(
+            'Workspace not deployed. Make sure you have deployed your workspace.'
+        );
+        return;
+    }
+    const ws = await util.workspace.readSchematicsWorkspace();
+    const creds: type.Account = await util.workspace.readCredentials();
+    const wsdata: any = await api.getWorkspace(ws.id, creds);
+
+    const payload = {
+        jobId: wsdata.last_activity_id,
+        fileType: 'state_file',
+    };
+
+    return new Promise((resolve, reject) => {
+        api.getOutputFile(payload)
+            .then(async (resp: any) => {
+                if (resp.hasOwnProperty('file_content')) {
+                    var fileContent: any = JSON.parse(resp.file_content);
+                    await util.workspace.saveSchematicsWorkspaceStateFile(
+                        fileContent
+                    );
+                    vscode.window.showInformationMessage(
+                        'State File downloaded!'
+                    );
+                }
+
+                resolve();
+            })
+            .catch((error) => {
+                console.log(error);
+                vscode.window.showErrorMessage(String(error));
+            });
+    });
 }

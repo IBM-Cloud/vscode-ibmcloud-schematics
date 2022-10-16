@@ -54,7 +54,6 @@ export function activate(context: vscode.ExtensionContext) {
         new MigrateTaskProvider()
     );
 
-
     // Register commands
     let jobsCmd = vscode.commands.registerCommand(
         'schematics.workspace.jobs',
@@ -127,6 +126,12 @@ export function activate(context: vscode.ExtensionContext) {
         () => command.workspace.cost(context)
     );
     context.subscriptions.push(estimateCostCmd);
+
+    var stateFileCmd = vscode.commands.registerCommand(
+        'schematics.workspace.stateFile',
+        () => command.workspace.getStateFile()
+    );
+    context.subscriptions.push(stateFileCmd);
 }
 
 // This method is called when your extension is deactivated
@@ -144,7 +149,6 @@ export function deactivate() {
     if (migrateTaskProvider) {
         migrateTaskProvider.dispose();
     }
-
 
     // Dispose webview panels after deactivation
     if (activitiesPanelWebview) {

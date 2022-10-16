@@ -31,6 +31,7 @@ export const credFilename = 'credentials.json';
 export const schematicsWorkspaceFilename = 'workspace.json';
 export const versionsFilename = 'version.json';
 export const versionsTFFilename = 'versions.tf';
+export const stateFilename = 'stateFile.json';
 export const cloneFilename = 'clone.json';
 export const originalWorkspaceFilename = 'original_workspace.json';
 export const tfvarsFilename = 'terraform.tfvars';
@@ -310,6 +311,11 @@ export async function saveSchematicsWorkspace(workspace: any) {
     return writeToFile(path, workspace);
 }
 
+export async function saveSchematicsWorkspaceStateFile(stateFileContent: any) {
+    const path = getStateFilePath();
+    return writeToFile(path, stateFileContent);
+}
+
 export function getSuffixedWorkspaceName() {
     let name: string = getWorkspaceName();
     name = name.split('.').join('_');
@@ -328,6 +334,10 @@ export function getWorkspaceVersionsFilePath(): string {
 
 export function getVersionsTFFilePath(): string {
     return getWorkspacePath() + path.sep + versionsTFFilename;
+}
+
+export function getStateFilePath(): string {
+    return getWorkspacePath() + path.sep + stateFilename;
 }
 
 export function hasVersionsTFFile(): boolean {
@@ -406,7 +416,6 @@ export function isCloned(): boolean {
 export function isWorkspaceExist(): boolean {
     const workspacepath = getSchematicsWorkspacePath();
     return fs.existsSync(workspacepath);
-
 }
 
 export function isDirectoryEmpty(dirPath: any): boolean {
@@ -493,8 +502,6 @@ export async function isGITRepo(url: any) {
     }
 }
 
-
-
 export function isCatalogWorkspace(obj: any): boolean {
     if (obj.hasOwnProperty('catalog_ref')) {
         return true;
@@ -502,8 +509,6 @@ export function isCatalogWorkspace(obj: any): boolean {
 
     return false;
 }
-
-
 
 export function isArchiveUploadedWorkspace(obj: any): boolean {
     if (obj?.template_repo?.has_uploadedgitrepotar) {
@@ -541,7 +546,7 @@ export async function createTarFile(): Promise<string> {
     };
 
     return new Promise((resolve, reject) => {
-        tar.c(options, [fileList], () => { })
+        tar.c(options, [fileList], () => {})
             .then(() => {
                 resolve('tar created');
             })
@@ -586,7 +591,6 @@ export function readWorkspaceFile(path: any) {
         });
     });
 }
-
 
 export function readTFFile(): any {
     return new Promise(function (resolve, reject) {
@@ -666,4 +670,3 @@ export function hasTfvarsFile(): boolean {
     const tfvarsPath = getTfvarsPath();
     return fs.existsSync(tfvarsPath);
 }
-

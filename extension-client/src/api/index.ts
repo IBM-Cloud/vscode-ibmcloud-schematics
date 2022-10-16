@@ -43,7 +43,7 @@ export async function uploadTar(payload: any): Promise<any> {
 
     return new Promise(function (resolve, reject) {
         schematicsService
-            .uploadTemplateTar(payload)
+            .templateRepoUpload(payload)
             .then(() => {
                 resolve('Workspace updated');
             })
@@ -67,7 +67,6 @@ export async function getWorkspace(id: string, credentials: any = undefined) {
             .catch((err: any) => {
                 reject(err);
             });
-
     });
 }
 
@@ -323,7 +322,6 @@ export async function saveVariables(wsData: any, variables: any) {
     });
 }
 
-
 export async function getStatefile(payload: any) {
     const credentials: type.Account = await util.workspace.readCredentials();
     const schematicsService = await auth.getSchematicsService(credentials);
@@ -340,3 +338,18 @@ export async function getStatefile(payload: any) {
     });
 }
 
+export async function getOutputFile(payload: any) {
+    const credentials: type.Account = await util.workspace.readCredentials();
+    const schematicsService = await auth.getSchematicsServiceV2(credentials);
+
+    return new Promise(function (resolve, reject) {
+        schematicsService
+            .getJobFiles(payload)
+            .then((res: any) => {
+                resolve(res.result);
+            })
+            .catch((err: any) => {
+                reject(err);
+            });
+    });
+}
