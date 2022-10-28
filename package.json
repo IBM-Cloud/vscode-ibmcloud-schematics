@@ -53,7 +53,7 @@
                 "type": "ibmcloud-schematics-migrate"
             },
             {
-                "type": "ibmcloud-schematics-blueprint"
+                "type": "ibmcloud-schematics-blueprint-deploy"
             }
         ],
         "commands": [

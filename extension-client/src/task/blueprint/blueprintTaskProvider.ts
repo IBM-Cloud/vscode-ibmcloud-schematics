@@ -20,7 +20,7 @@ import * as vscode from 'vscode';
 import BlueprintTaskTerminal from './blueprintTaskTerminal';
 
 export class BlueprintTaskProvider implements vscode.TaskProvider {
-    static taskType = 'ibmcloud-schematics-blueprint';
+    static taskType = 'ibmcloud-schematics-blueprint-deploy';
 
     private taskName = 'blueprint';
     private taskSource = 'schematics';
